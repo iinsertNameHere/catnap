@@ -1,5 +1,5 @@
-from functools import cache, wraps
 import platform
+import psutil
 import time
 import os
 import subprocess
@@ -102,6 +102,8 @@ class FetchInfo:
         self.cpu:          str = get_processor()
         self.uptime:       str = get_uptime()
 
+        self.vmem          = psutil.virtual_memory()
+
         self.art:          list[str]
         self.art_len:      int
         self.art_lines:    int
@@ -190,12 +192,7 @@ class FetchInfo:
 
         return "\n".join(rep)
 
-def get_time():
-    return time.time_ns() // 1_000_000
-
 if __name__ == "__main__":
-    start = get_time()
-    
     parser = ArgumentParser()
     parser.add_argument("-d", "--distro", required= False, default=None, help="Changes the distro art that is displayed")
     parser.add_argument("-s", "--small", required=False, action="store_true", default=False, help="Uses the small distro art version if posible")
@@ -207,5 +204,3 @@ if __name__ == "__main__":
         distro_suffix="_small" if args.small else ""
     )
     print(info)
-
-    print(f"{DEFAULT}Finished after {get_time() - start}ms")
