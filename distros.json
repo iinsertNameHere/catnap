@@ -1,0 +1,141 @@
+{
+    "default": {
+        "margin": [0, 0, 2, 3],
+        "art": [
+            "(BK)          #####        ",
+            "(BK)         #######       ",
+            "(BK)         ##(DT)O(BK)#(DT)O(BK)##       ",
+            "(BK)         #(YW)#####(BK)#       ",
+            "(BK)       ##(DT)##(YW)###(DT)##(BK)##     ",
+            "(BK)      #(DT)##########(BK)##    ",
+            "(BK)     #(DT)############(BK)##   ",
+            "(BK)     #(DT)#############(BK)##  ",
+            "(YW)    ##(BK)#(DT)###########(BK)##(YW)#  ",
+            "(YW)  #####(BK)#(DT)#########(BK)#(YW)#####",
+            "(YW)  ######(BK)#(DT)#######(BK)#(YW)######",
+            "(YW)    ####(BK)########(BK)#(YW)####  "
+        ]
+    },
+    "default_small": {
+        "margin": [2, 0, 2, 2],
+        "art": [
+            "(BK)      .--.     ",
+            "(BK)     |(DT)o(BK)_(DT)o (BK)|    ",
+            "(BK)     |(YW):_/ (BK)|    ",
+            "(BK)    /(DT)/   \\ (BK)\\   ",
+            "(BK)   ((DT)|     | (BK))  ",
+            "(YW)  /'(DT)|_   _/(YW)'\\  ",
+            "(YW)  \\___)(BK)=(YW)(___/  "
+        ]
+    },
+    "arch": {
+        "margin": [0, 2, 2, 0],
+        "art": [
+            "(CN)                 -`                  ",
+            "(CN)                .o+`                 ",
+            "(CN)               `ooo/                 ",
+            "(CN)              `+oooo:                ",
+            "(CN)             `+oooooo:               ",
+            "(CN)             -+oooooo+:              ",
+            "(CN)           `/:-:++oooo+:             ",
+            "(CN)          `/++++/+++++++:            ",
+            "(CN)         `/++++++++++++++:           ",
+            "(CN)        `/+++ooooooooooooo/`         ",
+            "(CN)       ./ooosssso++osssssso+`        ",
+            "(CN)      .oossssso-````/ossssss+`       ",
+            "(CN)     -osssssso.      :ssssssso.      ",
+            "(CN)    :osssssss/        osssso+++.     ",
+            "(CN)   /ossssssss/        +ssssooo/-     ",
+            "(CN)  `/ossssso+/:-        -:/+osssso+-  ",
+            "(CN) `+sso+:-`                 `.-/+oso: ",
+            "(CN)`++:.                           `-/+/",
+            "(CN).`                                 `/"
+        ]
+    },
+    "arch_small": {
+        "margin": [2, 0, 2, 3],
+        "art": [
+            "(CN)      /\\      ",
+            "(CN)     /  \\     ",
+            "(CN)    /\\   \\    ",
+            "(CN)   /      \\   ",
+            "(CN)  /   ,,   \\  ",
+            "(CN) /   |  |  -\\ ",
+            "(CN)/_-''    ''-_\\"
+        ]
+    },
+    "endeavouros": {
+        "alias": "arch"
+    },
+    "endeavouros_small": {
+        "alias": "arch_small"
+    },
+    "windows": {
+        "margin": [0, 2, 2, 3],
+        "art": [
+            "(RD)        ,.=:!!t3Z3z.,               ",
+            "(RD)       :tt:::tt333EE3               ",
+            "(RD)       Et:::ztt33EEEL (GN)@Ee.,      ..,",
+            "(RD)      ;tt:::tt333EE7 (GN);EEEEEEttttt33#",
+            "(RD)     :Et:::zt333EEQ. (GN)$EEEEEttttt33QL",
+            "(RD)     it::::tt333EEF (GN)@EEEEEEttttt33F ",
+            "(RD)    ;3=*^```\"*4EEV (GN):EEEEEEttttt33@. ",
+            "(BE)    ,.=::::!t=., ` (GN)@EEEEEEtttz33QF  ",
+            "(BE)   ;::::::::zt33)   (GN)\"4EEEtttji3P*   ",
+            "(BE)  :t::::::::tt33.(YW):Z3z..  `` ,..g.   ",
+            "(BE)  i::::::::zt33F (YW)AEEEtttt::::ztF    ",
+            "(BE) ;:::::::::t33V (YW);EEEttttt::::t3     ",
+            "(BE) E::::::::zt33L (YW)@EEEtttt::::z3F     ",
+            "(BE){3=*^```\"*4E3) (YW);EEEtttt:::::tZ`    ",
+            "(BE)             ` (YW):EEEEtttt::::z7      ",
+            "(BE)                 (YW)\"VEzjt:;;z>*`     "
+        ]
+    },
+    "windows_small": {
+        "margin": [2, 0, 2, 3],
+        "art": [
+            "(RD)   _--\"(GN)\"--_ ",
+            "(RD)-\"\"   (GN)|    |",
+            "(RD)|     (GN)|    |",
+            "(RD)| (BE) _--\"(YW)\"--_(GN)|",
+            "(BE)-\"\"   (YW)|    |",
+            "(BE)|     (YW)|    |",
+            "(BE)|  _--\"(YW)\"--_|",
+            "(BE)-\"\"         "
+        ]
+    },
+    "macos": {
+        "margin": [0, 3, 0, 4],
+        "art": [
+            "(DT)                    'c.       ",
+            "(DT)                 ,xNMM.       ",
+            "(DT)               .OMMMMo        ",
+            "(DT)               OMMM0,         ",
+            "(DT)     .;loddo:' loolloddol;.   ",
+            "(DT)   cKMMMMMMMMMMNWMMMMMMMMMM0: ",
+            "(DT) .KMMMMMMMMMMMMMMMMMMMMMMMWd. ",
+            "(DT) XMMMMMMMMMMMMMMMMMMMMMMMX.   ",
+            "(DT);MMMMMMMMMMMMMMMMMMMMMMMM:    ",
+            "(DT):MMMMMMMMMMMMMMMMMMMMMMMM:    ",
+            "(DT).MMMMMMMMMMMMMMMMMMMMMMMMX.   ",
+            "(DT) kMMMMMMMMMMMMMMMMMMMMMMMMWd. ",
+            "(DT) .XMMMMMMMMMMMMMMMMMMMMMMMMMMk",
+            "(DT)  .XMMMMMMMMMMMMMMMMMMMMMMMMK.",
+            "(DT)    kMMMMMMMMMMMMMMMMMMMMMMd  ",
+            "(DT)     ;KMMMMMMMWXXWMMMMMMMk.   ",
+            "(DT)       .cooc,.    .,coo:.     "
+        ]
+    },
+    "macos_small": {
+        "margin": [2, 0, 2, 3],
+        "art": [
+            "(DT)        .:'   ",
+            "(DT)    __ :'__   ",
+            "(DT) .'`__`-'__``.",
+            "(DT):__________.-'",
+            "(DT):_________:   ",
+            "(DT) :_________`-;",
+            "(DT)  `.__.-.__.' "
+        ]
+    }
+}
