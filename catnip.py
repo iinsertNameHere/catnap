@@ -7,37 +7,61 @@ import re
 import json
 from argparse import ArgumentParser
 
-BLACK:          str = "\u001b[30m" # (BK)
-RED:            str = "\u001b[31m" # (RD)
-GREEN:          str = "\u001b[32m" # (GN)
-YELLOW:         str = "\u001b[33m" # (YW)
-BLUE:           str = "\u001b[34m" # (BE)
-MAGENTA:        str = "\u001b[35m" # (MA)
-CYAN:           str = "\u001b[36m" # (CN)
-WHITE:          str = "\u001b[37m" # (WE)
-DEFAULT:        str = "\u001b[0m"  # (DT)
-BRIGHT_BLACK:   str = "\u001b[1;30m" # [BK]
-BRIGHT_RED:     str = "\u001b[1;31m" # [RD]
-BRIGHT_GREEN:   str = "\u001b[1;32m" # [GN]
-BRIGHT_YELLOW:  str = "\u001b[1;33m" # [YW]
-BRIGHT_BLUE:    str = "\u001b[1;34m" # [BE]
-BRIGHT_MAGENTA: str = "\u001b[1;35m" # [MA]
-BRIGHT_CYAN:    str = "\u001b[1;36m" # [CN]
-BRIGHT_WHITE:   str = "\u001b[1;37m" # [WE]
+BLACK:             str = "\u001b[30m"   # (BK)
+RED:               str = "\u001b[31m"   # (RD)
+GREEN:             str = "\u001b[32m"   # (GN)
+YELLOW:            str = "\u001b[33m"   # (YW)
+BLUE:              str = "\u001b[34m"   # (BE)
+MAGENTA:           str = "\u001b[35m"   # (MA)
+CYAN:              str = "\u001b[36m"   # (CN)
+WHITE:             str = "\u001b[37m"   # (WE)
+BRIGHT_BLACK:      str = "\u001b[30;1m" # [BK]
+BRIGHT_RED:        str = "\u001b[31;1m" # [RD]
+BRIGHT_GREEN:      str = "\u001b[32;1m" # [GN]
+BRIGHT_YELLOW:     str = "\u001b[33;1m" # [YW]
+BRIGHT_BLUE:       str = "\u001b[34;1m" # [BE]
+BRIGHT_MAGENTA:    str = "\u001b[35;1m" # [MA]
+BRIGHT_CYAN:       str = "\u001b[36;1m" # [CN]
+BRIGHT_WHITE:      str = "\u001b[37;1m" # [WE]
+BG_BLACK:          str = "\u001b[40m"   # |BK|
+BG_RED:            str = "\u001b[41m"   # |RD|
+BG_GREEN:          str = "\u001b[42m"   # |GN|
+BG_YELLOW:         str = "\u001b[43m"   # |YW|
+BG_BLUE:           str = "\u001b[44m"   # |BE|
+BG_MAGENTA:        str = "\u001b[45m"   # |MA|
+BG_CYAN:           str = "\u001b[46m"   # |CN|
+BG_WHITE:          str = "\u001b[47m"   # |WE|
+BRIGHT_BG_BLACK:   str = "\u001b[40;1m" # !BK!
+BRIGHT_BG_RED:     str = "\u001b[41;1m" # !RD!
+BRIGHT_BG_GREEN:   str = "\u001b[42;1m" # !GN!
+BRIGHT_BG_YELLOW:  str = "\u001b[43;1m" # !YW!
+BRIGHT_BG_BLUE:    str = "\u001b[44;1m" # !BE!
+BRIGHT_BG_MAGENTA: str = "\u001b[45;1m" # !MA!
+BRIGHT_BG_CYAN:    str = "\u001b[46;1m" # !CN!
+BRIGHT_BG_WHITE:   str = "\u001b[47;1m" # !WE!
+DEFAULT:           str = "\u001b[0m"    # /DT/
 
 COLOR = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
 
 def colorize(uncolored: str) -> str:
     colored = uncolored \
-        .replace("(BK)", BLACK).replace("[BK]", BRIGHT_BLACK) \
-        .replace("(RD)", RED).replace("[RD]", BRIGHT_RED) \
-        .replace("(GN)", GREEN).replace("[GN]", BRIGHT_GREEN) \
-        .replace("(YW)", YELLOW).replace("[YW]", BRIGHT_YELLOW) \
-        .replace("(BE)", BLUE).replace("[BE]", BRIGHT_BLUE) \
+        .replace("(BK)", BLACK)  .replace("[BK]", BRIGHT_BLACK) \
+        .replace("(RD)", RED)    .replace("[RD]", BRIGHT_RED) \
+        .replace("(GN)", GREEN)  .replace("[GN]", BRIGHT_GREEN) \
+        .replace("(YW)", YELLOW) .replace("[YW]", BRIGHT_YELLOW) \
+        .replace("(BE)", BLUE)   .replace("[BE]", BRIGHT_BLUE) \
         .replace("(MA)", MAGENTA).replace("[MA]", BRIGHT_MAGENTA) \
-        .replace("(CN)", CYAN).replace("[CN]", BRIGHT_CYAN) \
-        .replace("(WE)", WHITE).replace("[WE]", BRIGHT_WHITE) \
-        .replace("(DT)", DEFAULT)
+        .replace("(CN)", CYAN)   .replace("[CN]", BRIGHT_CYAN) \
+        .replace("(WE)", WHITE)  .replace("[WE]", BRIGHT_WHITE) \
+        .replace("|BK|", BLACK)  .replace("!BK!", BRIGHT_BLACK) \
+        .replace("|RD|", RED)    .replace("!RD!", BRIGHT_RED) \
+        .replace("|GN|", GREEN)  .replace("!GN!", BRIGHT_GREEN) \
+        .replace("|YW|", YELLOW) .replace("!YW!", BRIGHT_YELLOW) \
+        .replace("|BE|", BLUE)   .replace("!BE!", BRIGHT_BLUE) \
+        .replace("|MA|", MAGENTA).replace("!MA!", BRIGHT_MAGENTA) \
+        .replace("|CN|", CYAN)   .replace("!CN!", BRIGHT_CYAN) \
+        .replace("|WE|", WHITE)  .replace("!WE!", BRIGHT_WHITE) \
+        .replace("/DT/", DEFAULT)
     return colored
 
 def uncolorize(colored: str) -> str:
@@ -143,7 +167,7 @@ class FetchInfo:
         return distro
 
     def formateLine(self, line: str) -> str:
-        res = (" "*self.left + ((self.art[self.art_index] if self.art_index < self.art_lines else " "*self.art_len)) + " "*self.right + line)
+        res = (" "*self.left + ((self.art[self.art_index] + DEFAULT if self.art_index < self.art_lines else " "*self.art_len)) + " "*self.right + line +  DEFAULT)
         self.top -= 1
         self.art_index += 1
         return res
@@ -166,25 +190,38 @@ class FetchInfo:
         self.art_lines = len(self.art)
 
         for i in range(0, self.bottom):
-            rep.append(" " * self.left + (self.art[self.art_index] if self.art_index < self.art_lines else " "*self.art_len))
+            rep.append(" " * self.left + (self.art[self.art_index] if self.art_index < self.art_lines else " "*self.art_len) + DEFAULT)
             self.art_index += 1
 
-        rep.append(self.formateLine(f"{self.color}{self.username}\033[0m@{self.color}{self.hostname}\033[0m"))
-        rep.append(self.formateLine(self.color+"-"*(realLen(rep[len(rep)-1])-self.art_len)))
-        rep.append(self.formateLine(f"{self.color}Uptime: \033[0m{self.uptime}"))
-        rep.append(self.formateLine(self.color+"-"*(realLen(rep[len(rep)-1])-self.art_len)))
-        rep.append(self.formateLine(f"{self.color}OS: \033[0m{self.os} {self.archetecture}"))
-        rep.append(self.formateLine(f"{self.color}Kernel: \033[0m{self.kernel}"))
-        rep.append(self.formateLine(f"{self.color}CPU: \033[0m{self.cpu}"))
-        rep.append(self.formateLine(f"{self.color}Terminal: \033[0m{self.terminal}"))
-        rep.append(self.formateLine(f"{self.color}Desktop: \033[0m{self.desktop}"))
-        rep.append(self.formateLine(f"{self.color}Shell: \033[0m{self.shell}"))
+        def get_spacer():
+            return self.formateLine(self.color+"-"*(realLen(rep[len(rep)-1])-(self.art_len+self.left+self.right)))
+        
+        def spacer():
+            rep.append(get_spacer())
+        
+        def stat(name: str, value: str):
+            rep.append(self.formateLine(f"{self.color}{name}: {DEFAULT}{value}"))
 
-        line = f"{self.color}--------------"
-        last_len = (realLen(rep[len(rep)-1])-self.art_len)
-        rep.append(self.formateLine((line if last_len < len(line) else self.color+"-"*last_len)))
+        def prompt():
+            rep.append(self.formateLine(f"{self.color}{self.username}\033[0m@{self.color}{self.hostname}"))
+        
+        prompt()
+        spacer()
+        stat("Uptime",self.uptime)
+        spacer()
+        stat("OS", f"{self.os} {self.archetecture}")
+        stat("Kernel", self.kernel)
+        stat("CPU", self.cpu)
+        stat("Terminal", self.terminal)
+        stat("Desktop", self.desktop)
+        stat("Shell", self.shell)
 
-        rep.append(self.formateLine(f"{BRIGHT_BLUE}⬤   {BRIGHT_GREEN}⬤   {BRIGHT_RED}⬤   {BRIGHT_YELLOW}⬤"))
+        line = f"{self.color}---------------"
+        last_len = (realLen(rep[len(rep)-1])-(self.art_len+self.left+self.right))
+        rep.append(self.formateLine((line if last_len < len(line) else "-"*last_len)))
+
+        rep.append(self.formateLine(f"{BLUE}⣿⣿⣿ {GREEN}⣿⣿⣿ {RED}⣿⣿⣿ {YELLOW}⣿⣿⣿"))
+        rep.append(self.formateLine(f"{BRIGHT_BLUE}⣿⣿⣿ {BRIGHT_GREEN}⣿⣿⣿ {BRIGHT_RED}⣿⣿⣿ {BRIGHT_YELLOW}⣿⣿⣿"))
 
         while self.art_index < self.art_lines:
             rep.append(" "*self.left + self.art[self.art_index])
@@ -196,11 +233,24 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("-d", "--distro", required= False, default=None, help="Changes the distro art that is displayed")
     parser.add_argument("-s", "--small", required=False, action="store_true", default=False, help="Uses the small distro art version if posible")
+    parser.add_argument("-m", "--medium", required=False, action="store_true", default=False, help="Uses the medium distro art version if posible")
+    parser.add_argument("-c", "--color", required=False, default="[CN]", help="Changes the color")
     args = parser.parse_args()
 
+    suffix: str = ""
+
+    if args.small and args.medium:
+        print("# You can't use [-s|--small] and [-m|--medium] at the same time!")
+        exit(1)
+    elif args.small:
+        suffix = "_small"
+    elif args.medium:
+        suffix = "_medium"
+
     info = FetchInfo(
-        distro_file=f"distros.json",
+        #distro_file=os.environ["HOME"] + "/.config/catnip/distros.json",
         distro_name=args.distro,
-        distro_suffix="_small" if args.small else ""
+        distro_suffix=suffix,
+        color=colorize(args.color)
     )
     print(info)
