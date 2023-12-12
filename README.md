@@ -15,7 +15,7 @@ I created Catnip as a playful, simple system-information **concatenation** tool 
 - used shell
 - terminal colors
 
-**NOTE:** Design was inspired by [Nitch](https://github.com/ssleert/nitch)
+>**NOTE:** Design was inspired by [Nitch](https://github.com/ssleert/nitch)
 
 ## Usage
 Run catnip in you terminal:
@@ -50,3 +50,5 @@ Copy config:
 ```bash
 cp ../catnip.json ~/.config/catnip.json
 ```
+
+>**NOTE:** If you want the default icons to work, make shour you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
