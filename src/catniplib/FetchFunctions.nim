@@ -1,9 +1,10 @@
 import "std/strutils"
 import "std/os"
 import "std/parsecfg"
+import "std/posix_utils"
 
 proc getDistro*(): string =
-  result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME")
+  result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
 
 proc getDistroID*(): array[2, string] =
   result[0] = "/etc/os-release".loadConfig.getSectionValue("", "ID")
