@@ -1,0 +1,42 @@
+{
+    "stats": {
+        "username": "{RD}# user  ",
+        "hostname": "{YW}# hname ",
+        "uptime":   "{BE}# uptime",
+        "distro":   "{GN}# distro",
+        "kernel":   "{MA}# kernel",
+        "desktop":  "{CN}# desktp",
+        "shell":    "{RD}# shell ",
+        "colors":   "!DT!# colors",
+        "color_icon": ""
+    },
+    "distros": {
+        "default": {
+            "margin": [1, 2, 3],
+            "art": [
+                "(BK)      .--.     ",
+                "(BK)     |!DT!o(BK)_!DT!o (BK)|    ",
+                "(BK)     |(YW):_/ (BK)|    ",
+                "(BK)    /!DT!/   \\ (BK)\\   ",
+                "(BK)   (!DT!|     | (BK))  ",
+                "(YW)  /'!DT!|_   _/(YW)'\\  ",
+                "(YW)  \\___)(BK)=(YW)(___/  "
+            ]
+        },
+        "arch linux": {
+            "margin": [1, 2, 3],
+            "art": [
+                "{CN}      /\\      ",
+                "{CN}     /  \\     ",
+                "{CN}    /\\   \\    ",
+                "{CN}   /      \\   ",
+                "{CN}  /   ,,   \\  ",
+                "{CN} /   |  |  -\\ ",
+                "{CN}/_-''    ''-_\\"
+            ]
+        },
+        "endeavouros": {
+            "alias": "arch linux"
+        }
+    }
+}
