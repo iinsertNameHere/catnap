@@ -5,14 +5,19 @@ import "Utils"
 import "Colors"
 import "std/terminal"
 
-type Logo* = object
+type Logo = object
     margin*: array[3, int]
     art*: seq[string]
+
+type DistroID = object
+    id: string
+    like: string
 
 type FetchInfo* = object
     username*: string
     hostname*: string
     distro*: string
+    distroid*: DistroID
     uptime*: string
     kernel*: string
     shell*: string
@@ -30,10 +35,16 @@ proc GetFetchInfo*(distroID: string = "nil"): FetchInfo =
     result.shell    = FetchFunctions.getShell()
     result.desktop  = FetchFunctions.getDesktop()
 
-    var distroid = (if distroID != "nil": distroID else: result.distro.toLowerAscii())
+    let tmpid = FetchFunctions.getDistroID()
+    result.distroid.id = tmpid[0]
+    result.distroid.like = tmpid[1]
+
+    var distroid = (if distroID != "nil": distroID else: result.distroid.id)
 
     if config["distros"]{distroid} == nil:
-        distroid = "default"
+        distroid = result.distroid.like
+        if config["distros"]{distroid} == nil:
+            distroid = "default"
 
     let jalias = config["distros"][distroid]{"alias"} 
     if jalias != nil:

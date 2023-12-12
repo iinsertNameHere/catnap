@@ -5,6 +5,10 @@ import "std/parsecfg"
 proc getDistro*(): string =
   result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME")
 
+proc getDistroID*(): array[2, string] =
+  result[0] = "/etc/os-release".loadConfig.getSectionValue("", "ID")
+  result[1] = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE")
+
 proc getUptime*(): string =
   let uptime = "/proc/uptime".open.readLine.split(".")[0]
   let utu = uptime.parseUInt

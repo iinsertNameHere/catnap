@@ -23,7 +23,7 @@
                 "(YW)  \\___)(BK)=(YW)(___/  "
             ]
         },
-        "arch linux": {
+        "arch": {
             "margin": [1, 2, 3],
             "art": [
                 "{BE}      /\\      ",
@@ -34,9 +34,6 @@
                 "{BE} /   |  |  -\\ ",
                 "{BE}/_-''    ''-_\\"
             ]
-        },
-        "endeavouros": {
-            "alias": "arch linux"
         }
     }
 }
