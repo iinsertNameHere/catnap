@@ -51,4 +51,4 @@ Copy config:
 cp ../catnip.json ~/.config/catnip.json
 ```
 
->**NOTE:** If you want the default icons to work, make shour you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
+>**NOTE:** If you want the default icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
