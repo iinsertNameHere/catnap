@@ -1,16 +1,16 @@
 <br />
 <div align="center">
-  <a href="https://github.com/iinsertNameHere">
+  <a href="https://github.com/iinsertNameHere/Catnip">
     <img src="image/logo.png" alt="Logo" width="200" height="200">
   </a>
 
 <h3 align="center">Catnip Systemfetch</h3>
   <p align="center">
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="image/demo.png">View Demo</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
+    <a href="https://github.com/iinsertNameHere/Catnip/issues">Report Bug</a>
     ·
-    <a href="https://github.com/github_username/repo_name/issues">Request Feature</a>
+    <a href="https://github.com/iinsertNameHere/Catnip/issues">Features</a>
   </p>
 </div>
 <br>
