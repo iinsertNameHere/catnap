@@ -24,14 +24,7 @@ proc getUptime*(): string =
     result = $(utd) & "d " & $(uth) & "h " & $(utm) & "m"
 
 proc getHostname*(): string =
-  let hostname = "/etc/hostname"
-  let hostnameOpenrc = "/etc/conf.d/hostname"
-  if hostname.fileExists():
-    result = hostname.open.readLine
-  elif hostnameOpenrc.fileExists():
-    result = hostnameOpenrc.loadConfig.getSectionValue("", "hostname")
-  else:
-    result = ""
+  result = uname().nodename
 
 func getUser*(): string =
   result = os.getEnv("USER")
