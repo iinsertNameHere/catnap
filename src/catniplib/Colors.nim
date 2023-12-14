@@ -104,9 +104,8 @@ proc Colorize*(s: string): string =
 
     result = result.replace("!DT!", Default)
     
-
 proc Uncolorize*(s: string): string =
-    result = re.replace(s, ANSI)
+    result = re.replace(s, ANSI, "")
 
 proc Reset*() =
     stdout.write(Default)

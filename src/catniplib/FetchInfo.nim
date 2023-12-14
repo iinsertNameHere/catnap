@@ -1,9 +1,8 @@
 import "FetchFunctions"
 import "std/json"
-import "std/strutils"
 import "Utils"
 import "Colors"
-import "std/terminal"
+import unicode
 
 type Logo = object
     margin*: array[3, int]
@@ -24,22 +23,22 @@ type FetchInfo* = object
     desktop*: string
     logo*: Logo
 
-let config = parseJson(readFile("/home/iinsert/.config/catnip.json"))
-
 proc GetFetchInfo*(distroID: string = "nil"): FetchInfo =
-    result.username = FetchFunctions.getUser()
-    result.hostname = FetchFunctions.getHostname()
-    result.distro   = FetchFunctions.getDistro()
+    result.username = "catnip"# FetchFunctions.getUser()
+    result.hostname = "archsystem" # FetchFunctions.getHostname()
+    result.distro   = "Arch Linux x86_64" # FetchFunctions.getDistro()
     result.uptime   = FetchFunctions.getUptime()
     result.kernel   = FetchFunctions.getKernel()
+    result.desktop  = "Hyprland" # FetchFunctions.getDesktop()
     result.shell    = FetchFunctions.getShell()
-    result.desktop  = FetchFunctions.getDesktop()
 
     let tmpid = FetchFunctions.getDistroID()
     result.distroid.id = tmpid[0]
     result.distroid.like = tmpid[1]
 
     var distroid = (if distroID != "nil": distroID else: result.distroid.id)
+
+    let config = parseJson(readFile("/home/iinsert/.config/catnip.json"))
 
     if config["distros"]{distroid} == nil:
         distroid = result.distroid.like
@@ -58,71 +57,85 @@ proc GetFetchInfo*(distroID: string = "nil"): FetchInfo =
         result.logo.art.add(line.getStr())
 
 proc Render*(fetchinfo: FetchInfo) =
-    var art = fetchinfo.logo.art
+    ## Function that Renders a FetchInfo object to the console
+    
+    ##### Define output buffers #####
+    var distro_art: seq[string]
+    var stats_block: seq[string]
+
+    ##### Define Margins #####
     let margin_top = fetchinfo.logo.margin[0]
     let margin_left = fetchinfo.logo.margin[1]
     let margin_right = fetchinfo.logo.margin[2]
 
-    var line = 1
+    ##### Load Config #####
+    let config = parseJson(readFile("/home/iinsert/.config/catnip.json"))
 
-    for _ in countup(0, margin_top):
-        art = " ".repeat(art[0].len) & art
-
-    var bl0ck: seq[string]
-
-    var statslen = 0
-    proc registerStat(stat: string): string =
-        if statslen < stat.reallen:
-            statslen = stat.reallen - 1
+    ##### Define Functions #####
+    var statlen = 0 # lenght of the longest stat line
+    
+    func registerStat(stat: JsonNode): JsonNode =
+        ## Function that is used to register the stats lenght and compare it to statlen
+        let l = stat["icon"].getStr().runeLen + stat["name"].getStr().runeLen + 1
+        if l > statlen:
+            statlen = l
         return stat
 
-    let stat_username = registerStat Colors.Colorize(config["stats"]["username"].getStr())
-    let stat_hostname = registerStat Colors.Colorize(config["stats"]["hostname"].getStr())
-    let stat_uptime   = registerStat Colors.Colorize(config["stats"]["uptime"].getStr())
-    let stat_distro   = registerStat Colors.Colorize(config["stats"]["distro"].getStr())
-    let stat_kernel   = registerStat Colors.Colorize(config["stats"]["kernel"].getStr())
-    let stat_desktop  = registerStat Colors.Colorize(config["stats"]["desktop"].getStr())
-    let stat_shell    = registerStat Colors.Colorize(config["stats"]["shell"].getStr())
-    let stat_colors     = registerStat Colors.Colorize(config["stats"]["colors"].getStr())
+    func addStat(icon: string, name: string, color: string, value: string) =
+        ## Function Adds a stat to the stats_block buffer
+        var line = icon & " " & name 
+        while line.runeLen < statlen:
+            line &= " "
+        stats_block.add("│ " & color.Colorize() & line & Colors.Default & " │ " & value)
 
-    proc addStat(icon: string, name: string, value: string) =
-        var fname = name.replace("#", icon)
-        bl0ck.add("│ " & fname & " ".repeat((statslen - name.len) - 1) & Colors.Default & " │ " & value)
+    ##### Build distro_art buffer #####
+
+    # Fill distro_art buffer with fetchinfo.logo.art
+    for idx in countup(0, fetchinfo.logo.art.len - 1):
+        distro_art.add(" ".repeat(margin_left) & Colors.Colorize(fetchinfo.logo.art[idx]) & Colors.Default & " ".repeat(margin_right))
+
+    # Add margin_top lines ontop of the distro_art
+    if margin_top > 0:
+        var l = distro_art[0].reallen - 1
+        for _ in countup(0, margin_top):
+            distro_art = " ".repeat(l) & distro_art
+
+    ##### Build stat_block buffer #####
+
+    # Get and register stats
+    let stat_username = registerStat(config["stats"]["username"])
+    let stat_hostname = registerStat(config["stats"]["hostname"])
+    let stat_uptime   = registerStat(config["stats"]["uptime"])
+    let stat_distro   = registerStat(config["stats"]["distro"])
+    let stat_kernel   = registerStat(config["stats"]["kernel"])
+    let stat_desktop  = registerStat(config["stats"]["desktop"])
+    let stat_shell    = registerStat(config["stats"]["shell"])
+    let stat_colors   = registerStat(config["stats"]["colors"])
+
+    # Build the stat_block buffer
+    stats_block.add("╭" & "─".repeat(statlen + 1) & "╮")
+    addStat(stat_username["icon"].getStr(), stat_username["name"].getStr(), stat_username["color"].getStr(), fetchinfo.username)
+    addStat(stat_hostname["icon"].getStr(), stat_hostname["name"].getStr(), stat_hostname["color"].getStr(), fetchinfo.hostname)
+    addStat(stat_uptime["icon"].getStr(),   stat_uptime["name"].getStr(),   stat_uptime["color"].getStr(),   fetchinfo.uptime)
+    addStat(stat_distro["icon"].getStr(),   stat_distro["name"].getStr(),   stat_distro["color"].getStr(),   fetchinfo.distro)
+    addStat(stat_kernel["icon"].getStr(),   stat_kernel["name"].getStr(),   stat_kernel["color"].getStr(),   fetchinfo.kernel)
+    addStat(stat_desktop["icon"].getStr(),  stat_desktop["name"].getStr(),  stat_desktop["color"].getStr(),  fetchinfo.desktop)
+    addStat(stat_shell["icon"].getStr(),    stat_shell["name"].getStr(),    stat_shell["color"].getStr(),    fetchinfo.shell)
+    stats_block.add("├" & "─".repeat(statlen + 1) & "┤")
+    let symbol = stat_colors["symbol"].getStr()
+    addStat(stat_colors["icon"].getStr(),    stat_colors["name"].getStr(),    stat_colors["color"].getStr(), Colors.Colorize(
+    "(WE)"&symbol&" (RD)"&symbol&" (YW)"&symbol&" (GN)"&symbol&" (CN)"&symbol&" (BE)"&symbol&" (MA)"&symbol&" (BK)"&symbol&"!DT!"))
+    stats_block.add("╰" & "─".repeat(statlen + 1) & "╯")
+
+    ##### Merge buffers and output #####
     
-    bl0ck.add("╭" & "─".repeat(statslen + 3) & "╮")
-    addStat(" ", stat_username, fetchinfo.username)
-    addStat(" ", stat_hostname, fetchinfo.hostname)
-    addStat(" ", stat_uptime, fetchinfo.uptime)
-    addStat(" ", stat_distro, fetchinfo.distro)
-    addStat(" ", stat_kernel, fetchinfo.kernel)
-    addStat("󰧨 ", stat_desktop, fetchinfo.desktop)
-    addStat(" ", stat_shell, fetchinfo.shell)
-    bl0ck.add("├" & "─".repeat(statslen + 3) & "┤")
+    let lendiv = stats_block.len - distro_art.len
+    if lendiv < 0:
+        for _ in countup(1, lendiv - lendiv*2):
+            stats_block.add(" ")
+    elif lendiv > 0:
+        for _ in countup(1, lendiv):
+            distro_art.add(" ".repeat(distro_art[0].reallen - 1))
 
-    let color_icon = config["stats"]["color_icon"].getStr()
-    addStat(" ", stat_colors, Colors.Colorize(
-        "(WE)" & color_icon & " (RD)" & color_icon &
-        " (YW)" & color_icon & " (GN)" & color_icon & 
-        " (CN)" & color_icon & " (BE)" & color_icon &
-        " (MA)" & color_icon & " (BK)" & color_icon &
-        "!DT!"
-    ))
-
-    bl0ck.add("╰" & "─".repeat(statslen + 3) & "╯")
-
-    for artline in art:
-        echo Colors.Colorize(" ".repeat(margin_left) & artline & " ".repeat(margin_left))
-        Colors.Reset()
-    
-    cursorUp art.len
-    cursorForward art[0].len + margin_left + margin_right - 1
-
-    for blockline in bl0ck:
-        echo blockline
-        cursorForward art[0].len + margin_left + margin_right - 1
-        line += 1
-    
-    while line < art.len - 1:
-        echo ""
-        cursorForward art[0].len + margin_left + margin_right
-        line += 1
+    for idx in countup(0, distro_art.len - 1):
+        echo distro_art[idx] & stats_block[idx]

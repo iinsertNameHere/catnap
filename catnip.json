@@ -1,17 +1,34 @@
-{
+{   
     "stats": {
-        "username": "{RD}# user  ",
-        "hostname": "{YW}# hname ",
-        "uptime":   "{BE}# uptime",
-        "distro":   "{GN}# distro",
-        "kernel":   "{MA}# kernel",
-        "desktop":  "{CN}# desktp",
-        "shell":    "{RD}# shell ",
-        "colors":   "!DT!# colors",
-        "color_icon": ""
+        "username": {"icon": " ", "name": "user", "color": "(RD)"},
+        "hostname": {"icon": " ", "name": "hname", "color": "(YW)"},
+        "uptime":   {"icon": " ", "name": "uptime", "color": "(BE)"},
+        "distro":   {"icon": " ", "name": "distro", "color": "(GN)"},
+        "kernel":   {"icon": " ", "name": "kernel", "color": "(MA)"},
+        "desktop":  {"icon": " ", "name": "desktp", "color": "(CN)"},
+        "shell":    {"icon": " ", "name": "shell", "color": "(RD)"},
+        "colors":   {"icon": " ", "name": "colors", "color": "!DT!", "symbol": ""}
     },
     "distros": {
         "default": {
+            "alias": "catnip"
+        },
+        "catnip": {
+            "margin": [0, 0, 0],
+            "art": [
+            "(GN)          ⣀⣀⣠⣠⣶⠦⢴⣦⣀⣠⣀  ",
+            "(GN)     ⢀⣤⣴⠿⠋⠿⠋⠁   ⠉⠉⠉⠉⣿⡇ ",
+            "(GN)    ⣴⡟⠙⠁   ⡆        ⣰⡿ ",
+            "(GN)  ⣰⡿⡟   ⡇ ⢸⣧⣚⡀     ⢻⡇  ",
+            "(GN) ⢠⣿⠁ ⢸  ⣇⡴⠋⠉⠉     ⣰⡿⠁  ",
+            "(GN) ⢸⣏  ⢸⣀⣴⠟⠛⠛⠉⠁    ⢚⣿    ",
+            "(GN) ⠸⣿  ⣼⣿⠧⠤⠤⠔   ⣀⣤⡾⠛⠁    ",
+            "(GN)  ⠹⣧⣾⡟⠁     ⢀⣠⣼⡿       ",
+            "(GN)  ⢀⣼⠟⣼⡟⠻⠿⠛⠛⠛⠉⠁         ",
+            "(GN)  ⠘⠿⠾⠏                 "
+            ]
+        },
+        "tux": {
             "margin": [1, 2, 3],
             "art": [
                 "(BK)      .--.     ",
