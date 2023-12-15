@@ -24,12 +24,12 @@ type FetchInfo* = object
     logo*: Logo
 
 proc GetFetchInfo*(distroID: string = "nil"): FetchInfo =
-    result.username = "catnip"# FetchFunctions.getUser()
-    result.hostname = "archsystem" # FetchFunctions.getHostname()
-    result.distro   = "Arch Linux x86_64" # FetchFunctions.getDistro()
+    result.username = FetchFunctions.getUser()
+    result.hostname = FetchFunctions.getHostname()
+    result.distro   = FetchFunctions.getDistro()
     result.uptime   = FetchFunctions.getUptime()
     result.kernel   = FetchFunctions.getKernel()
-    result.desktop  = "Hyprland" # FetchFunctions.getDesktop()
+    result.desktop  = FetchFunctions.getDesktop()
     result.shell    = FetchFunctions.getShell()
 
     let tmpid = FetchFunctions.getDistroID()
