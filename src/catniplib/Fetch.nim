@@ -1,4 +1,4 @@
-import "fetch/linux" as platform
+import "fetch/Linux" as platform
 from "common/Definitions" import FetchInfo, CONFIGPATH
 import "common/Config"
 import json
