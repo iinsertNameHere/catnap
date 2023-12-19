@@ -4,7 +4,7 @@
     <img src="image/logo.png" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center">Catnip Systemfetch</h3>
+<h3 align="center"><code>Catnip🌿</code> Systemfetch</h3>
   <p align="center">
     <a href="#demo-image">View Demo</a>
     ·
@@ -15,14 +15,13 @@
 </div>
 <br>
 
-## What is Catnip
+## 🌿 What is Catnip
+I created Catnip as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
-I created Catnip as a playful, simple system-information **concatenation** tool using **nim**. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
-
-> #### Execution Time 
+> #### ⏱️ Execution Time 
 > *Around **0.0008** seconds on my laptop*
 
-### Displayed Statistics
+### 📊 Displayed Statistics
 - username
 - hostname
 - system uptime
@@ -32,12 +31,12 @@ I created Catnip as a playful, simple system-information **concatenation** tool 
 - used shell
 - terminal colors
 
-## Demo Image
->**NOTE:** Design was inspired by [Nitch](https://github.com/ssleert/nitch)
+## 📷 Demo Image
+>**NOTE:** Design was inspired by <code><a href="https://github.com/ssleert/nitch">Nitch👑</a></code>
 
 > <img width=500 src="image/demo.png">
 
-## Usage
+## 💻 Usage
 Run catnip in you terminal:
 ```bash
 ./catnip
@@ -49,30 +48,30 @@ Change the distro icon using:
 ```
 
 
-##  Compilation/Installation
-Install nim with you favorit pkg manager:
-```bash
-sudo yay -S nim
-```
+## 🪡 Compilation/Installation
+**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
 
-Clone the repo:
+**2.** Clone the repo:
 ```bash
 git clone https://github.com/iinsertNameHere/Catnip.git
+```
+**3.** Change dir into the repo
+```bash
 cd ./Catnip/src
 ```
 
-Run nim compilation:
+**4.** Run `nim👑` compilation:
 ```bash
 nim c -d:release catnip.nim
 ```
 
-Copy config:
->**NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
+**5.** Copy config to ~/.config:
 ```bash
 cp ../catnip.json ~/.config/catnip.json
 ```
+> **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
-## Todos
+## 🗃️ Todos
 - [ ] Add more Distro logos
 - [X] Add config options for icons
 - [X] Add more config options for colors
