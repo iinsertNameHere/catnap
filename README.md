@@ -6,7 +6,7 @@
 
 <h3 align="center"><code>Catnip🌿</code> Systemfetch</h3>
   <p align="center">
-    <a href="#demo-image">View Demo</a>
+    <a href="#📷-demo-image">View Demo</a>
     ·
     <a href="https://github.com/iinsertNameHere/Catnip/issues">Report Bug</a>
     ·
