@@ -1,60 +1,9 @@
-import "FetchFunctions"
-import "std/json"
-import "Utils"
+from "../common/Definitions" import FetchInfo, CONFIGPATH
+import "../common/Config"
 import "Colors"
+import "Utils"
+import json
 import unicode
-
-type Logo = object
-    margin*: array[3, int]
-    art*: seq[string]
-
-type DistroID = object
-    id: string
-    like: string
-
-type FetchInfo* = object
-    username*: string
-    hostname*: string
-    distro*: string
-    distroid*: DistroID
-    uptime*: string
-    kernel*: string
-    shell*: string
-    desktop*: string
-    logo*: Logo
-
-proc GetFetchInfo*(distroID: string = "nil"): FetchInfo =
-    result.username = FetchFunctions.getUser()
-    result.hostname = FetchFunctions.getHostname()
-    result.distro   = FetchFunctions.getDistro()
-    result.uptime   = FetchFunctions.getUptime()
-    result.kernel   = FetchFunctions.getKernel()
-    result.desktop  = FetchFunctions.getDesktop()
-    result.shell    = FetchFunctions.getShell()
-
-    let tmpid = FetchFunctions.getDistroID()
-    result.distroid.id = tmpid[0]
-    result.distroid.like = tmpid[1]
-
-    var distroid = (if distroID != "nil": distroID else: result.distroid.id)
-
-    let config = parseJson(readFile("/home/iinsert/.config/catnip.json"))
-
-    if config["distros"]{distroid} == nil:
-        distroid = result.distroid.like
-        if config["distros"]{distroid} == nil:
-            distroid = "default"
-
-    let jalias = config["distros"][distroid]{"alias"} 
-    if jalias != nil:
-        distroid = jalias.getStr()
-        if config["distros"]{distroid} == nil:
-            distroid = "default"
-
-    let jmargin = config["distros"][distroid]["margin"]
-    result.logo.margin = [jmargin[0].getInt(), jmargin[1].getInt(), jmargin[2].getInt()]
-    for line in config["distros"][distroid]["art"]:
-        result.logo.art.add(line.getStr())
 
 proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
@@ -69,7 +18,7 @@ proc Render*(fetchinfo: FetchInfo) =
     let margin_right = fetchinfo.logo.margin[2]
 
     ##### Load Config #####
-    let config = parseJson(readFile("/home/iinsert/.config/catnip.json"))
+    let config = Config.LoadConfig(CONFIGPATH)
 
     ##### Define Functions #####
     var statlen = 0 # lenght of the longest stat line
@@ -103,14 +52,14 @@ proc Render*(fetchinfo: FetchInfo) =
     ##### Build stat_block buffer #####
 
     # Get and register stats
-    let stat_username = registerStat(config["stats"]["username"])
-    let stat_hostname = registerStat(config["stats"]["hostname"])
-    let stat_uptime   = registerStat(config["stats"]["uptime"])
-    let stat_distro   = registerStat(config["stats"]["distro"])
-    let stat_kernel   = registerStat(config["stats"]["kernel"])
-    let stat_desktop  = registerStat(config["stats"]["desktop"])
-    let stat_shell    = registerStat(config["stats"]["shell"])
-    let stat_colors   = registerStat(config["stats"]["colors"])
+    let stat_username = registerStat(config.stats["username"])
+    let stat_hostname = registerStat(config.stats["hostname"])
+    let stat_uptime   = registerStat(config.stats["uptime"])
+    let stat_distro   = registerStat(config.stats["distro"])
+    let stat_kernel   = registerStat(config.stats["kernel"])
+    let stat_desktop  = registerStat(config.stats["desktop"])
+    let stat_shell    = registerStat(config.stats["shell"])
+    let stat_colors   = registerStat(config.stats["colors"])
 
     # Build the stat_block buffer
     stats_block.add("╭" & "─".repeat(statlen + 1) & "╮")

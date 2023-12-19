@@ -9,7 +9,7 @@
         "shell":    {"icon": " ", "name": "shell", "color": "(RD)"},
         "colors":   {"icon": " ", "name": "colors", "color": "!DT!", "symbol": ""}
     },
-    "distros": {
+    "distroart": {
         "default": {
             "alias": "catnip"
         },

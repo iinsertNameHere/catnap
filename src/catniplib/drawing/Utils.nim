@@ -1,5 +1,5 @@
-import "Colors"
 import unicode
+import "Colors"
 
 proc repeat*(s: string, i: int): string =
     for _ in countup(0, i):

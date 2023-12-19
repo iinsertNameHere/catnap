@@ -6,20 +6,21 @@
 
 <h3 align="center">Catnip Systemfetch</h3>
   <p align="center">
-    <a href="image/demo.png">View Demo</a>
+    <a href="#demo-image">View Demo</a>
     ·
     <a href="https://github.com/iinsertNameHere/Catnip/issues">Report Bug</a>
     ·
-    <a href="https://github.com/iinsertNameHere/Catnip/issues">Features</a>
+    <a href="https://github.com/iinsertNameHere/Catnip/issues">Request Features</a>
   </p>
 </div>
 <br>
 
 ## What is Catnip
 
-![demoimage](image/demo.png)
+I created Catnip as a playful, simple system-information **concatenation** tool using **nim**. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
-I created Catnip as a playful, simple system-information **concatenation** tool in **nim**. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
+> #### Execution Time 
+> *Around **0.0008** seconds on my laptop*
 
 ### Displayed Statistics
 - username
@@ -31,7 +32,10 @@ I created Catnip as a playful, simple system-information **concatenation** tool 
 - used shell
 - terminal colors
 
+## Demo Image
 >**NOTE:** Design was inspired by [Nitch](https://github.com/ssleert/nitch)
+
+> <img width=500 src="image/demo.png">
 
 ## Usage
 Run catnip in you terminal:
