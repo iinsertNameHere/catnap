@@ -67,7 +67,7 @@ nim c -d:release catnip.nim
 
 **5.** Copy config to ~/.config:
 ```bash
-cp ../catnip.json ~/.config/catnip.json
+cp ../catnip.json ~/catnip.json
 ```
 ## 🪡 Compilation/Installation (WINDOWS)
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
