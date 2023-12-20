@@ -23,10 +23,7 @@ type FetchInfo* = object
 const STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
 const STATKEYS*   = @["icon", "name", "color"]
 
-when defined linux:
-    const CONFIGPATH* = getHomeDir() & ".config/catnip.json"
-when defined windows:
-    const CONFIGPATH* = getHomeDir() & "catnip.json"
+const CONFIGPATH* = getHomeDir() & "catnip.json"
 
 type Config* = object
     stats*: json.JsonNode
