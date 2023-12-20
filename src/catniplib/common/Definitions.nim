@@ -1,4 +1,5 @@
 import json
+import os
 
 type DistroId* = object
     id*: string
@@ -21,7 +22,11 @@ type FetchInfo* = object
 
 const STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
 const STATKEYS*   = @["icon", "name", "color"]
-const CONFIGPATH* = "/home/iinsert/.config/catnip.json"
+
+when defined linux:
+    const CONFIGPATH* = getHomeDir() & ".config/catnip.json"
+when defined windows:
+    const CONFIGPATH* = getHomeDir() & "catnip.json"
 
 type Config* = object
     stats*: json.JsonNode

@@ -3,7 +3,7 @@ from "Definitions" import Config, STATNAMES, STATKEYS
 
 proc LoadConfig*(path: string): Config =
     ## Lads a config file and validates it
-    let jcfg = parseJson(readFile("/home/iinsert/.config/catnip.json"))
+    let jcfg = parseJson(readFile(path))
     
     if jcfg{"stats"} == nil:
         echo "ERROR: catnip.json - missing 'stats'!"

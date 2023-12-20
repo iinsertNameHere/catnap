@@ -1,7 +1,11 @@
-import "fetch/Linux" as platform
 from "common/Definitions" import FetchInfo, CONFIGPATH
 import "common/Config"
 import json
+
+when defined linux:
+    import "fetch/Linux" as platform
+when defined windows:
+    import "fetch/Windows" as platform
 
 proc FetchSystemInfo*(distroId: string = "nil"): FetchInfo =
     result.username = platform.getUser()

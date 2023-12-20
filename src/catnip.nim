@@ -1,6 +1,6 @@
 import "catniplib/Fetch"
 import "catniplib/drawing/Drawing"
-import "std/os"
+import os
 # import times, os, strutils
 
 # let t0 = epochTime()

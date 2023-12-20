@@ -48,7 +48,7 @@ Change the distro icon using:
 ```
 
 
-## 🪡 Compilation/Installation
+## 🪡 Compilation/Installation (LINUX)
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
 
 **2.** Clone the repo:
@@ -69,11 +69,39 @@ nim c -d:release catnip.nim
 ```bash
 cp ../catnip.json ~/.config/catnip.json
 ```
+## 🪡 Compilation/Installation (WINDOWS)
+**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
+
+**2.** Clone the repo:
+```powershell
+wget "https://codeload.github.com/iinsertNameHere/Catnip/zip/refs/heads/main" -outfile "Catnip.zip" 
+```
+
+**3.** Expand zipfile
+```powershell
+Expand-Archive -Path "Catnip.zip"
+```
+
+**4.** Change dir into the repo
+```powershell
+cd ".\Catnip\Catnip-main\src"
+```
+
+**5.** Run `nim👑` compilation:
+```powershell
+nim c -d:release catnip.nim
+```
+
+**6.** Copy config to home dir:
+```powershell
+cp "..\catnip.json" "C:\Users\$env:username\catnip.json"
+```
+
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
 ## 🗃️ Todos
 - [ ] Add more Distro logos
 - [X] Add config options for icons
 - [X] Add more config options for colors
-- [ ] Make Catnip crossplatform
+- [X] Make Catnip crossplatform
 - [ ] Add config options for layout
