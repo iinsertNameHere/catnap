@@ -8,9 +8,9 @@
   <p align="center">
     <a href="#-demo-image">View Demo</a>
     ·
-    <a href="https://github.com/iinsertNameHere/Catnip/issues">Report Bug</a>
+    <a href="#-compilationinstallation-linux">Linux Installation</a>
     ·
-    <a href="https://github.com/iinsertNameHere/Catnip/issues">Request Features</a>
+    <a href="#-compilationinstallation-windows">Windows Installation</a>
   </p>
 </div>
 <br>
