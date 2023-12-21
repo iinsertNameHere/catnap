@@ -24,7 +24,7 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
     alias = "catnip"
 
     [distroart.catnip]
-    margin = [0, 2, 2]
+    margin = [1, 2, 2]
     art    = [
         "(GN)          ⣀⣀⣠⣠⣶⠦⢴⣦⣀⣠⣀  ",
         "(GN)     ⢀⣤⣴⠿⠋⠿⠋⠁   ⠉⠉⠉⠉⣿⡇ ",
@@ -39,7 +39,7 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
     ]
 
     [distroart.tux]
-    margin = [1, 2, 3]
+    margin = [2, 2, 3]
     art    = [
         "(BK)      .--.     ",
         "(BK)     |!DT!o(BK)_!DT!o (BK)|    ",
@@ -51,7 +51,7 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
     ]
 
     [distroart.arch]
-    margin = [1, 2, 3]
+    margin = [2, 2, 3]
     art    = [
         "{BE}      /\\      ",
         "{BE}     /  \\     ",
@@ -62,8 +62,20 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
         "{BE}/_-''    ''-_\\"
     ]
 
+    [distroart.archcraft]
+    margin = [2, 2, 3]
+    art    = [
+        "{GN}      .      ",
+        "{GN}     / \\     ",
+        "{GN}    /\\  \\    ",
+        "{GN}   /     \\   ",
+        "{GN}  / , ^ , \\  ",
+        "{GN} /  <   > -\\ ",
+        "{GN}/_-'    ''-_\\"
+    ]
+
     [distroart.windows]
-    margin = [1, 2, 4]
+    margin = [2, 2, 4]
     art    = [
         "[RD]       [GN]       ",
         "[RD]       [GN]       ",
@@ -71,4 +83,45 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
         "[BE]       [YW]       ",
         "[BE]       [YW]       ",
         "[BE]       [YW]       "
+    ]
+
+    [distroart.ubuntu]
+    margin = [0, 2, 4]
+    art    = [
+        "{RD}                .-.   ",
+        "{RD}        .-'````(   )  ",
+        "{RD}     ,`\\ \\    `-`.    ",
+        "{RD}    /   \\ '````-.   ` ",
+        "{RD}  .-.  ,         `___:",
+        "{RD} (   ) :          ___ ",
+        "{RD}  `-`  `         ,   :",
+        "{RD}    \\   / ,....-`   , ",
+        "{RD}     `./ /      .-.`  ",
+        "{RD}        `-....-(   )  ",
+        "{RD}                `-`   "
+    ]
+
+    [distroart.manjaro]
+    margin = [2, 2, 4]
+    art    = [
+        "<GN>        !DT!  <GN>    ",
+        "<GN>        !DT!  <GN>    ",
+        "<GN>   !DT!       <GN>    ",
+        "<GN>   !DT!  <GN>   !DT!  <GN>    ",
+        "<GN>   !DT!  <GN>   !DT!  <GN>    ",
+        "<GN>   !DT!  <GN>   !DT!  <GN>    "
+    ]
+
+    [distroart.debian]
+    margin = [1, 2, 3]
+    art    = [
+        "(RD)  , - = - ,   ",
+        "(RD) =    ,,   =  ",
+        "(RD)=   :°   ;  = ",
+        "(RD)=   :.      = ",
+        "(RD)^=    ° == °  ",
+        "(RD)°=.           ",
+        "(RD) ^==..        ",
+        "(RD)   ^^°==..    ",
+        "(RD)        ^^°=  ",
     ]
