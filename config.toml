@@ -1,0 +1,107 @@
+# This is the configuration file for catnip
+# Here you can configure the stat colors,
+# stat names, stat icons, distro ascii-art and more
+
+
+##############################################
+##          FetchInfo stats Config          ##
+##############################################
+[stats]
+    [stats.username]
+    icon  = " "
+    name  = "user"
+    color = "(RD)"
+
+    [stats.hostname]
+    icon  = " "
+    name  = "hname"
+    color = "(YW)"
+
+    [stats.uptime]
+    icon  = " "
+    name  = "uptime"
+    color = "(BE)"
+
+    [stats.distro]
+    icon  = " "
+    name  = "distro"
+    color = "(GN)"
+
+    [stats.kernel]
+    icon  = " "
+    name  = "kernel"
+    color = "(MA)"
+
+    [stats.desktop]
+    icon  = " "
+    name  = "desktp"
+    color = "(CN)"
+
+    [stats.shell]
+    icon  = " "
+    name  = "shell"
+    color = "(RD)"
+
+    [stats.colors]
+    icon   = " "
+    name   = "colors"
+    color  = "!DT!"
+    symbol = ""
+
+
+##############################################
+##         Distro ASCII-Art Config          ##
+##############################################
+[distroart]
+    [distroart.default]
+    alias = "catnip"
+
+    [distroart.catnip]
+    margin = [0, 2, 2]
+    art    = [
+        "(GN)          ⣀⣀⣠⣠⣶⠦⢴⣦⣀⣠⣀  ",
+        "(GN)     ⢀⣤⣴⠿⠋⠿⠋⠁   ⠉⠉⠉⠉⣿⡇ ",
+        "(GN)    ⣴⡟⠙⠁   ⡆        ⣰⡿ ",
+        "(GN)  ⣰⡿⡟   ⡇ ⢸⣧⣚⡀     ⢻⡇  ",
+        "(GN) ⢠⣿⠁ ⢸  ⣇⡴⠋⠉⠉     ⣰⡿⠁  ",
+        "(GN) ⢸⣏  ⢸⣀⣴⠟⠛⠛⠉⠁    ⢚⣿    ",
+        "(GN) ⠸⣿  ⣼⣿⠧⠤⠤⠔   ⣀⣤⡾⠛⠁    ",
+        "(GN)  ⠹⣧⣾⡟⠁     ⢀⣠⣼⡿       ",
+        "(GN)  ⢀⣼⠟⣼⡟⠻⠿⠛⠛⠛⠉⠁         ",
+        "(GN)  ⠘⠿⠾⠏                 "
+    ]
+
+    [distroart.tux]
+    margin = [1, 2, 3]
+    art    = [
+        "(BK)      .--.     ",
+        "(BK)     |!DT!o(BK)_!DT!o (BK)|    ",
+        "(BK)     |(YW):_/ (BK)|    ",
+        "(BK)    /!DT!/   \\ (BK)\\   ",
+        "(BK)   (!DT!|     | (BK))  ",
+        "(YW)  /'!DT!|_   _/(YW)'\\  ",
+        "(YW)  \\___)(BK)=(YW)(___/  "
+    ]
+
+    [distroart.arch]
+    margin = [1, 2, 3]
+    art    = [
+        "{BE}      /\\      ",
+        "{BE}     /  \\     ",
+        "{BE}    /\\   \\    ",
+        "{BE}   /      \\   ",
+        "{BE}  /   ,,   \\  ",
+        "{BE} /   |  |  -\\ ",
+        "{BE}/_-''    ''-_\\"
+    ]
+
+    [distroart.windows]
+    margin = [1, 2, 4]
+    art    = [
+        "[RD]       [GN]       ",
+        "[RD]       [GN]       ",
+        "[RD]       [GN]       ",
+        "[BE]       [YW]       ",
+        "[BE]       [YW]       ",
+        "[BE]       [YW]       "
+    ]

@@ -1,8 +1,8 @@
 from "../common/Definitions" import FetchInfo, CONFIGPATH
 import "../common/Config"
+import "../common/Toml"
 import "Colors"
 import "Utils"
-import json
 import unicode
 
 proc Render*(fetchinfo: FetchInfo) =
@@ -23,7 +23,7 @@ proc Render*(fetchinfo: FetchInfo) =
     ##### Define Functions #####
     var statlen = 0 # lenght of the longest stat line
     
-    func registerStat(stat: JsonNode): JsonNode =
+    func registerStat(stat: TomlValueRef): TomlValueRef =
         ## Function that is used to register the stats lenght and compare it to statlen
         let l = stat["icon"].getStr().runeLen + stat["name"].getStr().runeLen + 1
         if l > statlen:

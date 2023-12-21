@@ -63,7 +63,7 @@ cd ./Catnip/src
 
 **4.** Copy config to ~/.config:
 ```bash
-cp ../catnip.json ~/catnip.json
+cp ../config.toml ~/.catnip/config.toml
 ```
 
 **5.** Run `nim👑` compilation:
@@ -98,7 +98,7 @@ cd ".\Catnip\Catnip-main\src"
 
 **5.** Copy config to home dir:
 ```powershell
-cp "..\catnip.json" "C:\Users\$env:username\catnip.json"
+cp "..\config.toml" "C:\Users\$env:username\.catnip\config.toml"
 ```
 
 **6.** Run `nim👑` compilation:
@@ -114,21 +114,55 @@ nim c -d:release catnip.nim
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
 ## 📒Configuration
-The `stats` node is located in the config file (`catnip.json`).
+The `stats` node is located in the config file (`.catnip/config.toml`).
 You can change the names, colors, and icons for the various stats inside the `stats` node.
 
 *Example config that dose not use NerdFont icons:* 
-```json
-"stats": {
-  "username": {"icon": ">", "name": "user", "color": "{RD}"},
-  "hostname": {"icon": ">", "name": "hname", "color": "{YW}"},
-  "uptime":   {"icon": ">", "name": "uptime", "color": "{BE}"},
-  "distro":   {"icon": ">", "name": "distro", "color": "{GN}"},
-  "kernel":   {"icon": ">", "name": "kernel", "color": "{MA}"},
-  "desktop":  {"icon": ">", "name": "desktp", "color": "{CN}"},
-  "shell":    {"icon": ">", "name": "shell", "color": "{RD}"},
-  "colors":   {"icon": ">", "name": "colors", "color": "!DT!", "symbol": "#"}
-}
+```toml
+##############################################
+##          FetchInfo stats Config          ##
+##############################################
+[stats]
+    [stats.username]
+    icon  = ">"
+    name  = "user"
+    color = "(RD)"
+
+    [stats.hostname]
+    icon  = ">"
+    name  = "hname"
+    color = "(YW)"
+
+    [stats.uptime]
+    icon  = ">"
+    name  = "uptime"
+    color = "(BE)"
+
+    [stats.distro]
+    icon  = ">"
+    name  = "distro"
+    color = "(GN)"
+
+    [stats.kernel]
+    icon  = ">"
+    name  = "kernel"
+    color = "(MA)"
+
+    [stats.desktop]
+    icon  = ">"
+    name  = "desktp"
+    color = "(CN)"
+
+    [stats.shell]
+    icon  = ">"
+    name  = "shell"
+    color = "(RD)"
+
+    [stats.colors]
+    icon   = ">"
+    name   = "colors"
+    color  = "!DT!"
+    symbol = "#"
 ```
 
 ### 🎨 Colors:

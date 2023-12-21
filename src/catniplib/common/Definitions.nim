@@ -1,4 +1,4 @@
-import json
+import "Toml"
 import os
 
 type DistroId* = object
@@ -23,8 +23,8 @@ type FetchInfo* = object
 const STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
 const STATKEYS*   = @["icon", "name", "color"]
 
-const CONFIGPATH* = getHomeDir() & "catnip.json"
+const CONFIGPATH* = joinPath(getHomeDir(), ".catnip/config.toml")
 
 type Config* = object
-    stats*: json.JsonNode
-    distroart*: json.JsonNode
+    stats*: TomlValueRef
+    distroart*: TomlValueRef

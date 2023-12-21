@@ -1,6 +1,6 @@
 from "common/Definitions" import FetchInfo, CONFIGPATH
 import "common/Config"
-import json
+import "common/Toml"
 
 when defined linux:
     import "fetch/Linux" as platform
@@ -21,18 +21,19 @@ proc FetchSystemInfo*(distroId: string = "nil"): FetchInfo =
 
     let config = Config.LoadConfig(CONFIGPATH)
 
-    if config.distroart{distroId} == nil:
+    if not config.distroart.contains(distroId):
         distroId = result.distroId.like
-        if config.distroart{distroId} == nil:
+        if not config.distroart.contains(distroId):
             distroId = "default"
 
-    let jalias = config.distroart[distroId]{"alias"} 
-    if jalias != nil:
-        distroId = jalias.getStr()
-        if config.distroart{distroId} == nil:
+    
+    if config.distroart[distroId].contains("alias"):
+        let talias = config.distroart[distroId]["alias"]
+        distroId = talias.getStr()
+        if not config.distroart.contains(distroId):
             distroId = "default"
 
-    let jmargin = config.distroart[distroId]["margin"]
-    result.logo.margin = [jmargin[0].getInt(), jmargin[1].getInt(), jmargin[2].getInt()]
-    for line in config.distroart[distroId]["art"]:
+    let tmargin = config.distroart[distroId]["margin"]
+    result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+    for line in config.distroart[distroId]["art"].getElems:
         result.logo.art.add(line.getStr())
