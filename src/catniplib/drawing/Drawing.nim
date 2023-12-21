@@ -46,7 +46,7 @@ proc Render*(fetchinfo: FetchInfo) =
     # Add margin_top lines ontop of the distro_art
     if margin_top > 0:
         var l = distro_art[0].reallen - 1
-        for _ in countup(0, margin_top):
+        for _ in countup(1, margin_top):
             distro_art = " ".repeat(l) & distro_art
 
     ##### Build stat_block buffer #####
