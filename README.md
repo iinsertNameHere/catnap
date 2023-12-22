@@ -19,7 +19,7 @@
 I created `Catnip🌿` as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
 > #### ⏱️ Execution Time 
-> *Around **0.008** seconds on my laptop*
+> *Around **0.009** seconds on my laptop*
 
 ### 📊 Displayed Statistics
 - username
