@@ -1,16 +1,12 @@
-from "../common/Definitions" import FetchInfo, CONFIGPATH
+from "../common/Definitions" import FetchInfo, CONFIGPATH, Stats, Stat
+import "../common/Stats"
 import "../common/Config"
 import "../common/Toml"
 import "Colors"
 import "Utils"
-import unicode
 
 proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
-    
-    ##### Define output buffers #####
-    var distro_art: seq[string]
-    var stats_block: seq[string]
 
     ##### Define Margins #####
     let margin_top = fetchinfo.logo.margin[0]
@@ -20,24 +16,8 @@ proc Render*(fetchinfo: FetchInfo) =
     ##### Load Config #####
     let config = Config.LoadConfig(CONFIGPATH)
 
-    ##### Define Functions #####
-    var statlen = 0 # lenght of the longest stat line
-    
-    func registerStat(stat: TomlValueRef): TomlValueRef =
-        ## Function that is used to register the stats lenght and compare it to statlen
-        let l = stat["icon"].getStr().runeLen + stat["name"].getStr().runeLen + 1
-        if l > statlen:
-            statlen = l
-        return stat
-
-    func addStat(icon: string, name: string, color: string, value: string) =
-        ## Function Adds a stat to the stats_block buffer
-        var line = icon & " " & name 
-        while line.runeLen < statlen:
-            line &= " "
-        stats_block.add("│ " & color.Colorize() & line & Colors.Default & " │ " & value)
-
     ##### Build distro_art buffer #####
+    var distro_art: seq[string]
 
     # Fill distro_art buffer with fetchinfo.logo.art
     for idx in countup(0, fetchinfo.logo.art.len - 1):
@@ -50,31 +30,18 @@ proc Render*(fetchinfo: FetchInfo) =
             distro_art = " ".repeat(l) & distro_art
 
     ##### Build stat_block buffer #####
-
-    # Get and register stats
-    let stat_username = registerStat(config.stats["username"])
-    let stat_hostname = registerStat(config.stats["hostname"])
-    let stat_uptime   = registerStat(config.stats["uptime"])
-    let stat_distro   = registerStat(config.stats["distro"])
-    let stat_kernel   = registerStat(config.stats["kernel"])
-    let stat_desktop  = registerStat(config.stats["desktop"])
-    let stat_shell    = registerStat(config.stats["shell"])
-    let stat_colors   = registerStat(config.stats["colors"])
+    var stats: Stats = newStats()
+    stats.setUsername(config.stats["username"])
+    stats.setHostname(config.stats["hostname"])
+    stats.setUptime(config.stats["uptime"])
+    stats.setDistro(config.stats["distro"])
+    stats.setKernel(config.stats["kernel"])
+    stats.setDesktop(config.stats["desktop"])
+    stats.setShell(config.stats["shell"])
+    stats.setColors(config.stats["colors"])
 
     # Build the stat_block buffer
-    stats_block.add("╭" & "─".repeat(statlen + 1) & "╮")
-    addStat(stat_username["icon"].getStr(), stat_username["name"].getStr(), stat_username["color"].getStr(), fetchinfo.username)
-    addStat(stat_hostname["icon"].getStr(), stat_hostname["name"].getStr(), stat_hostname["color"].getStr(), fetchinfo.hostname)
-    addStat(stat_uptime["icon"].getStr(),   stat_uptime["name"].getStr(),   stat_uptime["color"].getStr(),   fetchinfo.uptime)
-    addStat(stat_distro["icon"].getStr(),   stat_distro["name"].getStr(),   stat_distro["color"].getStr(),   fetchinfo.distro)
-    addStat(stat_kernel["icon"].getStr(),   stat_kernel["name"].getStr(),   stat_kernel["color"].getStr(),   fetchinfo.kernel)
-    addStat(stat_desktop["icon"].getStr(),  stat_desktop["name"].getStr(),  stat_desktop["color"].getStr(),  fetchinfo.desktop)
-    addStat(stat_shell["icon"].getStr(),    stat_shell["name"].getStr(),    stat_shell["color"].getStr(),    fetchinfo.shell)
-    stats_block.add("├" & "─".repeat(statlen + 1) & "┤")
-    let symbol = stat_colors["symbol"].getStr()
-    addStat(stat_colors["icon"].getStr(),    stat_colors["name"].getStr(),    stat_colors["color"].getStr(), Colors.Colorize(
-    "(WE)"&symbol&" (RD)"&symbol&" (YW)"&symbol&" (GN)"&symbol&" (CN)"&symbol&" (BE)"&symbol&" (MA)"&symbol&" (BK)"&symbol&"!DT!"))
-    stats_block.add("╰" & "─".repeat(statlen + 1) & "╯")
+    var stats_block = build(stats, fetchinfo)
 
     ##### Merge buffers and output #####
     
