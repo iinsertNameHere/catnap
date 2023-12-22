@@ -71,7 +71,7 @@ colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
         "{GN}   /     \\   ",
         "{GN}  / , ^ , \\  ",
         "{GN} /  <   > -\\ ",
-        "{GN}/_-'    ''-_\\"
+        "{GN}/_-''   ''-_\\"
     ]
 
     [distroart.windows]
