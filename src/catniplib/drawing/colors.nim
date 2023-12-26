@@ -43,10 +43,11 @@ proc initBackgroundBright(): ColorSet = # <..>
     result.Cyan    = "\e[46;1m" # CN
     result.White   = "\e[47;1m" # WE
 
-const Forground*:        ColorSet = initForground()
-const ForgroundBright*:  ColorSet = initForgroundBright()
-const Background*:       ColorSet = initBackground()
-const BackgroundBright*: ColorSet = initBackgroundBright()
+const
+    Forground*:        ColorSet = initForground()
+    ForgroundBright*:  ColorSet = initForgroundBright()
+    Background*:       ColorSet = initBackground()
+    BackgroundBright*: ColorSet = initBackgroundBright()
 
 const Default*: Color = "\e[0m" # !DT!
 

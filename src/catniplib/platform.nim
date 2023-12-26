@@ -35,10 +35,11 @@ proc getUptime*(): string =
     when defined windows:
         let uptime = int(GetTickCount64().float / 1000.float)
 
-    let utu = uptime.parseUInt
-    let uth = utu div 3600 mod 24 # hours
-    let utm = utu mod 3600 div 60 # minutes
-    let utd = utu div 3600 div 24 # days
+    let
+        utu = uptime.parseUInt
+        uth = utu div 3600 mod 24 # hours
+        utm = utu mod 3600 div 60 # minutes
+        utd = utu div 3600 div 24 # days
 
     if utd == 0 and uth != 0:
       result = &"{uth}h {utm}m" # return hours and mins

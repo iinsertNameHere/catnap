@@ -9,9 +9,10 @@ proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
 
     ##### Define Margins #####
-    let margin_top = fetchinfo.logo.margin[0]
-    let margin_left = fetchinfo.logo.margin[1]
-    let margin_right = fetchinfo.logo.margin[2]
+    let
+        margin_top = fetchinfo.logo.margin[0]
+        margin_left = fetchinfo.logo.margin[1]
+        margin_right = fetchinfo.logo.margin[2]
 
     ##### Load Config #####
     let config = LoadConfig(CONFIGPATH)
