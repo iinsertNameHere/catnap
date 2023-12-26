@@ -1,5 +1,5 @@
-from "Definitions" import Stats, Stat, Color
-import "Toml"
+from "../common/defs" import Stats, Stat, Color
+import "../common/toml"
 import unicode
 
 proc newStat*(icon: string, name: string, color: Color): Stat =

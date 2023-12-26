@@ -1,13 +1,9 @@
-from "common/Definitions" import FetchInfo, CONFIGPATH
-import "common/Config"
-import "common/Toml"
+from "common/defs" import FetchInfo, CONFIGPATH
+import "common/config"
+import "common/toml"
+import "platform"
 
-when defined linux:
-    import "fetch/Linux" as platform
-when defined windows:
-    import "fetch/Windows" as platform
-
-proc FetchSystemInfo*(distroId: string = "nil"): FetchInfo =
+proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
     result.username = platform.getUser()
     result.hostname = platform.getHostname()
     result.distro   = platform.getDistro()
@@ -19,7 +15,7 @@ proc FetchSystemInfo*(distroId: string = "nil"): FetchInfo =
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
 
-    let config = Config.LoadConfig(CONFIGPATH)
+    let config = LoadConfig(CONFIGPATH)
 
     if not config.distroart.contains(distroId):
         distroId = result.distroId.like

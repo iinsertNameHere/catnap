@@ -1,6 +1,6 @@
-from "../common/Definitions" import Color, ColorSet
-import re
+from "../common/defs" import Color, ColorSet
 import strutils
+import re
 
 proc initForground(): ColorSet = # (..)
     result.Black   = "\e[30m"   # BK

@@ -1,9 +1,9 @@
-from "../common/Definitions" import FetchInfo, CONFIGPATH, Stats, Stat
-import "../common/Stats"
-import "../common/Config"
-import "../common/Toml"
-import "Colors"
-import "Utils"
+from "../common/defs" import FetchInfo, CONFIGPATH, Stats, Stat
+import "../common/config"
+import "../common/toml"
+import "colors"
+import "utils"
+import "infoStats"
 
 proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
@@ -14,14 +14,14 @@ proc Render*(fetchinfo: FetchInfo) =
     let margin_right = fetchinfo.logo.margin[2]
 
     ##### Load Config #####
-    let config = Config.LoadConfig(CONFIGPATH)
+    let config = LoadConfig(CONFIGPATH)
 
     ##### Build distro_art buffer #####
     var distro_art: seq[string]
 
     # Fill distro_art buffer with fetchinfo.logo.art
     for idx in countup(0, fetchinfo.logo.art.len - 1):
-        distro_art.add(" ".repeat(margin_left) & Colors.Colorize(fetchinfo.logo.art[idx]) & Colors.Default & " ".repeat(margin_right))
+        distro_art.add(" ".repeat(margin_left) & Colorize(fetchinfo.logo.art[idx]) & colors.Default & " ".repeat(margin_right))
 
     # Add margin_top lines ontop of the distro_art
     if margin_top > 0:

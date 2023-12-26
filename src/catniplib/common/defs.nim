@@ -1,4 +1,4 @@
-import "Toml"
+import "toml"
 import os
 
 type Color* = string

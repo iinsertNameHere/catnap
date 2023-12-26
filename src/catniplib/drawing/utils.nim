@@ -1,13 +1,13 @@
 import unicode
-from "../common/Definitions" import Stats, Stat, FetchInfo
-import "Colors"
+from "../common/defs" import Stats, Stat, FetchInfo
+import "colors"
 
 proc repeat*(s: string, i: int): string =
     for _ in countup(0, i):
         result &= s
 
 proc reallen*(s: string): int =
-    result = Colors.Uncolorize(s).runeLen
+    result = Uncolorize(s).runeLen
 
 proc build*(stats: Stats, fi: FetchInfo): seq[string] =
     var sb: seq[string]
@@ -15,9 +15,9 @@ proc build*(stats: Stats, fi: FetchInfo): seq[string] =
         var line = stat.icon & " " & stat.name
         while uint(line.runeLen) < stats.maxlen:
             line &= " "
-        sb.add("│ " & stat.color.Colorize() & line & Colors.Default & " │ " & value)
+        sb.add("│ " & stat.color.Colorize() & line & colors.Default & " │ " & value)
     
-    let colorval = Colors.Colorize(
+    let colorval = Colorize(
         "(WE)"&stats.color_symbol&
         " (RD)"&stats.color_symbol&
         " (YW)"&stats.color_symbol&
