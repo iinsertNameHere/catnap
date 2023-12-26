@@ -39,7 +39,8 @@ proc getUptime*(): string =
     let uth = utu div 3600 mod 24 # hours
     let utm = utu mod 3600 div 60 # minutes
     let utd = utu div 3600 div 24 # days
-    if utd == 0:
+
+    if utd == 0 and uth != 0:
       result = &"{uth}h {utm}m" # return hours and mins
     elif uth == 0 and utd == 0:
       result = &"{utm}m" # return only mins
