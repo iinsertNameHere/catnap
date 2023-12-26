@@ -1,2 +1,3 @@
-src/catnip
-src/catnip.exe
+/bin
+catnip
+*.exe

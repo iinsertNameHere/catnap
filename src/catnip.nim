@@ -1,9 +1,11 @@
 import "catniplib/Fetch"
 import "catniplib/drawing/Drawing"
 import os
-# import times, os, strutils
 
-# let t0 = epochTime()
+# Debug code for execution time
+when not defined release: 
+    import times, strutils
+    let t0 = epochTime()
 
 # Handle commandline args
 var distroid = "nil"
@@ -17,5 +19,7 @@ let fetchinfo = Fetch.FetchSystemInfo(distroid)
 Drawing.Render(fetchinfo)
 echo ""
 
-# let time = (epochTime() - t0).formatFloat(format = ffDecimal, precision = 4)
-# echo time & "s"
+# Debug code for execution time
+when not defined release: 
+    let time = (epochTime() - t0).formatFloat(format = ffDecimal, precision = 3)
+    echo "Execution finished in " & time & "s"

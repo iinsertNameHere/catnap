@@ -48,68 +48,28 @@ Change the distro icon using:
 ```
 
 ## 🪡 Installation/Build
-
-### 📦 On Linux
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
 
 **2.** Clone the repo:
-```bash
-git clone https://github.com/iinsertNameHere/Catnip.git
+```shell
+git clone https://github.com/iinsertNameHere/catnip.git
 ```
-**3.** Change dir into the repo
-```bash
-cd ./Catnip/src
-```
-
-**4.** Copy config to ~/.config:
-```bash
-cp ../config.toml ~/.catnip/config.toml
+**3.** Change dir to repo
+```shell
+cd ./catnip
 ```
 
-**5.** Run `nim👑` compilation:
-```bash
-nim c -d:release catnip.nim
+**4.** Run setup using `nim👑`:
+```shell
+nim setup
 ```
 
-**6.** You can now use the compiled file:
-```bash
-./catnip
+**5.** Your compiled executable can be found in ./bin:
+```shell
+./bin/catnip
 ```
 
----
-
-### 📦 On Windows
-**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
-
-**2.** Clone the repo:
-```powershell
-wget "https://codeload.github.com/iinsertNameHere/Catnip/zip/refs/heads/main" -outfile "Catnip.zip" 
-```
-
-**3.** Expand zipfile
-```powershell
-Expand-Archive -Path "Catnip.zip"
-```
-
-**4.** Change dir into the repo
-```powershell
-cd ".\Catnip\Catnip-main\src"
-```
-
-**5.** Copy config to home dir:
-```powershell
-cp "..\config.toml" "C:\Users\$env:username\.catnip\config.toml"
-```
-
-**6.** Run `nim👑` compilation:
-```powershell
-nim c -d:release catnip.nim
-```
-
-**7.** You can now use the compiled file:
-```powershell
-.\catnip.exe
-```
+The config file can be found in your home directory under `.catnip/config.toml`
 
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
