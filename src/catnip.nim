@@ -16,6 +16,7 @@ if paramCount() > 0:
 let fetchinfo = fetchSystemInfo(distroid)
 
 # Render system info
+echo ""
 Render(fetchinfo)
 echo ""
 
