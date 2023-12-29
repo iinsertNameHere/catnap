@@ -44,8 +44,24 @@ Run catnip in you terminal:
 
 Change the distro icon using:
 ```bash
-./catnip [distroname]
+./catnip [distroid]
 ```
+
+<details>
+  <summary style="font-size: 18px; font-weight: 600;">Supported Distros</summary>
+  <ul>
+    <li>Arch</li>
+    <li>Archcraft</li>
+    <li>Ubuntu</li>
+    <li>Debian</li>
+    <li>LinuxMint</li>
+    <li>NixOS</li>
+    <li>Fedora</li>
+    <li>Void</li>
+    <li>Manjaro</li>
+    <li>Windows</li>
+  </ul>
+</details>
 
 ## 🪡 Installation/Build
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
