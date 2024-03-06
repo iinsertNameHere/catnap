@@ -20,7 +20,7 @@ if paramCount() > 0:
             echo ""
             echo "Optins:"
             echo "    -h  --help                   Show help list"
-            echo "    -d  --distroid <DistroId>    Froce a DistroId"
+            echo "    -d  --distroid <DistroId>    Force a DistroId"
             echo "    -g  --grep     <StatName>    Get the stats value"
             echo ""
             echo "StatNames:"
