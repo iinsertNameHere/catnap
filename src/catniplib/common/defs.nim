@@ -59,4 +59,4 @@ type
 const
     STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
     STATKEYS*   = @["icon", "name", "color"]
-    CONFIGPATH* = joinPath(getHomeDir(), ".catnip/config.toml")
+    CONFIGPATH* = joinPath(getConfigDir(), "catnip/config.toml")

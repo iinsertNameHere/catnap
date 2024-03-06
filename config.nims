@@ -9,7 +9,7 @@ proc compile(srcfile: string, outdir: string, release: bool, verbose: bool) =
 
 proc configure() =
     when defined linux:
-        let configpath = getEnv("HOME") & "/.catnip/"
+        let configpath = getEnv("XDG_CONFIG_HOME") & "/catnip/"
     when defined windows:
         let configpath = "C:/Users/" & getEnv("USERPROFILE") & "/.catnip/"
 
