@@ -39,12 +39,17 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 ## 💻 Usage
 Run catnip in you terminal:
 ```bash
-./catnip
+$ catnip
 ```
 
 Change the distro icon using:
 ```bash
-./catnip [distroid]
+$ catnip -d <distro>
+```
+
+To get a full list of arguments use:
+```bash
+$ catnip --help
 ```
 
 <details>
@@ -135,7 +140,5 @@ To set the color to Default, use `!DT!`.
 
 ## 🗃️ Todos
 - [ ] Add more Distro logos
-- [X] Add config options for icons
-- [X] Add more config options for colors
-- [X] Make `Catnip🌿` crossplatform
 - [ ] Add config options for layout
+- [ ] Add docs for how to define logos in the config file.
