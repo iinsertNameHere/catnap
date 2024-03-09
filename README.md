@@ -69,6 +69,9 @@ $ catnip --help
 </details>
 
 ## 🪡 Installation/Build
+
+> `pcre` has to be installed as a dependency.
+
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
 
 **2.** Clone the repo:
