@@ -1,7 +1,8 @@
 when defined linux:
-    import "std/strutils"
-    import "std/parsecfg"
-    import "std/posix_utils"
+    import strutils
+    import parsecfg
+    import posix_utils
+    from unicode import toLower
 
 from "common/defs" import DistroId
 import os
@@ -17,8 +18,8 @@ proc getDistro*(): string =
 proc getDistroId*(): DistroId =
     ## Returns the DistroId of the running linux distro
     when defined linux:
-        result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID")
-        result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE")
+        result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
+        result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
     when defined windows:
         result.id = "windows"
         result.like = "nt"
@@ -75,7 +76,7 @@ proc getShell*(): string =
         for rawline in statusLines:
             let stat = rawline.split(":")
             if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
-                let pPid = stat[1].strip().parseInt()
+                let pPid = parseInt(stat[1].strip())
                 let pStatusLines = readFile("/proc/" & $pPid & "/status").split("\n")
                 for rawPLine in pStatusLines:
                     let pStat = rawPLine.split(":")

@@ -1,6 +1,7 @@
 import "catniplib/fetch"
 import "catniplib/drawing/render"
 import os
+from unicode import toLower
 
 # Debug code for execution time
 when not defined release: 
@@ -39,7 +40,7 @@ if paramCount() > 0:
                 echo "ERROR: " & param & " and --grep/-g can't be used together!"
                 quit(1)
             idx += 1
-            distroid = paramStr(idx)
+            distroid = paramStr(idx).toLower()
 
         elif param == "-g" or param == "--grep":
             if paramCount() < 1:
@@ -52,7 +53,7 @@ if paramCount() > 0:
                 echo "ERROR: " & param & " and --distroid/-d can't be used together!"
                 quit(1)
             idx += 1
-            statname = paramStr(idx)
+            statname = paramStr(idx).toLower()
         
         else:
             echo "ERROR: Unknown option '" & param & "'!"
