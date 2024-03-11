@@ -25,15 +25,22 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 > #### ⏱️ Execution Time 
 > *Around **0.006** seconds on my laptop*
 
-### 📊 Displayed Statistics
-- username
-- hostname
-- system uptime
-- running os
-- running kernel
-- desktop env
-- used shell
-- terminal colors
+#### 📊 Displayed Statistics
+<details>
+  <summary style="font-size: 18px; font-weight: 600;">View Statistics</summary>
+  <ul>
+    <li>username</li>
+    <li>hostname</li>
+    <li>uptime</li>
+    <li>os</li>
+    <li>kernel</li>
+    <li>desktop</li>
+    <li>shell</li>
+    <li>terminal colors</li>
+  </ul>
+</details>
+
+<br>
 
 ## 📷 Demo Image
 >**NOTE:** Design was inspired by <code><a href="https://github.com/ssleert/nitch">Nitch</a></code>
