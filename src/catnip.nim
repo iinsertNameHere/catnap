@@ -8,12 +8,14 @@ from unicode import toLower
 import strutils
 
 proc getAllDistros(): seq[string] =
-    for distro in LoadConfig(CONFIGPATH).distroart.getTable().keys:
-        result.add(distro)
+    let distroart = LoadConfig(CONFIGPATH).distroart
+    for distro in distroart.getTable().keys:
+        if not distroart[distro].contains("alias"): # Skip alias definitions
+            result.add(distro)
 
 # Debug code for execution time
 when not defined release: 
-    import times, strutils, strformat
+    import times, strformat
     let t0 = epochTime()
 
 # Handle commandline args
