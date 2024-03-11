@@ -40,6 +40,33 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 > <img width=500 src="image/demo.png">
 
+## 🪡 Installation/Build
+
+> **NOTE:* `pcre` has to be installed as a dependency.
+
+**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
+
+**2.** Clone the repo:
+```shell
+git clone https://github.com/iinsertNameHere/catnip.git
+```
+**3.** Change dir to repo
+```shell
+cd ./catnip
+```
+
+**4.** Run setup using `nim👑`:
+```shell
+nim setup
+```
+
+**5.** Your compiled executable can be found in ./bin:
+```shell
+./bin/catnip
+```
+
+> **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
+
 ## 💻 Usage
 Run catnip in you terminal:
 ```bash
@@ -72,40 +99,16 @@ $ catnip --help
   </ul>
 </details>
 
-## 🪡 Installation/Build
-
-> **NOTE:* `pcre` has to be installed as a dependency.
-
-**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
-
-**2.** Clone the repo:
-```shell
-git clone https://github.com/iinsertNameHere/catnip.git
-```
-**3.** Change dir to repo
-```shell
-cd ./catnip
-```
-
-**4.** Run setup using `nim👑`:
-```shell
-nim setup
-```
-
-**5.** Your compiled executable can be found in ./bin:
-```shell
-./bin/catnip
-```
-
-The config file can be found in your home directory under `.catnip/config.toml`
-
-> **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
-
 ## 📒 Configuration
-The `stats` node is located in the config file (`.catnip/config.toml`).
-You can change the names, colors, and icons for the various stats inside the `stats` node.
+> **The config file is located at:**
+> -  `~/.config/catnip/config.toml`: Linux
+> -  `C:\Users\%USERNAME%\catnip\config.toml`: Windows
 
-*Example config that dose not use NerdFont icons:* 
+<br>
+
+You can change the names, colors, and icons for the various stats inside the `stats` section.
+
+*Example `stats` section that dose not use NerdFont icons:* 
 ```toml
 ##############################################
 ##          FetchInfo stats Config          ##
