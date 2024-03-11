@@ -4,13 +4,17 @@
     <img src="image/logo.png" alt="Logo" width="200" height="200">
   </a>
 
-<h3 align="center"><code>Catnip🌿</code> Systemfetch</h3>
+<h1 align="center"><code>Catnip🌿</code> Systemfetch</h3>
   <p align="center">
     <a href="#-demo-image">View Demo</a>
     ·
-    <a href="#-compilationinstallation-linux">Linux Installation</a>
+    <a href="#-installationbuild">Installation</a>
     ·
-    <a href="#-compilationinstallation-windows">Windows Installation</a>
+    <a href="#-usage">Basic Usage</a>
+    ·
+    <a href="#-configuration">Configuration</a>
+    ·
+    <a href="#thanks-to-all-contributors-">Contributors</a>
   </p>
 </div>
 <br>
@@ -97,7 +101,7 @@ The config file can be found in your home directory under `.catnip/config.toml`
 
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
-## 📒Configuration
+## 📒 Configuration
 The `stats` node is located in the config file (`.catnip/config.toml`).
 You can change the names, colors, and icons for the various stats inside the `stats` node.
 
