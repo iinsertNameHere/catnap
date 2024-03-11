@@ -1,10 +1,11 @@
 import "catniplib/fetch"
 import "catniplib/drawing/render"
-import os
-from unicode import toLower
 from "catniplib/common/defs" import CONFIGPATH
 import "catniplib/common/config"
 import "catniplib/common/toml"
+import os
+from unicode import toLower
+import strutils
 
 proc getAllDistros(): seq[string] =
     for distro in LoadConfig(CONFIGPATH).distroart.getTable().keys:
