@@ -145,3 +145,12 @@ To set the color to Default, use `!DT!`.
 - [ ] Add more Distro logos
 - [ ] Add config options for layout
 - [ ] Add docs for how to define logos in the config file.
+
+<br>
+<br>
+
+# Thanks to all contributors ❤
+
+<a href = "https://github.com/iintertNameHere/catnip/graphs/contributors">
+   <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip"/>
+ </a>
