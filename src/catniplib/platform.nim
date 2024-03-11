@@ -23,9 +23,6 @@ proc getDistroId*(): DistroId =
         result.id = "windows"
         result.like = "nt"
 
-when defined windows:
-    proc GetTickCount64(): cint {.importc, varargs, header: "sysinfoapi.h".}
-
 proc getUptime*(): string =
     ## Returns the system uptime as a string (DAYS, HOURS, MINUTES)
     
@@ -33,6 +30,7 @@ proc getUptime*(): string =
     when defined linux:
         let uptime = "/proc/uptime".open.readLine.split(".")[0]
     when defined windows:
+        proc GetTickCount64(): cint {.importc, varargs, header: "sysinfoapi.h".}
         let uptime = int(GetTickCount64().float / 1000.float)
 
     let
@@ -72,13 +70,28 @@ proc getKernel*(): string =
 proc getShell*(): string =
     ## Returns the system shell
     when defined linux:
-        result = getEnv("SHELL").split("/")[^1]
+        let statusFilePath = "/proc/" & $getCurrentProcessID() & "/status"
+        let statusLines = readFile(statusFilePath).split("\n")
+        for rawline in statusLines:
+            let stat = rawline.split(":")
+            if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
+                let pPid = stat[1].strip().parseInt()
+                let pStatusLines = readFile("/proc/" & $pPid & "/status").split("\n")
+                for rawPLine in pStatusLines:
+                    let pStat = rawPLine.split(":")
+                    if pStat[0] == "Name": # Filter ParrentProcessInfo for Parrent Name
+                        return pStat[1].strip()
+
     when defined windows:
-        result = "powershell"
+        result = "PowerShell"
 
 proc getDesktop*(): string =
     ## Returns the running desktop env
     when defined linux:
         result = getEnv("XDG_CURRENT_DESKTOP")
+        if result == "":
+            result = "Unknown"
+        
+
     when defined windows:
         result = "Windows"
