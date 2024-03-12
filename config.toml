@@ -228,3 +228,17 @@ margin = [0, 0, 0,]
         "{WE}(     _-   ",
         "{WE}\\____-     "
     ]
+
+    [distroart.endeavour]
+    margin = [2, 2, 3]
+    art    = [
+        "{MA}       /\\     ",
+        "{RD}     /{MA}/  \\{CN}\\   ",
+        "{RD}    /{MA}/    \\{CN}\\  ",
+        "{RD}  / {MA}/     _) {CN})",
+        "{RD} /_{MA}/___-- {CN}__- ",
+        "{CN}/____--       "
+    ]
+
+    [distroart.endeavouros]
+    alias = "endeavour"
