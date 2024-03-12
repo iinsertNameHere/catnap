@@ -96,22 +96,6 @@ To get a full list of arguments use:
 $ catnip --help
 ```
 
-<details>
-  <summary style="font-size: 18px; font-weight: 600;">Supported Distros</summary>
-  <ul>
-    <li>Arch</li>
-    <li>Archcraft</li>
-    <li>Ubuntu</li>
-    <li>Debian</li>
-    <li>LinuxMint</li>
-    <li>NixOS</li>
-    <li>Fedora</li>
-    <li>Void</li>
-    <li>Manjaro</li>
-    <li>Windows</li>
-  </ul>
-</details>
-
 ## 📒 Configuration
 > **The config file is located at:**
 > -  `~/.config/catnip/config.toml`: Linux
