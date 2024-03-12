@@ -50,8 +50,9 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 ## 📷 Demo Image
 > <img width=500 src="image/demo.png">
 
-## 🪡 Installation/Build
+<br>
 
+## 🪡 Installation/Build
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
 ```
 Dependencies (Linux only):
@@ -80,6 +81,8 @@ nim setup
 
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
+<br>
+
 ## 💻 Usage
 Run catnip in you terminal:
 ```bash
@@ -95,6 +98,8 @@ To get a full list of arguments use:
 ```bash
 $ catnip --help
 ```
+
+<br>
 
 ## 📒 Configuration
 > **The config file is located at:**
