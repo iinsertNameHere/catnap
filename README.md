@@ -194,10 +194,9 @@ alias = "arch"
 ```
 This is also used in the `default` DistroArt object to set which art should be displayed by default.
 
----
----
-
 > **NOTE:** If you use the `alias` key, all other keys will have no effect.
+
+---
 
 *Example DistroArt object:*
 ```
