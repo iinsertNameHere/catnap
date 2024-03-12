@@ -16,6 +16,17 @@ shell    = {icon = " ", name = "shell", color = "(RD)"}
 colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
 ##############################################
+##               Misc Config                ##
+##############################################
+[misc]
+layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
+
+[misc.figletLogos]
+enable = false
+color  = "(YW)"
+margin = [0, 0, 0,]
+
+##############################################
 ##         Distro ASCII-Art Config          ##
 ##############################################
 [distroart]

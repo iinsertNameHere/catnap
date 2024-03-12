@@ -55,6 +55,7 @@ type
     Config* = object
         stats*: TomlValueRef
         distroart*: TomlValueRef
+        misc*: TomlValueRef
 
 const
     STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]

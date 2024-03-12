@@ -49,9 +49,12 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 ## 🪡 Installation/Build
 
-> **NOTE:* `pcre` has to be installed as a dependency.
-
-**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a>
+**1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
+```
+Dependencies (Linux only):
+- pcre
+- figlet
+```
 
 **2.** Clone the repo:
 ```shell
@@ -154,6 +157,29 @@ Catnip's color system uses a ColorId, witch is made up of the colors first and l
 
 So `{GN}` translates to: Forground-Bright-Green.
 To set the color to Default, use `!DT!`.
+
+### 🚩 Misc
+In the `misc` section you can find 2 keys.
+1. `layout`
+2. `figletLogos`
+
+#### Layout
+In the layout you can define how the logo and stats will be arranged.
+- Use `Inline` to place the logo and stats next to each other.
+- Use `ArtOnTop` to place the logo on top of the stats.
+- Use `StatsOnTop` to place the stats on top of the logo.
+
+#### Figlet Logos
+> **WARNING:** FigletLogos are not supported on windows yet.
+
+In the `figletLogos` section you can find 3 keys:
+1. `enable`
+2. `color`
+3. `margin`
+
+- Set `enable` to `true`/`false` to enable or disable *figlet* generated logos.
+- Use `color` to set the color the *figlet* logos should have.
+- Use `margin` to define the margins of the *figlet* logos.
 
 ### 🖌️ Distro Art
 To create a new DistroArt object, add a new section to the config file (replace `distroname` with the name of your distro):

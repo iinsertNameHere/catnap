@@ -16,6 +16,7 @@ proc Render*(fetchinfo: FetchInfo) =
 
     ##### Load Config #####
     let config = LoadConfig(CONFIGPATH)
+    let layout = config.misc["layout"].getStr()
 
     ##### Build distro_art buffer #####
     var distro_art: seq[string]
@@ -45,14 +46,25 @@ proc Render*(fetchinfo: FetchInfo) =
     var stats_block = build(stats, fetchinfo)
 
     ##### Merge buffers and output #####
-    
-    let lendiv = stats_block.len - distro_art.len
-    if lendiv < 0:
-        for _ in countup(1, lendiv - lendiv*2):
-            stats_block.add(" ")
-    elif lendiv > 0:
-        for _ in countup(1, lendiv):
-            distro_art.add(" ".repeat(distro_art[0].reallen - 1))
+    case layout:
+        of "Inline":
+            let lendiv = stats_block.len - distro_art.len
+            if lendiv < 0:
+                for _ in countup(1, lendiv - lendiv*2):
+                    stats_block.add(" ")
+            elif lendiv > 0:
+                for _ in countup(1, lendiv):
+                    distro_art.add(" ".repeat(distro_art[0].reallen - 1))
 
-    for idx in countup(0, distro_art.len - 1):
-        echo distro_art[idx] & stats_block[idx]
+            for idx in countup(0, distro_art.len - 1):
+                echo distro_art[idx] & stats_block[idx]
+        of "ArtOnTop":
+            for idx in countup(0, distro_art.len - 1):
+                echo distro_art[idx]
+            for idx in countup(0, stats_block.len - 1):
+                echo stats_block[idx]
+        of "StatsOnTop":
+            for idx in countup(0, stats_block.len - 1):
+                echo stats_block[idx]
+            for idx in countup(0, distro_art.len - 1):
+                echo distro_art[idx]

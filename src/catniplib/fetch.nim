@@ -2,6 +2,9 @@ from "common/defs" import FetchInfo, CONFIGPATH
 import "common/config"
 import "common/toml"
 import "platform"
+import osproc
+import strformat
+import strutils
 
 proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
     result.username = platform.getUser()
@@ -16,20 +19,35 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
 
     let config = LoadConfig(CONFIGPATH)
+    let figletLogos = config.misc["figletLogos"]
 
-    if not config.distroart.contains(distroId):
-        distroId = result.distroId.like
+    if not figletLogos["enable"].getBool(): # Get logo from config file
         if not config.distroart.contains(distroId):
-            distroId = "default"
+            distroId = result.distroId.like
+            if not config.distroart.contains(distroId):
+                distroId = "default"
 
-    
-    if config.distroart[distroId].contains("alias"):
-        let talias = config.distroart[distroId]["alias"]
-        distroId = talias.getStr()
-        if not config.distroart.contains(distroId):
-            distroId = "default"
+        
+        if config.distroart[distroId].contains("alias"):
+            let talias = config.distroart[distroId]["alias"]
+            distroId = talias.getStr()
+            if not config.distroart.contains(distroId):
+                distroId = "default"
 
-    let tmargin = config.distroart[distroId]["margin"]
-    result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-    for line in config.distroart[distroId]["art"].getElems:
-        result.logo.art.add(line.getStr())
+        let tmargin = config.distroart[distroId]["margin"]
+        result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+        for line in config.distroart[distroId]["art"].getElems:
+            result.logo.art.add(line.getStr())
+    else: # Generate logo using figlet'
+        when defined linux:
+            discard execCmd(&"figlet -f slant '{distroId}' > /tmp/catnip_figlet_art.txt")
+            let artLines = readFile("/tmp/catnip_figlet_art.txt").split('\n')
+            let tmargin = figletLogos["margin"]
+            result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+            for line in artLines:
+                if line != "":
+                    result.logo.art.add(figletLogos["color"].getStr() & line)
+
+        when defined windows:
+            echo "ERROR: Figlet mode is not implemented for windows at the moment."
+            exit(0)

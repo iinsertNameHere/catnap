@@ -40,6 +40,31 @@ proc LoadConfig*(path: string): Config =
     if not tcfg["distroart"].contains("default"):
         echo &"ERROR: {path}:distroart - missing 'default'!"
         quit(1)
+
+    if not tcfg.contains("misc"):
+        echo &"ERROR: {path} - missing 'stats'!"
+        quit(1)
+
+    if not tcfg["misc"].contains("layout"):
+        echo &"ERROR: {path}:misc - missing 'layout'!"
+        quit(1)
+
+    if not tcfg["misc"].contains("figletLogos"):
+        echo &"ERROR: {path}:misc - missing 'figletLogos'!"
+        quit(1)
+
+    if not tcfg["misc"]["figletLogos"].contains("enable"):
+        echo &"ERROR: {path}:misc:figletLogos - missing 'enable'!"
+        quit(1)
+    
+    if not tcfg["misc"]["figletLogos"].contains("color"):
+        echo &"ERROR: {path}:misc:figletLogos - missing 'color'!"
+        quit(1)
+
+    if not tcfg["misc"]["figletLogos"].contains("margin"):
+        echo &"ERROR: {path}:misc:figletLogos - missing 'margin'!"
+        quit(1)
     
     result.stats = tcfg["stats"]
     result.distroart = tcfg["distroart"]
+    result.misc = tcfg["misc"]
