@@ -40,11 +40,14 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
   </ul>
 </details>
 
+#### ❤ Shoutout to:
+- [NimParsers/parsetoml](https://github.com/NimParsers/parsetoml) for the toml parsing
+- [Nitch](https://github.com/ssleert/nitch) for the inspiration
+- [All contributors](#thanks-to-all-contributors-)
+
 <br>
 
 ## 📷 Demo Image
->**NOTE:** Design was inspired by <code><a href="https://github.com/ssleert/nitch">Nitch</a></code>
-
 > <img width=500 src="image/demo.png">
 
 ## 🪡 Installation/Build
