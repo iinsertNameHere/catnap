@@ -42,7 +42,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 #### ❤ Shoutout to:
 - [NimParsers/parsetoml](https://github.com/NimParsers/parsetoml) for the toml parsing
-- [Nitch](https://github.com/ssleert/nitch) for the inspiration
+- [ssleert/Nitch](https://github.com/ssleert/nitch) for the inspiration
 - [All contributors](#thanks-to-all-contributors-)
 
 <br>
