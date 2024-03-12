@@ -232,6 +232,6 @@ art = [
 
 # Thanks to all contributors ❤
 
-<a href = "https://github.com/iintertNameHere/catnip/graphs/contributors">
-   <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip"/>
- </a>
+<a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
+   <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
+</a>
