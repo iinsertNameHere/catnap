@@ -155,10 +155,60 @@ Catnip's color system uses a ColorId, witch is made up of the colors first and l
 So `{GN}` translates to: Forground-Bright-Green.
 To set the color to Default, use `!DT!`.
 
-## 🗃️ Todos
-- [ ] Add more Distro logos
-- [ ] Add config options for layout
-- [ ] Add docs for how to define logos in the config file.
+### 🖌️ Distro Art
+To create a new DistroArt object, add a new section to the config file (replace `distroname` with the name of your distro):
+```
+[distroart.distroname]
+```
+> **NOTE:** Make sure to add the `distroart.` prefix!
+
+Catnip's DistroArt Objects have three posible keys.
+1. `margin`
+2. `art`
+3. `alias`
+
+#### Margin
+The `margin` key is used to define the top, left and right margins of the art. For example:
+
+> *Art with `margin = [0, 0, 0]`*
+<img src="image/no_margin.png" width="400px">
+
+> *Art with `margin = [3, 3, 3]`*
+<img src="image/margin.png" width="400px">
+
+#### Art
+The `art` key is used to define the ascii-art for your distro.
+For example:
+```
+art = [
+  "Test",
+  "Test",
+  "Test"
+]
+```
+
+#### Alias
+The `alias` key can be used to reference an already existing DistroArt object.
+```
+alias = "arch"
+```
+This is also used in the `default` DistroArt object to set which art should be displayed by default.
+
+---
+---
+
+> **NOTE:** If you use the `alias` key, all other keys will have no effect.
+
+*Example DistroArt object:*
+```
+[distroart.test]
+margin = [3, 3 ,3]
+art = [
+  "Test",
+  "Test",
+  "Test"
+]
+```
 
 <br>
 <br>
