@@ -98,10 +98,15 @@ proc getDesktop*(): string =
     when defined linux:
         result = getEnv("XDG_CURRENT_DESKTOP")
         if result == "":
+            if getEnv("XDG_SESSION_TYPE") == "tty": # Check if in tty mode (Method 1)
+                result = "Headless"
+            
+        if result == "": # Check if in tty mode (Method 2)
             let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
             if starterProcess == "login": # Check if the current shell was executed by the login process
                 result = "Headless"
-            else:
+
+        if result == "": # Unknown desktop
                 result = "Unknown"
         
     when defined windows:
