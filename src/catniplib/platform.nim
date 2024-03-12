@@ -103,7 +103,8 @@ proc getDesktop*(): string =
             
         if result == "": # Check if in tty mode (Method 2)
             let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
-            if starterProcess == "login": # Check if the current shell was executed by the login process
+            # Check if the current shell was executed by the login or sshd process
+            if starterProcess == "login" or starterProcess == "sshd":
                 result = "Headless"
 
         if result == "": # Unknown desktop
