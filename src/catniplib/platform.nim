@@ -68,20 +68,27 @@ proc getKernel*(): string =
     when defined windows:
         result = "nt"
 
+proc getParrentPid(pid: int): int =
+    let statusFilePath = "/proc/" & $pid & "/status"
+    let statusLines = readFile(statusFilePath).split("\n")
+    for rawline in statusLines:
+        let stat = rawline.split(":")
+        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
+            let pPid = parseInt(stat[1].strip())
+            return pPid
+    return -1
+
+proc getProcessName(pid: int): string =
+    let statusLines = readFile("/proc/" & $pid & "/status").split("\n")
+    for rawLine in statusLines:
+        let stat = rawLine.split(":")
+        if stat[0] == "Name": # Filter ParrentProcessInfo for Parrent Name
+            return stat[1].strip()
+
 proc getShell*(): string =
     ## Returns the system shell
     when defined linux:
-        let statusFilePath = "/proc/" & $getCurrentProcessID() & "/status"
-        let statusLines = readFile(statusFilePath).split("\n")
-        for rawline in statusLines:
-            let stat = rawline.split(":")
-            if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
-                let pPid = parseInt(stat[1].strip())
-                let pStatusLines = readFile("/proc/" & $pPid & "/status").split("\n")
-                for rawPLine in pStatusLines:
-                    let pStat = rawPLine.split(":")
-                    if pStat[0] == "Name": # Filter ParrentProcessInfo for Parrent Name
-                        return pStat[1].strip()
+        result = getParrentPid(getCurrentProcessID()).getProcessName()
 
     when defined windows:
         result = "PowerShell"
@@ -91,8 +98,11 @@ proc getDesktop*(): string =
     when defined linux:
         result = getEnv("XDG_CURRENT_DESKTOP")
         if result == "":
-            result = "Unknown"
+            let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
+            if starterProcess == "login": # Check if the current shell was executed by the login process
+                result = "Headless"
+            else:
+                result = "Unknown"
         
-
     when defined windows:
         result = "Windows"
