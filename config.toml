@@ -195,13 +195,24 @@ margin = [0, 0, 0,]
     [distroart.raspbian]
     margin = [2, 2, 3]
     art    = [
-    "{GN}  __  __   ",
-    "{GN} (_\\)(/_)  ",
-    "{RD} (_(__)_)  ",
-    "{RD}(_(_)(_)_) ",
-    "{RD} (_(__)_)  ",
-    "{RD}   (__)    "
+        "{GN}  __  __   ",
+        "{GN} (_\\)(/_)  ",
+        "{RD} (_(__)_)  ",
+        "{RD}(_(_)(_)_) ",
+        "{RD} (_(__)_)  ",
+        "{RD}   (__)    "
     ]
 
     [distroart.raspberrypios]
     alias = "raspbian"
+
+    [distroart.android]
+    margin = [2, 2, 2]
+    art    = [
+        "{GN}  ;,           ,;  ",
+        "{GN}   ';,.-----.,;'   ",
+        "{GN}  ,'           ',  ",
+        "{GN} /    O     O    \\ ",
+        "{GN}|                 |",
+        "{GN}'-----------------'"
+    ]
