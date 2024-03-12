@@ -49,5 +49,5 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
                     result.logo.art.add(figletLogos["color"].getStr() & line)
 
         when defined windows:
-            echo "ERROR: Figlet mode is not implemented for windows at the moment."
+            echo &"ERROR: {CONFIGPATH}:misc:figletLogos - Not supported on windows yet"
             exit(0)

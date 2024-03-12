@@ -4,6 +4,7 @@ import "../common/toml"
 import "colors"
 import "utils"
 import "infoStats"
+import strformat
 
 proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
@@ -68,3 +69,6 @@ proc Render*(fetchinfo: FetchInfo) =
                 echo stats_block[idx]
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx]
+        else:
+            echo &"ERROR: {CONFIGPATH}:misc:layout - Invalid value"
+            quit(1)
