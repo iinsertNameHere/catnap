@@ -17,18 +17,12 @@ proc LoadConfig*(path: string): Config =
         quit(1)
 
     for statname in STATNAMES:
-        if not tcfg["stats"].contains(statname):
-            echo &"ERROR: {path}->stats - missing '" & statname & "'!"
-            quit(1)
-        else:
+        if tcfg["stats"].contains(statname):
             for statkey in STATKEYS:
                 if not tcfg["stats"][statname].contains(statkey):
                     echo &"ERROR: {path}:stats:" & statname & " - missing '" & statkey & "'!"
                     quit(1)  
-    if not tcfg["stats"].contains("colors"):
-        echo &"ERROR: {path}->stats - missing 'colors'!"
-        quit(1)
-    else:
+    if tcfg["stats"].contains("colors"):
         for statkey in STATKEYS & @["symbol"]:
             if not tcfg["stats"]["colors"].contains(statkey):
                     echo &"ERROR: {path}:stats:colors - missing '" & statkey & "'!"

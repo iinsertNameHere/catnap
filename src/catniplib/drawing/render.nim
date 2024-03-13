@@ -1,10 +1,15 @@
-from "../common/defs" import FetchInfo, CONFIGPATH, Stats, Stat
+from "../common/defs" import FetchInfo, CONFIGPATH, Stats, Stat, Config
 import "../common/config"
 import "../common/toml"
 import "colors"
 import "utils"
 import "infoStats"
 import strformat
+
+proc getStat(stats: TomlValueRef, key: string): TomlValueRef =
+    if stats.contains(key):
+        return stats[key]
+    return nil
 
 proc Render*(fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
@@ -34,14 +39,14 @@ proc Render*(fetchinfo: FetchInfo) =
 
     ##### Build stat_block buffer #####
     var stats: Stats = newStats()
-    stats.setUsername(config.stats["username"])
-    stats.setHostname(config.stats["hostname"])
-    stats.setUptime(config.stats["uptime"])
-    stats.setDistro(config.stats["distro"])
-    stats.setKernel(config.stats["kernel"])
-    stats.setDesktop(config.stats["desktop"])
-    stats.setShell(config.stats["shell"])
-    stats.setColors(config.stats["colors"])
+    stats.setUsername(config.stats.getStat("username"))
+    stats.setHostname(config.stats.getStat("hostname"))
+    stats.setUptime(config.stats.getStat("uptime"))
+    stats.setDistro(config.stats.getStat("distro"))
+    stats.setKernel(config.stats.getStat("kernel"))
+    stats.setDesktop(config.stats.getStat("desktop"))
+    stats.setShell(config.stats.getStat("shell"))
+    stats.setColors(config.stats.getStat("colors"))
 
     # Build the stat_block buffer
     var stats_block = build(stats, fetchinfo)

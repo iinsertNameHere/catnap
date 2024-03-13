@@ -1,6 +1,7 @@
 import unicode
 from "../common/defs" import Stats, Stat, FetchInfo
 import "colors"
+from "infoStats" import newStat
 
 proc repeat*(s: string, i: int): string =
     for _ in countup(0, i):
@@ -29,16 +30,26 @@ proc build*(stats: Stats, fi: FetchInfo): seq[string] =
         "!DT!"
     )
 
+    let NIL_STAT = newStat("", "", "")
+
     sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
-    addStat(stats.username, fi.username)
-    addStat(stats.hostname, fi.hostname)
-    addStat(stats.uptime,   fi.uptime)
-    addStat(stats.distro,   fi.distro)
-    addStat(stats.kernel,   fi.kernel)
-    addStat(stats.desktop,  fi.desktop)
-    addStat(stats.shell,    fi.shell)
-    sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
-    addStat(stats.colors, colorval)
+    if stats.username != NIL_STAT:
+        addStat(stats.username, fi.username)
+    if stats.hostname != NIL_STAT:
+        addStat(stats.hostname, fi.hostname)
+    if stats.uptime != NIL_STAT:
+        addStat(stats.uptime,   fi.uptime)
+    if stats.distro != NIL_STAT:
+        addStat(stats.distro,   fi.distro)
+    if stats.kernel != NIL_STAT:
+        addStat(stats.kernel,   fi.kernel)
+    if stats.desktop != NIL_STAT:
+        addStat(stats.desktop,  fi.desktop)
+    if stats.shell != NIL_STAT:
+        addStat(stats.shell,    fi.shell)
+    if stats.colors != NIL_STAT:
+        sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
+        addStat(stats.colors, colorval)
     sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
 
     return sb

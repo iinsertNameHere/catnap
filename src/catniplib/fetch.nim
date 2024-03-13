@@ -38,7 +38,8 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
         result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
         for line in config.distroart[distroId]["art"].getElems:
             result.logo.art.add(line.getStr())
-    else: # Generate logo using figlet'
+
+    else: # Generate logo using figlet
         when defined linux:
             let figletFont = figletLogos["font"]
             if execCmd(&"figlet -f {figletFont} '{distroId}' > /tmp/catnip_figlet_art.txt") != 0:
