@@ -242,3 +242,16 @@ margin = [0, 0, 0,]
 
     [distroart.endeavouros]
     alias = "endeavour"
+
+    [distroart.popos]
+    margin = [1, 3, 3]
+    art    = [
+        "{CN}  ______             ",
+        "{CN}  \\   _ \\        __  ",
+        "{CN}   \\ \\ \\ \\      / /  ",
+        "{CN}    \\ \\_\\ \\    / /   ",
+        "{CN}     \\  ___\\  /_/    ",
+        "{CN}      \\ \\    _       ",
+        "{CN}     __\\_\\__(_)_     ",
+        "{CN}    (___________)    "
+    ]
