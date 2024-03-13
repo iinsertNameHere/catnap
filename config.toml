@@ -243,7 +243,7 @@ margin = [0, 0, 0,]
     [distroart.endeavouros]
     alias = "endeavour"
 
-    [distroart.pop!_os]
+    [distroart.popos]
     margin = [1, 1, 2]
     art    = [
         "{CN}  ______             ",
