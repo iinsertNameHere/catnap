@@ -18,8 +18,13 @@ proc getDistro*(): string =
 proc getDistroId*(): DistroId =
     ## Returns the DistroId of the running linux distro
     when defined linux:
-        result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
-        result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
+        if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
+            result.id = "raspbian"
+            result.like = "debian"
+        else:
+            result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
+            result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
+
     when defined windows:
         result.id = "windows"
         result.like = "nt"
