@@ -40,7 +40,10 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
             result.logo.art.add(line.getStr())
     else: # Generate logo using figlet'
         when defined linux:
-            discard execCmd(&"figlet -f slant '{distroId}' > /tmp/catnip_figlet_art.txt")
+            let figletFont = figletLogos["font"]
+            if execCmd(&"figlet -f {figletFont} '{distroId}' > /tmp/catnip_figlet_art.txt") != 0:
+                echo "ERROR: Failed to execute 'figlet'!"
+                quit(1)
             let artLines = readFile("/tmp/catnip_figlet_art.txt").split('\n')
             let tmargin = figletLogos["margin"]
             result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]

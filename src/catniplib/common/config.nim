@@ -61,6 +61,10 @@ proc LoadConfig*(path: string): Config =
         echo &"ERROR: {path}:misc:figletLogos - missing 'color'!"
         quit(1)
 
+    if not tcfg["misc"]["figletLogos"].contains("font"):
+        echo &"ERROR: {path}:misc:figletLogos - missing 'font'!"
+        quit(1)
+
     if not tcfg["misc"]["figletLogos"].contains("margin"):
         echo &"ERROR: {path}:misc:figletLogos - missing 'margin'!"
         quit(1)
