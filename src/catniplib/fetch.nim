@@ -27,17 +27,7 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
             if not config.distroart.contains(distroId):
                 distroId = "default"
 
-        
-        if config.distroart[distroId].contains("alias"):
-            let talias = config.distroart[distroId]["alias"]
-            distroId = talias.getStr()
-            if not config.distroart.contains(distroId):
-                distroId = "default"
-
-        let tmargin = config.distroart[distroId]["margin"]
-        result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-        for line in config.distroart[distroId]["art"].getElems:
-            result.logo.art.add(line.getStr())
+        result.logo = config.distroart[distroId]
 
     else: # Generate logo using figlet
         when defined linux:

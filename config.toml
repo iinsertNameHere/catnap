@@ -31,10 +31,8 @@ margin = [0, 0, 0,]
 ##         Distro ASCII-Art Config          ##
 ##############################################
 [distroart]
-    [distroart.default]
-    alias = "catnip"
-
     [distroart.catnip]
+    alias  = "default"
     margin = [1, 2, 2]
     art    = [
         "(GN)          ⣀⣀⣠⣠⣶⠦⢴⣦⣀⣠⣀  ",
@@ -179,6 +177,7 @@ margin = [0, 0, 0,]
     ]
 
     [distroart.mint]
+    alias = "linuxmint"
     margin = [2, 2, 4]
     art    = [
         "{CN} ___________ ",
@@ -190,10 +189,8 @@ margin = [0, 0, 0,]
         "{CN}  \\_________/"
     ]
 
-    [distroart.linuxmint]
-    alias = "mint"
-
     [distroart.raspbian]
+    alias = "raspberrypios"
     margin = [2, 2, 3]
     art    = [
         "{GN}  __  __   ",
@@ -203,9 +200,6 @@ margin = [0, 0, 0,]
         "{RD} (_(__)_)  ",
         "{RD}   (__)    "
     ]
-
-    [distroart.raspberrypios]
-    alias = "raspbian"
 
     [distroart.android]
     margin = [2, 2, 2]
@@ -231,6 +225,7 @@ margin = [0, 0, 0,]
     ]
 
     [distroart.endeavour]
+    alias = "endeavour"
     margin = [2, 2, 3]
     art    = [
         "{MA}       /\\     ",
@@ -241,10 +236,8 @@ margin = [0, 0, 0,]
         "{CN}/____--       "
     ]
 
-    [distroart.endeavouros]
-    alias = "endeavour"
-
     [distroart.pop]
+    alias = "popos, pop_os"
     margin = [1, 1, 2]
     art    = [
         "{CN}  ______             ",

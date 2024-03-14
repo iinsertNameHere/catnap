@@ -9,9 +9,9 @@ import strutils
 
 proc getAllDistros(): seq[string] =
     let distroart = LoadConfig(CONFIGPATH).distroart
-    for distro in distroart.getTable().keys:
-        if not distroart[distro].contains("alias"): # Skip alias definitions
-            result.add(distro)
+    for k in distroart.keys:
+        if not distroart[k].isAlias:
+            result.add(k)
 
 # Debug code for execution time
 when not defined release: 

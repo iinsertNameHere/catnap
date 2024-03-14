@@ -1,5 +1,6 @@
 import "toml"
 import os
+import tables
 
 type
     Color* = string
@@ -23,6 +24,7 @@ type
     Logo* = object
         margin*: Margin
         art*: seq[string]
+        isAlias*: bool
 
     Stat* = object
         icon*: string
@@ -54,7 +56,7 @@ type
 
     Config* = object
         stats*: TomlValueRef
-        distroart*: TomlValueRef
+        distroart*: OrderedTable[string, Logo]
         misc*: TomlValueRef
 
 const
