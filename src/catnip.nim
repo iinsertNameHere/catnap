@@ -29,7 +29,7 @@ if paramCount() > 0:
             echo "Usage:"
             echo "    catnip [options...]"
             echo ""
-            echo "Optins:"
+            echo "Options:"
             echo "    -h  --help                   Show help list"
             echo "    -d  --distroid <DistroId>    Force a DistroId"
             echo "    -g  --grep     <StatName>    Get the stats value"
