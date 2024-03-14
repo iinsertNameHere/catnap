@@ -222,19 +222,21 @@ art = [
 ```
 
 #### Alias
-The `alias` key can be used to reference an already existing DistroArt object.
-```
-alias = "arch"
-```
-This is also used in the `default` DistroArt object to set which art should be displayed by default.
+The `alias` key can be used to define alternate names that should also refer to the DistroArt Object.
 
-> **NOTE:** If you use the `alias` key, all other keys will have no effect.
+*Example in which 'test1' also referes to your new DistroArt object:*
+```
+alias = "test1"
+```
+
+This is also used to define the `default` DistroArt object, which defines what art should be displayed by default.
 
 ---
 
 *Example DistroArt object:*
 ```
 [distroart.test]
+alias = "test1"
 margin = [3, 3 ,3]
 art = [
   "Test",
