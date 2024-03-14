@@ -110,7 +110,7 @@ $ catnip --help
 
 You can change the names, colors, and icons for the various stats inside the `stats` section.
 
-*Example `stats` section that dose not use NerdFont icons:* 
+*Example `stats` section that does not use NerdFont icons:* 
 ```toml
 ##############################################
 ##          FetchInfo stats Config          ##
@@ -143,7 +143,7 @@ colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ``` 
 
 ### 🎨 Colors:
-Catnip's color system uses a ColorId, witch is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
+Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
 
 **Color Types:**
 - Forground Normal  -> `(#)`
