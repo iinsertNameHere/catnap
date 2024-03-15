@@ -1,12 +1,13 @@
+import os
+import strformat
+
 when defined linux:
     import strutils
     import parsecfg
     import posix_utils
     from unicode import toLower
 
-from "common/defs" import DistroId
-import os
-import strformat
+from "../common/defs" import DistroId
 
 proc getDistro*(): string =
     ## Returns the name of the running linux distro

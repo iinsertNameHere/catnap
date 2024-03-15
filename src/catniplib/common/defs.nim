@@ -55,6 +55,7 @@ type
         logo*: Logo
 
     Config* = object
+        file*: string
         stats*: TomlValueRef
         distroart*: OrderedTable[string, Logo]
         misc*: TomlValueRef

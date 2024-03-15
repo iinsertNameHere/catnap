@@ -4,11 +4,13 @@ from os import fileExists
 import strformat
 import strutils
 
+# Chars that a alias can contain
+const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
+
 proc LoadConfig*(path: string): Config =
     ## Lads a config file and validates it
-    
-    # 1. Validate the config file
-    
+
+    ### Validate the config file ###
     if not fileExists(path):
         echo &"ERROR: {path} - file not found!"
         quit(1)
@@ -63,10 +65,11 @@ proc LoadConfig*(path: string): Config =
         echo &"ERROR: {path}:misc:figletLogos - missing 'margin'!"
         quit(1)
     
-    ###############################################################
-    # 2. Fill out the result
+    ### Fill out the result object ###
+    result.file = path
 
     for distro in tcfg["distroart"].getTable().keys:
+        # Validate distroart objects
         if not tcfg["distroart"][distro].contains("margin"):
             echo &"ERROR: {path}:distroart:{distro} - missing 'margin'!"
             quit(1)
@@ -74,14 +77,15 @@ proc LoadConfig*(path: string): Config =
             echo &"ERROR: {path}:distroart:{distro} - missing 'art'!"
             quit(1)
         
-        # Generate Logo Objects for each logo in config
+        # Generate Logo Objects
         var newLogo: Logo 
         var tmargin = tcfg["distroart"][distro]["margin"]
         newLogo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
         for line in tcfg["distroart"][distro]["art"].getElems:
             newLogo.art.add(line.getStr())
 
-        if tcfg["distroart"][distro].contains("alias"): # Inflate distroart table with alias if exists
+        # Inflate distroart table with alias if exists
+        if tcfg["distroart"][distro].contains("alias"):
             let raw_alias_list = tcfg["distroart"][distro]["alias"].getStr().split(",")
             var alias_list: seq[string]
             for alias in raw_alias_list:
@@ -89,16 +93,13 @@ proc LoadConfig*(path: string): Config =
             
             newLogo.isAlias = true
 
-            # Chars that a alias can contain
-            let allowedNameChars = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
-
             for name in alias_list:
                 if result.distroart.hasKey(name):
                     echo &"ERROR: {path}:distroart:{distro} - alias '{name}' already exists!"
                     quit(1)
                 
                 for c in name: # Check if name is a valid alias
-                    if not (c in allowedNameChars):
+                    if not (c in ALLOWED_NAME_CHARS):
                         echo &"ERROR: {path}:distroart:{distro} - '{name}' is not a valid alias!"
                         quit(1)
 
@@ -114,3 +115,10 @@ proc LoadConfig*(path: string): Config =
 
     result.stats = tcfg["stats"]
     result.misc = tcfg["misc"]
+
+proc getAllDistros*(cfg: Config): seq[string] =
+    ## Function that returns all keys of distroart Table
+    let distroart = cfg.distroart
+    for k in distroart.keys:
+        if not distroart[k].isAlias:
+            result.add(k)

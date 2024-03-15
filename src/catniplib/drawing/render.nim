@@ -1,17 +1,18 @@
-from "../common/defs" import FetchInfo, CONFIGPATH, Stats, Stat, Config
-import "../common/config"
+import strformat
+
+from "../common/defs" import FetchInfo, Stats, Stat, Config
 import "../common/toml"
 import "colors"
 import "utils"
-import "infoStats"
-import strformat
+import "stats"
 
 proc getStat(stats: TomlValueRef, key: string): TomlValueRef =
+    ## Returns the value of stats[key] if it exists, else returns nil
     if stats.contains(key):
         return stats[key]
     return nil
 
-proc Render*(fetchinfo: FetchInfo) =
+proc Render*(config: Config, fetchinfo: FetchInfo) =
     ## Function that Renders a FetchInfo object to the console
 
     ##### Define Margins #####
@@ -21,7 +22,6 @@ proc Render*(fetchinfo: FetchInfo) =
         margin_right = fetchinfo.logo.margin[2]
 
     ##### Load Config #####
-    let config = LoadConfig(CONFIGPATH)
     let layout = config.misc["layout"].getStr()
 
     ##### Build distro_art buffer #####
@@ -49,11 +49,11 @@ proc Render*(fetchinfo: FetchInfo) =
     stats.setColors(config.stats.getStat("colors"))
 
     # Build the stat_block buffer
-    var stats_block = build(stats, fetchinfo)
+    var stats_block = buildStatBlock(stats, fetchinfo)
 
     ##### Merge buffers and output #####
     case layout:
-        of "Inline":
+        of "Inline": # Handle Inline Layout
             let lendiv = stats_block.len - distro_art.len
             if lendiv < 0:
                 for _ in countup(1, lendiv - lendiv*2):
@@ -64,16 +64,16 @@ proc Render*(fetchinfo: FetchInfo) =
 
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx] & stats_block[idx]
-        of "ArtOnTop":
+        of "ArtOnTop": # Handle ArtOnTop Layout
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx]
             for idx in countup(0, stats_block.len - 1):
                 echo stats_block[idx]
-        of "StatsOnTop":
+        of "StatsOnTop": # Handle StatsOnTop Layout
             for idx in countup(0, stats_block.len - 1):
                 echo stats_block[idx]
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx]
-        else:
-            echo &"ERROR: {CONFIGPATH}:misc:layout - Invalid value"
+        else: # Invalid Layout
+            echo &"ERROR: {config.file}:misc:layout - Invalid value"
             quit(1)

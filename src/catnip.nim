@@ -1,22 +1,18 @@
-import "catniplib/fetch"
+import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
 from "catniplib/common/defs" import CONFIGPATH
 import "catniplib/common/config"
-import "catniplib/common/toml"
 import os
 from unicode import toLower
 import strutils
-
-proc getAllDistros(): seq[string] =
-    let distroart = LoadConfig(CONFIGPATH).distroart
-    for k in distroart.keys:
-        if not distroart[k].isAlias:
-            result.add(k)
 
 # Debug code for execution time
 when not defined release: 
     import times, strformat
     let t0 = epochTime()
+
+# Load config
+let cfg = LoadConfig(CONFIGPATH)
 
 # Handle commandline args
 var distroid = "nil"
@@ -25,6 +21,8 @@ if paramCount() > 0:
     var idx = 1
     while paramCount() > (idx - 1):
         var param = paramStr(idx)
+
+        # Help Argument
         if param == "-h" or param == "--help":
             echo "Usage:"
             echo "    catnip [options...]"
@@ -38,10 +36,11 @@ if paramCount() > 0:
             echo "    username, hostname, uptime, distro, kernel, desktop, shell"
             echo ""
             echo "DistroIds:"
-            echo "    " & getAllDistros().join(", ")
+            echo "    " &  cfg.getAllDistros().join(", ")
             echo ""
             quit()
 
+        # DistroId Argument
         elif param == "-d" or param == "--distroid":
             if paramCount() < 1:
                 echo "ERROR: No DistroId was set with " & param
@@ -55,6 +54,7 @@ if paramCount() > 0:
             idx += 1
             distroid = paramStr(idx).toLower()
 
+        # Grep Argument
         elif param == "-g" or param == "--grep":
             if paramCount() < 1:
                 echo "ERROR: No StatName was set with " & param
@@ -68,6 +68,7 @@ if paramCount() > 0:
             idx += 1
             statname = paramStr(idx).toLower()
         
+        # Unknown Argument
         else:
             echo "ERROR: Unknown option '" & param & "'!"
             quit(1)
@@ -76,11 +77,11 @@ if paramCount() > 0:
 
 if statname == "nil":
     # Get system info
-    let fetchinfo = fetchSystemInfo(distroid)
+    let fetchinfo = fetchSystemInfo(cfg, distroid)
 
     # Render system info
     echo ""
-    Render(fetchinfo)
+    Render(cfg, fetchinfo)
     echo ""
 
     # Debug code for execution time
@@ -89,7 +90,7 @@ if statname == "nil":
         echo &"Execution finished in {time}s"
 
 else:
-    let fetchinfo = fetchSystemInfo()
+    let fetchinfo = fetchSystemInfo(cfg)
     case statname:
         of "username":
             echo fetchinfo.username

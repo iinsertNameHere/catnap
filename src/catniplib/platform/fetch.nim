@@ -1,12 +1,12 @@
-from "common/defs" import FetchInfo, CONFIGPATH
-import "common/config"
-import "common/toml"
-import "platform"
 import osproc
 import strformat
 import strutils
 
-proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
+from "../common/defs" import FetchInfo, Config
+import "../common/toml"
+import "platform"
+
+proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.username = platform.getUser()
     result.hostname = platform.getHostname()
     result.distro   = platform.getDistro()
@@ -17,8 +17,6 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
     result.distroId = platform.getDistroId()
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
-
-    let config = LoadConfig(CONFIGPATH)
     let figletLogos = config.misc["figletLogos"]
 
     if not figletLogos["enable"].getBool(): # Get logo from config file
@@ -43,5 +41,5 @@ proc fetchSystemInfo*(distroId: string = "nil"): FetchInfo =
                     result.logo.art.add(figletLogos["color"].getStr() & line)
 
         when defined windows:
-            echo &"ERROR: {CONFIGPATH}:misc:figletLogos - Not supported on windows yet"
+            echo &"ERROR: {config.file}:misc:figletLogos - Not supported on windows yet"
             exit(0)
