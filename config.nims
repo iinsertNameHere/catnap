@@ -38,6 +38,11 @@ task install, "Installs the config files":
     echo "\e[36;1mInstalling\e[0;0m config files"
     configure()
 
+when defined linux:
+    task install_bin, "Installs the bin file inside /usr/local/bin":
+        echo "\e[36;1mInstalling\e[0;0m bin file"
+    exec "sudo cp ./bin/catnip /usr/local/bin"
+
 task setup, "'release' and 'install'":
     releaseTask()
     installTask()
