@@ -1,6 +1,6 @@
 import "toml"
 import "logging"
-from "defs" import Config, STATNAMES, STATKEYS, Logo
+from "defs" import Config, STATNAMES, STATKEYS, Logo, DISTROSGPATH
 from os import fileExists
 import strformat
 import strutils
@@ -15,7 +15,11 @@ proc LoadConfig*(path: string): Config =
     if not fileExists(path):
         logError(&"{path} - file not found!")
 
+    if not fileExists(DISTROSGPATH):
+        logError(&"{DISTROSGPATH} - file not found!")
+
     let tcfg = toml.parseFile(path)
+    let tdistros = toml.parseFile(DISTROSGPATH)
 
     if not tcfg.contains("stats"):
         logError(&"{path} - missing 'stats'!")
@@ -30,8 +34,6 @@ proc LoadConfig*(path: string): Config =
             if not tcfg["stats"]["colors"].contains(statkey):
                 logError(&"{path}:stats:colors - missing '{statkey}'!")
 
-    if not tcfg.contains("distroart"):
-        logError(&"{path} - missing 'distroart'!")
     if not tcfg.contains("misc"):
         logError(&"{path} - missing 'stats'!")
     if not tcfg["misc"].contains("layout"):
@@ -50,28 +52,28 @@ proc LoadConfig*(path: string): Config =
     ### Fill out the result object ###
     result.file = path
 
-    for distro in tcfg["distroart"].getTable().keys:
+    for distro in tdistros.getTable().keys:
         # Validate distroart objects
-        if not tcfg["distroart"][distro].contains("margin"):
-            logError(&"{path}:distroart:{distro} - missing 'margin'!")
+        if not tdistros[distro].contains("margin"):
+            logError(&"{DISTROSGPATH}:{distro} - missing 'margin'!")
 
-        var tmargin = tcfg["distroart"][distro]["margin"].getElems
+        var tmargin = tdistros[distro]["margin"].getElems
         if tmargin.len() < 3:
             var delta = 3 - tmargin.len()
             var s = (if delta > 1: "s" else: "")
-            logError(&"{path}:distroart:{distro}:margin - missing {delta} value{s}!")
+            logError(&"{DISTROSGPATH}:{distro}:margin - missing {delta} value{s}!")
 
         if tmargin.len() > 3:
             var delta = tmargin.len() - 3
             var s = (if delta > 1: "s" else: "")
-            logError(&"{path}:distroart:{distro}:margin - overflows by {delta} value{s}!")
+            logError(&"{DISTROSGPATH}:{distro}:margin - overflows by {delta} value{s}!")
 
-        if not tcfg["distroart"][distro].contains("art"):
-            logError(&"{path}:distroart:{distro} - missing 'art'!")
+        if not tdistros[distro].contains("art"):
+            logError(&"{DISTROSGPATH}:{distro} - missing 'art'!")
 
-        var tart = tcfg["distroart"][distro]["art"].getElems
+        var tart = tdistros[distro]["art"].getElems
         if tart.len() < 1:
-            logError(&"{path}:distroart:{distro}:art - is empty!")
+            logError(&"{DISTROSGPATH}:{distro}:art - is empty!")
 
         # Generate Logo Objects
         var newLogo: Logo
@@ -80,8 +82,8 @@ proc LoadConfig*(path: string): Config =
             newLogo.art.add(line.getStr())
 
         # Inflate distroart table with alias if exists
-        if tcfg["distroart"][distro].contains("alias"):
-            let raw_alias_list = tcfg["distroart"][distro]["alias"].getStr().split(",")
+        if tdistros[distro].contains("alias"):
+            let raw_alias_list = tdistros[distro]["alias"].getStr().split(",")
             var alias_list: seq[string]
             for alias in raw_alias_list:
                 alias_list.add(alias.strip())
@@ -90,11 +92,11 @@ proc LoadConfig*(path: string): Config =
 
             for name in alias_list:
                 if result.distroart.hasKey(name) or name == distro:
-                    logError(&"{path}:distroart:{distro} - alias '{name}' is already taken!")
+                    logError(&"{DISTROSGPATH}:{distro} - alias '{name}' is already taken!")
                 
                 for c in name: # Check if name is a valid alias
                     if not (c in ALLOWED_NAME_CHARS):
-                        logError(&"{path}:distroart:{distro} - '{name}' is not a valid alias!")
+                        logError(&"{DISTROSGPATH}:{distro} - '{name}' is not a valid alias!")
 
                 result.distroart[name] = newLogo # Add alias to result
 
@@ -103,7 +105,7 @@ proc LoadConfig*(path: string): Config =
         result.distroart[distro] = newLogo # Add distroart obj to result
 
     if not result.distroart.contains("default"): # Validate that default alias exists
-        logError(&"{path}:distroart - missing 'default'!")
+        logError(&"{DISTROSGPATH} - missing 'default'!")
 
     result.stats = tcfg["stats"]
     result.misc = tcfg["misc"]

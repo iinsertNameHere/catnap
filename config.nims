@@ -23,8 +23,12 @@ proc configure() =
 
     echo "Creating " & configpath
     mkdir(configpath)
+
     echo "Creating " & configpath & "config.toml"
-    cpFile("config.toml", configpath & "config.toml")
+    cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
+
+    echo "Creating " & configpath & "distros.toml"
+    cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"

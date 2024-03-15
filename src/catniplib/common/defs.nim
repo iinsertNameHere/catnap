@@ -61,6 +61,7 @@ type
         misc*: TomlValueRef
 
 const
-    STATNAMES*  = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
-    STATKEYS*   = @["icon", "name", "color"]
-    CONFIGPATH* = joinPath(getConfigDir(), "catnip/config.toml")
+    STATNAMES*    = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
+    STATKEYS*     = @["icon", "name", "color"]
+    CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
+    DISTROSGPATH* = joinPath(getConfigDir(), "catnip/distros.toml")
