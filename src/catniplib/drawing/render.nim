@@ -1,5 +1,6 @@
 import strformat
 
+import "../common/logging"
 from "../common/defs" import FetchInfo, Stats, Stat, Config
 import "../common/toml"
 import "colors"
@@ -75,5 +76,5 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx]
         else: # Invalid Layout
-            echo &"ERROR: {config.file}:misc:layout - Invalid value"
+            logError(&"{config.file}:misc:layout - Invalid value")
             quit(1)

@@ -41,5 +41,5 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
                     result.logo.art.add(figletLogos["color"].getStr() & line)
 
         when defined windows:
-            echo &"ERROR: {config.file}:misc:figletLogos - Not supported on windows yet"
+            logError(&"{config.file}:misc:figletLogos - Not supported on windows yet")
             exit(0)
