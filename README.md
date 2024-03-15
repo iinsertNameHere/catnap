@@ -102,13 +102,13 @@ $ catnip --help
 <br>
 
 ## 📒 Configuration
-> **The config file is located at:**
-> -  `~/.config/catnip/config.toml`: Linux
-> -  `C:\Users\%USERNAME%\catnip\config.toml`: Windows
+> **The config files are located at:**
+> -  `~/.config/catnip`: Linux
+> -  `C:\Users\%USERNAME%\catnip`: Windows
 
 <br>
 
-You can change the names, colors, and icons for the various stats inside the `stats` section.
+You can change the names, colors, and icons for the various stats inside the `stats` section of the `config.toml` file.
 
 *Example `stats` section that does not use NerdFont icons:* 
 ```toml
@@ -146,8 +146,8 @@ colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
 
 **Color Types:**
-- Forground Normal  -> `(#)`
-- Forground Bright  -> `{#}`
+- Foreground Normal  -> `(#)`
+- Foreground Bright  -> `{#}`
 - Background Normal -> `[#]`
 - Background Bright -> `<#>`
 
@@ -163,11 +163,11 @@ Catnip's color system uses a ColorId, which is made up of the colors first and l
 - CYAN    -> `CN`
 - WHITE   -> `WE`
 
-So `{GN}` translates to: Forground-Bright-Green.
+So `{GN}` translates to: Foreground-Bright-Green.
 To set the color to Default, use `!DT!`.
 
 ### 🚩 Misc
-In the `misc` section you can find 2 keys.
+In the `misc` section of `config.toml` you can find 2 keys.
 1. `layout`
 2. `figletLogos`
 
@@ -190,13 +190,12 @@ In the `figletLogos` section you can find 3 keys:
 - Use `margin` to define the margins of the *figlet* logos.
 
 ### 🖌️ Distro Art
-To create a new DistroArt object, add a new section to the config file (replace `distroname` with the name of your distro):
+To create a new DistroArt object inside the `distros.toml` file, add a new section to the file (replace `distroname` with the name of your distro):
+```toml
+[distroname]
 ```
-[distroart.distroname]
-```
-> **NOTE:** Make sure to add the `distroart.` prefix!
 
-Catnip's DistroArt Objects have three posible keys.
+Catnip's DistroArt Objects have three possible keys.
 1. `margin`
 2. `art`
 3. `alias`
@@ -224,7 +223,7 @@ art = [
 #### Alias
 The `alias` key can be used to define alternate names that should also refer to the DistroArt Object.
 
-*Example in which 'test1' also referes to your new DistroArt object:*
+*Example in which 'test1' also refers to your new DistroArt object:*
 ```
 alias = "test1"
 ```
