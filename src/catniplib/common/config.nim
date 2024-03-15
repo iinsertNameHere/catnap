@@ -1,4 +1,5 @@
 import "toml"
+import "logging"
 from "defs" import Config, STATNAMES, STATKEYS, Logo
 from os import fileExists
 import strformat
@@ -12,58 +13,39 @@ proc LoadConfig*(path: string): Config =
 
     ### Validate the config file ###
     if not fileExists(path):
-        echo &"ERROR: {path} - file not found!"
-        quit(1)
+        logError(&"{path} - file not found!")
 
     let tcfg = toml.parseFile(path)
-    
+
     if not tcfg.contains("stats"):
-        echo &"ERROR: {path} - missing 'stats'!"
-        quit(1)
+        logError(&"{path} - missing 'stats'!")
 
     for statname in STATNAMES:
         if tcfg["stats"].contains(statname):
             for statkey in STATKEYS:
                 if not tcfg["stats"][statname].contains(statkey):
-                    echo &"ERROR: {path}:stats:" & statname & " - missing '" & statkey & "'!"
-                    quit(1)  
+                    logError(&"{path}:stats:{statname} - missing '{statkey}'!")
     if tcfg["stats"].contains("colors"):
         for statkey in STATKEYS & @["symbol"]:
             if not tcfg["stats"]["colors"].contains(statkey):
-                echo &"ERROR: {path}:stats:colors - missing '" & statkey & "'!"
-                quit(1)
+                logError(&"{path}:stats:colors - missing '{statkey}'!")
 
     if not tcfg.contains("distroart"):
-        echo &"ERROR: {path} - missing 'distroart'!"
-        quit(1)
-
+        logError(&"{path} - missing 'distroart'!")
     if not tcfg.contains("misc"):
-        echo &"ERROR: {path} - missing 'stats'!"
-        quit(1)
-
+        logError(&"{path} - missing 'stats'!")
     if not tcfg["misc"].contains("layout"):
-        echo &"ERROR: {path}:misc - missing 'layout'!"
-        quit(1)
-
+        logError(&"{path}:misc - missing 'layout'!")
     if not tcfg["misc"].contains("figletLogos"):
-        echo &"ERROR: {path}:misc - missing 'figletLogos'!"
-        quit(1)
-
+        logError(&"{path}:misc - missing 'figletLogos'!")
     if not tcfg["misc"]["figletLogos"].contains("enable"):
-        echo &"ERROR: {path}:misc:figletLogos - missing 'enable'!"
-        quit(1)
-    
+        logError(&"{path}:misc:figletLogos - missing 'enable'!")
     if not tcfg["misc"]["figletLogos"].contains("color"):
-        echo &"ERROR: {path}:misc:figletLogos - missing 'color'!"
-        quit(1)
-
+        logError(&"{path}:misc:figletLogos - missing 'color'!")
     if not tcfg["misc"]["figletLogos"].contains("font"):
-        echo &"ERROR: {path}:misc:figletLogos - missing 'font'!"
-        quit(1)
-
+        logError(&"{path}:misc:figletLogos - missing 'font'!")
     if not tcfg["misc"]["figletLogos"].contains("margin"):
-        echo &"ERROR: {path}:misc:figletLogos - missing 'margin'!"
-        quit(1)
+        logError(&"{path}:misc:figletLogos - missing 'margin'!")
     
     ### Fill out the result object ###
     result.file = path
@@ -71,17 +53,30 @@ proc LoadConfig*(path: string): Config =
     for distro in tcfg["distroart"].getTable().keys:
         # Validate distroart objects
         if not tcfg["distroart"][distro].contains("margin"):
-            echo &"ERROR: {path}:distroart:{distro} - missing 'margin'!"
-            quit(1)
+            logError(&"{path}:distroart:{distro} - missing 'margin'!")
+
+        var tmargin = tcfg["distroart"][distro]["margin"].getElems
+        if tmargin.len() < 3:
+            var delta = 3 - tmargin.len()
+            var s = (if delta > 1: "s" else: "")
+            logError(&"{path}:distroart:{distro}:margin - missing {delta} value{s}!")
+
+        if tmargin.len() > 3:
+            var delta = tmargin.len() - 3
+            var s = (if delta > 1: "s" else: "")
+            logError(&"{path}:distroart:{distro}:margin - overflows by {delta} value{s}!")
+
         if not tcfg["distroart"][distro].contains("art"):
-            echo &"ERROR: {path}:distroart:{distro} - missing 'art'!"
-            quit(1)
-        
+            logError(&"{path}:distroart:{distro} - missing 'art'!")
+
+        var tart = tcfg["distroart"][distro]["art"].getElems
+        if tart.len() < 1:
+            logError(&"{path}:distroart:{distro}:art - is empty!")
+
         # Generate Logo Objects
-        var newLogo: Logo 
-        var tmargin = tcfg["distroart"][distro]["margin"]
+        var newLogo: Logo
         newLogo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-        for line in tcfg["distroart"][distro]["art"].getElems:
+        for line in tart:
             newLogo.art.add(line.getStr())
 
         # Inflate distroart table with alias if exists
@@ -95,13 +90,11 @@ proc LoadConfig*(path: string): Config =
 
             for name in alias_list:
                 if result.distroart.hasKey(name) or name == distro:
-                    echo &"ERROR: {path}:distroart:{distro} - alias '{name}' is already taken!"
-                    quit(1)
+                    logError(&"{path}:distroart:{distro} - alias '{name}' is already taken!")
                 
                 for c in name: # Check if name is a valid alias
                     if not (c in ALLOWED_NAME_CHARS):
-                        echo &"ERROR: {path}:distroart:{distro} - '{name}' is not a valid alias!"
-                        quit(1)
+                        logError(&"{path}:distroart:{distro} - '{name}' is not a valid alias!")
 
                 result.distroart[name] = newLogo # Add alias to result
 
@@ -110,8 +103,7 @@ proc LoadConfig*(path: string): Config =
         result.distroart[distro] = newLogo # Add distroart obj to result
 
     if not result.distroart.contains("default"): # Validate that default alias exists
-        echo &"ERROR: {path}:distroart - missing 'default'!"
-        quit(1)
+        logError(&"{path}:distroart - missing 'default'!")
 
     result.stats = tcfg["stats"]
     result.misc = tcfg["misc"]
