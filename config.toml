@@ -88,7 +88,7 @@ margin = [0, 0, 0,]
     ]
 
     [distroart.artix]
-    margin = [2,2,2]
+    margin = [2,2,2,]
     art    = [
         "{BE}      /\\      ",
         "{BE}     /  \\     ",
