@@ -2,21 +2,44 @@ import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
 from "catniplib/common/defs" import CONFIGPATH
 import "catniplib/common/config"
+import "catniplib/common/logging"
 import os
 from unicode import toLower
 import strutils
+import strformat
 
 # Debug code for execution time
 when not defined release: 
-    import times, strformat
+    import times
     let t0 = epochTime()
 
 # Load config
 var cfg = LoadConfig(CONFIGPATH)
 
+proc printHelp() =
+    echo "Usage:"
+    echo "    catnip [options...]"
+    echo ""
+    echo "Options:"
+    echo "    -h  --help                   Show help list"
+    echo "    -d  --distroid <DistroId>    Force a DistroId"
+    echo "    -g  --grep     <StatName>    Get the stats value"
+    echo "    -c  --config   <ConfigDir>   Uses a custom location for the config file"
+    echo ""
+    echo "StatNames:"
+    echo "    username, hostname, uptime, distro, kernel, desktop, shell"
+    echo ""
+    echo "DistroIds:"
+    echo "    " &  cfg.getAllDistros().join(", ")
+    echo ""
+    quit()
+
 # Handle commandline args
 var distroid = "nil"
 var statname = "nil"
+var help = false
+var error = false
+
 if paramCount() > 0:
     var idx = 1
     while paramCount() > (idx - 1):
@@ -24,65 +47,70 @@ if paramCount() > 0:
 
         # Config Argument
         if param == "-c" or param == "--config":
-            if paramCount() < 1:
-                echo "ERROR: No path to config file specificed."
-                quit(1)
+            if paramCount() - idx < 1:
+                logError("No ConfigDir was specified.", false)
+                error = true
+                idx += 1
+                continue
             idx += 1
             cfg = LoadConfig(paramStr(idx))
 
         # Help Argument
         elif param == "-h" or param == "--help":
-            echo "Usage:"
-            echo "    catnip [options...]"
-            echo ""
-            echo "Options:"
-            echo "    -h  --help                   Show help list"
-            echo "    -d  --distroid <DistroId>    Force a DistroId"
-            echo "    -g  --grep     <StatName>    Get the stats value"
-            echo "    -c  --config   <ConfigDir>   Uses a custom location for the config file"
-            echo ""
-            echo "StatNames:"
-            echo "    username, hostname, uptime, distro, kernel, desktop, shell"
-            echo ""
-            echo "DistroIds:"
-            echo "    " &  cfg.getAllDistros().join(", ")
-            echo ""
-            quit()
+            help = true
 
         # DistroId Argument
         elif param == "-d" or param == "--distroid":
-            if paramCount() < 1:
-                echo "ERROR: No DistroId was set with " & param
-                quit(1)
+            if paramCount() - idx < 1:
+                logError("No DistroId was specified.", false)
+                error = true
+                idx += 1
+                continue
             elif distroid != "nil":
-                echo "ERROR: " & param & " can only be used once!"
-                quit(1)
+                logError(&"{param} can only be used once!", false)
+                error = true
+                idx += 1
+                continue
             elif statname != "nil":
-                echo "ERROR: " & param & " and --grep/-g can't be used together!"
-                quit(1)
+                logError(&"{param} and --grep/-g can't be used together!", false)
+                error = true
+                idx += 1
+                continue
             idx += 1
             distroid = paramStr(idx).toLower()
 
         # Grep Argument
         elif param == "-g" or param == "--grep":
-            if paramCount() < 1:
-                echo "ERROR: No StatName was set with " & param
-                quit(1)
+            if paramCount() - idx < 1:
+                logError("No StatName was specified.", false)
+                error = true
+                idx += 1
+                continue
             elif statname != "nil":
-                echo "ERROR: " & param & " can only be used once!"
-                quit(1)
+                logError(&"{param} can only be used once!", false)
+                error = true
+                idx += 1
+                continue
             elif distroid != "nil":
-                echo "ERROR: " & param & " and --distroid/-d can't be used together!"
-                quit(1)
+                logError(&"{param} and --distroid/-d can't be used together!", false)
+                error = true
+                idx += 1
+                continue
             idx += 1
             statname = paramStr(idx).toLower()
         
         # Unknown Argument
         else:
-            echo "ERROR: Unknown option '" & param & "'!"
-            quit(1)
+            logError(&"Unknown option '{param}'!", false)
+            error = true
+            idx += 1
+            continue
 
         idx += 1
+
+if help: printHelp()
+if error: quit(1)
+elif help: quit(0)
 
 if statname == "nil":
     # Get system info
@@ -116,5 +144,4 @@ else:
         of "shell":
             echo fetchinfo.shell
         else:
-            echo "ERROR: Unknown StatName '" & statname & "'!"
-            quit(1)
+            logError(&"Unknown StatName '{statname}'!")
