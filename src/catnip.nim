@@ -1,6 +1,6 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/common/defs" import CONFIGPATH
+from "catniplib/common/defs" import CONFIGPATH, Config
 import "catniplib/common/config"
 import "catniplib/common/logging"
 import os
@@ -13,10 +13,7 @@ when not defined release:
     import times
     let t0 = epochTime()
 
-# Load config
-var cfg = LoadConfig(CONFIGPATH)
-
-proc printHelp() =
+proc printHelp(cfg: Config) =
     echo "Usage:"
     echo "    catnip [options...]"
     echo ""
@@ -37,6 +34,7 @@ proc printHelp() =
 # Handle commandline args
 var distroid = "nil"
 var statname = "nil"
+var cfgPath = CONFIGPATH
 var help = false
 var error = false
 
@@ -53,7 +51,7 @@ if paramCount() > 0:
                 idx += 1
                 continue
             idx += 1
-            cfg = LoadConfig(paramStr(idx))
+            cfgPath = paramStr(idx)
 
         # Help Argument
         elif param == "-h" or param == "--help":
@@ -108,7 +106,10 @@ if paramCount() > 0:
 
         idx += 1
 
-if help: printHelp()
+let cfg = LoadConfig(cfgPath)
+
+# Handle argument errors and help
+if help: printHelp(cfg)
 if error: quit(1)
 elif help: quit(0)
 
