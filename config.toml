@@ -83,6 +83,18 @@ margin = [0, 0, 0,]
         "{GN}/_-''   ''-_\\"
     ]
 
+    [distroart.artix]
+    margin = [2,2,2]
+    art    = [
+        "{BE}      /\\      ",
+        "{BE}     /  \\     ",
+        "{BE}    /`'.,\\    ",
+        "{BE}   /     ',   ",
+        "{BE}  /      ,`\\  ",
+        "{BE} /   ,.'`.  \\ ",
+        "{BE}/.,'`     `'.\\",
+    ]
+
     [distroart.windows]
     margin = [2, 2, 4]
     art    = [
