@@ -12,7 +12,7 @@ when not defined release:
     let t0 = epochTime()
 
 # Load config
-let cfg = LoadConfig(CONFIGPATH)
+var cfg = LoadConfig(CONFIGPATH)
 
 # Handle commandline args
 var distroid = "nil"
@@ -22,8 +22,16 @@ if paramCount() > 0:
     while paramCount() > (idx - 1):
         var param = paramStr(idx)
 
+        # Config Argument
+        if param == "-c" or param == "--config":
+            if paramCount() < 1:
+                echo "ERROR: No path to config file specificed."
+                quit(1)
+            idx += 1
+            cfg = LoadConfig(paramStr(idx))
+
         # Help Argument
-        if param == "-h" or param == "--help":
+        elif param == "-h" or param == "--help":
             echo "Usage:"
             echo "    catnip [options...]"
             echo ""
@@ -31,6 +39,7 @@ if paramCount() > 0:
             echo "    -h  --help                   Show help list"
             echo "    -d  --distroid <DistroId>    Force a DistroId"
             echo "    -g  --grep     <StatName>    Get the stats value"
+            echo "    -c  --config   <ConfigDir>   Uses a custom location for the config file"
             echo ""
             echo "StatNames:"
             echo "    username, hostname, uptime, distro, kernel, desktop, shell"
