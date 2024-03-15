@@ -94,8 +94,8 @@ proc LoadConfig*(path: string): Config =
             newLogo.isAlias = true
 
             for name in alias_list:
-                if result.distroart.hasKey(name):
-                    echo &"ERROR: {path}:distroart:{distro} - alias '{name}' already exists!"
+                if result.distroart.hasKey(name) or name == distro:
+                    echo &"ERROR: {path}:distroart:{distro} - alias '{name}' is already taken!"
                     quit(1)
                 
                 for c in name: # Check if name is a valid alias

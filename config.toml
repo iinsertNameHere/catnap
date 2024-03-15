@@ -225,7 +225,7 @@ margin = [0, 0, 0,]
     ]
 
     [distroart.endeavour]
-    alias = "endeavour"
+    alias = "endeavouros"
     margin = [2, 2, 3]
     art    = [
         "{MA}       /\\     ",
