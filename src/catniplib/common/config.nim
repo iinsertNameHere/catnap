@@ -16,7 +16,7 @@ proc LoadConfig*(path: string): Config =
         logError(&"{path} - file not found!")
 
     let tcfg = toml.parseFile(path)
-    
+
     if not tcfg.contains("stats"):
         logError(&"{path} - missing 'stats'!")
 
@@ -54,14 +54,29 @@ proc LoadConfig*(path: string): Config =
         # Validate distroart objects
         if not tcfg["distroart"][distro].contains("margin"):
             logError(&"{path}:distroart:{distro} - missing 'margin'!")
+
+        var tmargin = tcfg["distroart"][distro]["margin"].getElems
+        if tmargin.len() < 3:
+            var delta = 3 - tmargin.len()
+            var s = (if delta > 1: "s" else: "")
+            logError(&"{path}:distroart:{distro}:margin - missing {delta} value{s}!")
+
+        if tmargin.len() > 3:
+            var delta = tmargin.len() - 3
+            var s = (if delta > 1: "s" else: "")
+            logError(&"{path}:distroart:{distro}:margin - overflows by {delta} value{s}!")
+
         if not tcfg["distroart"][distro].contains("art"):
             logError(&"{path}:distroart:{distro} - missing 'art'!")
-        
+
+        var tart = tcfg["distroart"][distro]["art"].getElems
+        if tart.len() < 1:
+            logError(&"{path}:distroart:{distro}:art - is empty!")
+
         # Generate Logo Objects
-        var newLogo: Logo 
-        var tmargin = tcfg["distroart"][distro]["margin"]
+        var newLogo: Logo
         newLogo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-        for line in tcfg["distroart"][distro]["art"].getElems:
+        for line in tart:
             newLogo.art.add(line.getStr())
 
         # Inflate distroart table with alias if exists
