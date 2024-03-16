@@ -45,7 +45,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 - [ssleert/Nitch](https://github.com/ssleert/nitch) for the inspiration
 - [All contributors](#thanks-to-all-contributors-)
 
-**Feel free to submit [issues](https://github.com/iinsertNameHere/catnip/issues) if you have any improfement ideas! ❤**
+**Feel free to submit [issues](https://github.com/iinsertNameHere/catnip/issues) if you have any improvement ideas! ❤**
 
 <br>
 
