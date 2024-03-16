@@ -7,9 +7,10 @@ import os
 from unicode import toLower
 import strutils
 import strformat
+import std/wordwrap
 
 # Debug code for execution time
-when not defined release: 
+when not defined release:
     import times
     let t0 = epochTime()
 
@@ -27,7 +28,7 @@ proc printHelp(cfg: Config) =
     echo "    username, hostname, uptime, distro, kernel, desktop, shell"
     echo ""
     echo "DistroIds:"
-    echo "    " &  cfg.getAllDistros().join(", ")
+    echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80)
     echo ""
     quit()
 
@@ -96,7 +97,7 @@ if paramCount() > 0:
                 continue
             idx += 1
             statname = paramStr(idx).toLower()
-        
+
         # Unknown Argument
         else:
             logError(&"Unknown option '{param}'!", false)
@@ -123,7 +124,7 @@ if statname == "nil":
     echo ""
 
     # Debug code for execution time
-    when not defined release: 
+    when not defined release:
         let time = (epochTime() - t0).formatFloat(format = ffDecimal, precision = 3)
         echo &"Execution finished in {time}s"
 
