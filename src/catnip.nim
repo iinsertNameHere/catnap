@@ -25,7 +25,9 @@ proc printHelp(cfg: Config) =
     echo "    -g  --grep                 <StatName>    Get the stats value"
     echo "    -c  --config               <ConfigDir>   Uses a custom location for the config file"
     echo ""
-    echo "    -fe --figletLogos.enable  <on/off>      Overwrite figletLogos enable"
+    echo "    -l  --layout               <Layout>      Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
+    echo ""
+    echo "    -fe --figletLogos.enable   <on/off>      Overwrite figletLogos enable"
     echo "    -fm --figletLogos.margin   <Margin>      Overwrite figletLogos margin (Example: 1,2,3)"
     echo "    -ff --figletLogos.font     <Font>        Overwrite figletLogos font"
     echo ""
@@ -43,6 +45,7 @@ var statname = "nil"
 var figletLogos_enabled = "nil"
 var figletLogos_margin: seq[int]
 var figletLogos_font = "nil"
+var layout = "nil"
 var cfgPath = CONFIGPATH
 var help = false
 var error = false
@@ -106,6 +109,27 @@ if paramCount() > 0:
             idx += 1
             statname = paramStr(idx).toLower()
 
+        # Layout Argument
+        elif param == "-l" or param == "--layout":
+            if paramCount() - idx < 1:
+                logError(&"'{param}' - No Value was specified!", false)
+                error = true
+                idx += 1
+                continue
+            elif statname != "nil":
+                logError(&"{param} - Can't be used together with: -g/--grep", false)
+                error = true
+                idx += 1
+                continue
+            elif layout != "nil":
+                logError(&"{param} - Can only be used once!", false)
+                error = true
+                idx += 1
+                continue
+            
+            idx += 1
+            layout = paramStr(idx)
+        
         # FigletLogos enabled Argument
         elif param == "-fe" or param == "--figletLogos.enabled":
             if paramCount() - idx < 1:
@@ -210,6 +234,9 @@ if error: quit(1)
 elif help: quit(0)
 
 if statname == "nil":
+    # Handle layout overwrite
+    if layout != "nil":
+        cfg.misc["layout"] = parseString(&"val = '{layout}'")["val"]
 
     # Handle figletLogos overwrites
     if figletLogos_enabled != "nil":
