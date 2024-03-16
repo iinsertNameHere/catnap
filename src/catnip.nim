@@ -28,7 +28,7 @@ proc printHelp(cfg: Config) =
     echo "    username, hostname, uptime, distro, kernel, desktop, shell"
     echo ""
     echo "DistroIds:"
-    echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80)
+    echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
     echo ""
     quit()
 
