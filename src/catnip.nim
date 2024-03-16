@@ -14,6 +14,9 @@ when not defined release:
     import times
     let t0 = epochTime()
 
+#Margin must be set here in order to be before the help argument.
+var margin = 80
+
 proc printHelp(cfg: Config) =
     echo "Usage:"
     echo "    catnip [options...]"
@@ -23,12 +26,13 @@ proc printHelp(cfg: Config) =
     echo "    -d  --distroid <DistroId>    Force a DistroId"
     echo "    -g  --grep     <StatName>    Get the stats value"
     echo "    -c  --config   <ConfigDir>   Uses a custom location for the config file"
+    echo "    -m  --margin   <MarginSize>  Uses a custom margin size for DistroId."
     echo ""
     echo "StatNames:"
     echo "    username, hostname, uptime, distro, kernel, desktop, shell"
     echo ""
     echo "DistroIds:"
-    echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
+    echo "    " &  cfg.getAllDistros().join(", ").wrapWords(margin).replace("\n", "\n    ")
     echo ""
     quit()
 
@@ -43,7 +47,17 @@ if paramCount() > 0:
     var idx = 1
     while paramCount() > (idx - 1):
         var param = paramStr(idx)
-
+        
+        # Margin Argument
+        if param == "-m" or param == "--margin":
+            if paramCount() - idx < 1:
+                logError("No margin size specificed.", false)
+                error = true
+                idx += 1
+                continue
+            idx += 1
+            margin = parseInt(paramStr(idx))
+        
         # Config Argument
         if param == "-c" or param == "--config":
             if paramCount() - idx < 1:
