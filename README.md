@@ -104,7 +104,7 @@ $ catnip --help
 ## 📒 Configuration
 > **The config files are located at:**
 > -  `~/.config/catnip`: Linux
-> -  `C:\Users\%USERNAME%\catnip`: Windows
+> -  `C:\Users\%USERNAME%\AppData\Local\catnip`: Windows
 
 <br>
 

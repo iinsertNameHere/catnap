@@ -19,7 +19,7 @@ proc configure() =
             configpath = XDG_CONFIG_HOME & "/catnip/"
         
     when defined windows:
-        let configpath = "C:/Users/" & getEnv("USERPROFILE") & "/.catnip/"
+        let configpath = "C:/Users/" & getEnv("USERPROFILE") & "AppData/Local/catnip/"
 
     echo "Creating " & configpath
     mkdir(configpath)
