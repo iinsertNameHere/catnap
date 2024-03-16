@@ -23,7 +23,7 @@
 I created `Catnip🌿` as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
 > #### ⏱️ Execution Time 
-> *Around **0.006** seconds on my laptop*
+> *Around **0.006** seconds on my lapt
 
 #### 📊 Displayed Statistics
 <details>
@@ -39,6 +39,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
     <li>terminal colors</li>
   </ul>
 </details>
+
+**Feel free to submit [issues](https://github.com/iinsertNameHere/catnip/issues) if you have any improfement ideas! ❤**
 
 #### ❤ Shoutout to:
 - [NimParsers/parsetoml](https://github.com/NimParsers/parsetoml) for the toml parsing
