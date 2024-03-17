@@ -1,11 +1,11 @@
 import strformat
 
-import "../common/logging"
-from "../common/defs" import FetchInfo, Stats, Stat, Config
-import "../common/toml"
-import "colors"
-import "utils"
-import "stats"
+import "../terminal/logging"
+from "../common/definitions" import FetchInfo, Stats, Stat, Config
+import "../common/parsetoml"
+import "../terminal/colors"
+import "../generation/utils"
+import "../generation/stats"
 
 proc getStat(stats: TomlValueRef, key: string): TomlValueRef =
     ## Returns the value of stats[key] if it exists, else returns nil

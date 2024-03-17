@@ -2,19 +2,19 @@ import osproc
 import strformat
 import strutils
 
-from "../common/defs" import FetchInfo, Config
-import "../common/toml"
-import "platform"
+from "../common/definitions" import FetchInfo, Config
+import "../common/parsetoml"
+import "probe"
 
 proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
-    result.username = platform.getUser()
-    result.hostname = platform.getHostname()
-    result.distro   = platform.getDistro()
-    result.uptime   = platform.getUptime()
-    result.kernel   = platform.getKernel()
-    result.desktop  = platform.getDesktop()
-    result.shell    = platform.getShell()
-    result.distroId = platform.getDistroId()
+    result.username = probe.getUser()
+    result.hostname = probe.getHostname()
+    result.distro   = probe.getDistro()
+    result.uptime   = probe.getUptime()
+    result.kernel   = probe.getKernel()
+    result.desktop  = probe.getDesktop()
+    result.shell    = probe.getShell()
+    result.distroId = probe.getDistroId()
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
     let figletLogos = config.misc["figletLogos"]

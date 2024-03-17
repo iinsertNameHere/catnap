@@ -1,6 +1,6 @@
-import "toml"
-import "logging"
-from "defs" import Config, STATNAMES, STATKEYS, Logo, DISTROSGPATH
+import "parsetoml"
+import "../terminal/logging"
+from "definitions" import Config, STATNAMES, STATKEYS, Logo, DISTROSGPATH
 from os import fileExists
 import strformat
 import strutils
@@ -18,8 +18,8 @@ proc LoadConfig*(path: string): Config =
     if not fileExists(DISTROSGPATH):
         logError(&"{DISTROSGPATH} - file not found!")
 
-    let tcfg = toml.parseFile(path)
-    let tdistros = toml.parseFile(DISTROSGPATH)
+    let tcfg = parsetoml.parseFile(path)
+    let tdistros = parsetoml.parseFile(DISTROSGPATH)
 
     if not tcfg.contains("stats"):
         logError(&"{path} - missing 'stats'!")
@@ -48,7 +48,7 @@ proc LoadConfig*(path: string): Config =
         logError(&"{path}:misc:figletLogos - missing 'font'!")
     if not tcfg["misc"]["figletLogos"].contains("margin"):
         logError(&"{path}:misc:figletLogos - missing 'margin'!")
-    
+
     ### Fill out the result object ###
     result.file = path
 
@@ -87,13 +87,13 @@ proc LoadConfig*(path: string): Config =
             var alias_list: seq[string]
             for alias in raw_alias_list:
                 alias_list.add(alias.strip())
-            
+
             newLogo.isAlias = true
 
             for name in alias_list:
                 if result.distroart.hasKey(name) or name == distro:
                     logError(&"{DISTROSGPATH}:{distro} - alias '{name}' is already taken!")
-                
+
                 for c in name: # Check if name is a valid alias
                     if not (c in ALLOWED_NAME_CHARS):
                         logError(&"{DISTROSGPATH}:{distro} - '{name}' is not a valid alias!")
