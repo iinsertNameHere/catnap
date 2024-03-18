@@ -25,6 +25,7 @@ proc printHelp(cfg: Config) =
     echo "    -g  --grep                 <StatName>    Get the stats value"
     echo "    -c  --config               <ConfigDir>   Uses a custom location for the config file"
     echo ""
+    echo "    -m  --margin               <Margin>      Overwrite margin value for the displayed logo (Example: 1,2,3)"
     echo "    -l  --layout               <Layout>      Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
     echo ""
     echo "    -fe --figletLogos.enable   <on/off>      Overwrite figletLogos enable"
@@ -46,6 +47,7 @@ var figletLogos_enabled = "nil"
 var figletLogos_margin: seq[int]
 var figletLogos_font = "nil"
 var layout = "nil"
+var margin: seq[int]
 var cfgPath = CONFIGPATH
 var help = false
 var error = false
@@ -108,6 +110,45 @@ if paramCount() > 0:
                 continue
             idx += 1
             statname = paramStr(idx).toLower()
+
+        # Margin Argument
+        elif param == "-m" or param == "--margin":
+            if paramCount() - idx < 1:
+                logError(&"{param} - No Value was specified!", false)
+                error = true
+                idx += 1
+                continue
+            elif statname != "nil":
+                logError(&"'{param}' - Can't be used together with: -g/--grep", false)
+                error = true
+                idx += 1
+                continue
+            elif figletLogos_margin.len > 0:
+                logError(&"'{param}' - Can only be used once!", false)
+                error = true
+                idx += 1
+                continue
+
+            idx += 1
+            let margin_list = paramStr(idx).split(",")
+            if margin_list.len < 3:
+                logError(&"'{param}' - Value dose not match format!", false)
+                error = true
+                idx += 1
+                continue
+
+            for idx in countup(0, 2):
+                let num = margin_list[idx].strip()
+                var parsed_num: int
+
+                try:
+                    parsed_num = parseInt(num)
+                except:
+                    logError(&"'{param}' - Value[{idx}] is not a number!", false)
+                    error = true
+                    break
+
+                margin.add(parsed_num)
 
         # Layout Argument
         elif param == "-l" or param == "--layout":
@@ -234,6 +275,11 @@ if error: quit(1)
 elif help: quit(0)
 
 if statname == "nil":
+    # Handle margin overwrite
+    if margin.len == 3:
+        for key in cfg.distroart.keys:
+            cfg.distroart[key].margin = [margin[0], margin[1], margin[2]]
+
     # Handle layout overwrite
     if layout != "nil":
         cfg.misc["layout"] = parseString(&"val = '{layout}'")["val"]
