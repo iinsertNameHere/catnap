@@ -1,5 +1,5 @@
-from "../common/defs" import Stats, Stat, Color
-import "../common/toml"
+from "../common/definitions" import Stats, Stat, Color
+import "../common/parsetoml"
 import unicode
 
 proc newStat*(icon: string, name: string, color: Color): Stat =
@@ -20,7 +20,7 @@ proc setUsername*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.username = newStat("", "", "")
         return
-    
+
     # Merge icon with stat name and color
     let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
     if l > stats.maxlen:
@@ -31,7 +31,7 @@ proc setHostname*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.hostname = newStat("", "", "")
         return
-    
+
     # Merge icon with stat name and color
     let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
     if l > stats.maxlen:
@@ -64,7 +64,7 @@ proc setKernel*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.kernel = newStat("", "", "")
         return
-    
+
     # Merge icon with stat name and color
     let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
     if l > stats.maxlen:
@@ -86,7 +86,7 @@ proc setShell*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.shell = newStat("", "", "")
         return
-    
+
     # Merge icon with stat name and color
     let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
     if l > stats.maxlen:
@@ -97,7 +97,7 @@ proc setColors*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.colors = newStat("", "", "")
         return
-    
+
     # Merge icon with stat name, color and symbol
     let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
     if l > stats.maxlen:

@@ -1,9 +1,9 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/common/defs" import CONFIGPATH, Config
+from "catniplib/common/definitions" import CONFIGPATH, Config
 import "catniplib/common/config"
-import "catniplib/common/logging"
-import "catniplib/common/toml"
+import "catniplib/terminal/logging"
+import "catniplib/common/parsetoml"
 import os
 from unicode import toLower
 import strutils
@@ -17,7 +17,7 @@ when not defined release:
 
 proc printHelp(cfg: Config) =
     echo "Usage:"
-    echo "    catnip [options...]"
+    echo "    catnip [options] [arguments]"
     echo ""
     echo "Options:"
     echo "    -h  --help                               Show help list"
@@ -126,10 +126,10 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            
+
             idx += 1
             layout = paramStr(idx)
-        
+
         # FigletLogos enabled Argument
         elif param == "-fe" or param == "--figletLogos.enabled":
             if paramCount() - idx < 1:
@@ -147,7 +147,7 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            
+
             idx += 1
             figletLogos_enabled = paramStr(idx).toLower()
             if figletLogos_enabled != "on" and figletLogos_enabled != "off":
@@ -173,7 +173,7 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            
+
             idx += 1
             let margin_list = paramStr(idx).split(",")
             if margin_list.len < 3:
@@ -181,7 +181,7 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            
+
             for idx in countup(0, 2):
                 let num = margin_list[idx].strip()
                 var parsed_num: int
@@ -213,7 +213,7 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            
+
             idx += 1
             figletLogos_font = paramStr(idx)
 
@@ -240,7 +240,7 @@ if statname == "nil":
 
     # Handle figletLogos overwrites
     if figletLogos_enabled != "nil":
-        let onoff = if figletLogos_enabled == "on": "true" else: "false" 
+        let onoff = if figletLogos_enabled == "on": "true" else: "false"
         cfg.misc["figletLogos"]["enable"] = parseString(&"val = {onoff}")["val"]
     if figletLogos_margin.len == 3:
         let fmargin = &"[{figletLogos_margin[0]},{figletLogos_margin[1]},{figletLogos_margin[2]},]"

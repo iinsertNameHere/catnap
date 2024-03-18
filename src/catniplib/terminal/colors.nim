@@ -1,4 +1,4 @@
-from "../common/defs" import Color, ColorSet
+from "../common/definitions" import Color, ColorSet
 import strutils
 import re
 
@@ -66,7 +66,7 @@ proc Colorize*(s: string): string =
         .replace("(MA)", Foreground.Magenta)
         .replace("(CN)", Foreground.Cyan)
         .replace("(WE)", Foreground.White)
-    
+
     result = result # Parse bright Foreground
         .replace("{BK}", ForegroundBright.Black)
         .replace("{RD}", ForegroundBright.Red)
@@ -98,10 +98,10 @@ proc Colorize*(s: string): string =
         .replace("<WE>", BackgroundBright.White)
 
     result = result.replace("!DT!", Default) # Parse Default
-    
+
 proc Uncolorize*(s: string): string =
     ## Removes ansi color codes from string
     result = re.replace(s, re"\e(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "")
 
-proc Reset*() = 
+proc Reset*() =
     stdout.write(Default)

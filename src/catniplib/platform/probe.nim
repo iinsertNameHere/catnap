@@ -7,7 +7,7 @@ when defined linux:
     import posix_utils
     from unicode import toLower
 
-from "../common/defs" import DistroId
+from "../common/definitions" import DistroId
 
 proc getDistro*(): string =
     ## Returns the name of the running linux distro
@@ -32,7 +32,7 @@ proc getDistroId*(): DistroId =
 
 proc getUptime*(): string =
     ## Returns the system uptime as a string (DAYS, HOURS, MINUTES)
-    
+
     # Uptime in sec
     when defined linux:
         let uptime = "/proc/uptime".open.readLine.split(".")[0]
@@ -106,7 +106,7 @@ proc getDesktop*(): string =
         if result == "":
             if getEnv("XDG_SESSION_TYPE") == "tty": # Check if in tty mode (Method 1)
                 result = "Headless"
-            
+
         if result == "": # Check if in tty mode (Method 2)
             let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
             # Check if the current shell was executed by the login or sshd process
@@ -115,6 +115,6 @@ proc getDesktop*(): string =
 
         if result == "": # Unknown desktop
                 result = "Unknown"
-        
+
     when defined windows:
         result = "Windows"

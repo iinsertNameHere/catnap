@@ -1,8 +1,8 @@
 import unicode
 
-from "../common/defs" import Stats, Stat, FetchInfo
+from "../common/definitions" import Stats, Stat, FetchInfo
 from "stats" import newStat
-import "colors"
+import "../terminal/colors"
 
 proc repeat*(s: string, i: int): string =
     ## Repeats a string 's', 'i' times
@@ -15,7 +15,7 @@ proc reallen*(s: string): int =
 
 proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
     ## Build output lines from Stats object and FetchInfo object
-    
+
     var sb: seq[string]
     proc addStat(stat: Stat, value: string) =
         ## Function to add a stat/value pair to the result
@@ -23,7 +23,7 @@ proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
         while uint(line.runeLen) < stats.maxlen:
             line &= " "
         sb.add("│ " & stat.color.Colorize() & line & colors.Default & " │ " & value)
-    
+
     let colorval = Colorize( # Construct color showcase
         "(WE)"&stats.color_symbol&
         " (RD)"&stats.color_symbol&
