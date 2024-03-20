@@ -74,12 +74,12 @@ proc getKernel*(): string =
     when defined windows:
         result = "nt"
 
-proc getParrentPid(pid: int): int =
+proc getParentPid(pid: int): int =
     let statusFilePath = "/proc/" & $pid & "/status"
     let statusLines = readFile(statusFilePath).split("\n")
     for rawline in statusLines:
         let stat = rawline.split(":")
-        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
+        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parent pid
             let pPid = parseInt(stat[1].strip())
             return pPid
     return -1
@@ -88,13 +88,13 @@ proc getProcessName(pid: int): string =
     let statusLines = readFile("/proc/" & $pid & "/status").split("\n")
     for rawLine in statusLines:
         let stat = rawLine.split(":")
-        if stat[0] == "Name": # Filter ParrentProcessInfo for Parrent Name
+        if stat[0] == "Name": # Filter ParentProcessInfo for Parent Name
             return stat[1].strip()
 
 proc getShell*(): string =
     ## Returns the system shell
     when defined linux:
-        result = getParrentPid(getCurrentProcessID()).getProcessName()
+        result = getParentPid(getCurrentProcessID()).getProcessName()
 
     when defined windows:
         result = "PowerShell"
@@ -108,7 +108,7 @@ proc getDesktop*(): string =
                 result = "Headless"
 
         if result == "": # Check if in tty mode (Method 2)
-            let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
+            let starterProcess = getParentPid(getCurrentProcessID()).getParentPid().getProcessName()
             # Check if the current shell was executed by the login or sshd process
             if starterProcess == "login" or starterProcess == "sshd":
                 result = "Headless"
