@@ -54,6 +54,8 @@ proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
         addStat(stats.desktop,  fi.desktop)
     if stats.shell != NIL_STAT:
         addStat(stats.shell,    fi.shell)
+    if stats.memory != NIL_STAT:
+        addStat(stats.memory,    fi.memory)
     if stats.colors != NIL_STAT:
         sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
         addStat(stats.colors, colorval)

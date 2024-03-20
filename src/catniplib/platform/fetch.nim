@@ -14,6 +14,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.kernel   = probe.getKernel()
     result.desktop  = probe.getDesktop()
     result.shell    = probe.getShell()
+    result.memory   = probe.getMemory(true)
     result.distroId = probe.getDistroId()
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)

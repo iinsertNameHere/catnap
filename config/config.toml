@@ -15,6 +15,7 @@ distro   = {icon = " ", name = "distro", color = "(GN)"}
 kernel   = {icon = " ", name = "kernel", color = "(MA)"}
 desktop  = {icon = " ", name = "desktp", color = "(CN)"}
 shell    = {icon = " ", name = "shell", color = "(RD)"}
+memory   = {icon = " ", name = "memory", color = "(YW)"}
 colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
 ##############################################

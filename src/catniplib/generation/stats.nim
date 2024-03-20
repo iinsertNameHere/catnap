@@ -93,6 +93,17 @@ proc setShell*(stats: var Stats, rawstat: TomlValueRef) =
         stats.maxlen = l
     stats.shell = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
 
+proc setMemory*(stats: var Stats, rawstat: TomlValueRef) =
+    if rawstat == nil: # Set username to empty stat
+        stats.memory = newStat("", "", "")
+        return
+
+    # Merge icon with stat name and color
+    let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
+    if l > stats.maxlen:
+        stats.maxlen = l
+    stats.memory = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
+
 proc setColors*(stats: var Stats, rawstat: TomlValueRef) =
     if rawstat == nil: # Set username to empty stat
         stats.colors = newStat("", "", "")

@@ -118,3 +118,21 @@ proc getDesktop*(): string =
 
     when defined windows:
         result = "Windows"
+
+proc getMemory*(mb: bool): string =
+  let fileSeq: seq[string] = "/proc/meminfo".readLines(3)
+  
+  let
+    dividend: uint = if mb: 1000 else: 1024
+    suffix: string = if mb: "MB" else: "MiB"
+
+  let
+    memTotalString = fileSeq[0].split(" ")[^2]
+    memAvailableString = fileSeq[2].split(" ")[^2]
+  
+    memTotalInt = memTotalString.parseUInt div dividend
+    memAvailableInt = memAvailableString.parseUInt div dividend
+  
+    memUsedInt = memTotalInt - memAvailableInt
+  
+  result = &"{memUsedInt}/{memTotalInt} {suffix}"
