@@ -74,12 +74,12 @@ proc getKernel*(): string =
     when defined windows:
         result = "nt"
 
-proc getParrentPid(pid: int): int =
+proc getParentPid(pid: int): int =
     let statusFilePath = "/proc/" & $pid & "/status"
     let statusLines = readFile(statusFilePath).split("\n")
     for rawline in statusLines:
         let stat = rawline.split(":")
-        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parrent pid
+        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parent pid
             let pPid = parseInt(stat[1].strip())
             return pPid
     return -1
@@ -88,13 +88,23 @@ proc getProcessName(pid: int): string =
     let statusLines = readFile("/proc/" & $pid & "/status").split("\n")
     for rawLine in statusLines:
         let stat = rawLine.split(":")
-        if stat[0] == "Name": # Filter ParrentProcessInfo for Parrent Name
+        if stat[0] == "Name": # Filter ParentProcessInfo for Parent Name
             return stat[1].strip()
+
+proc getTerminal*(): string =
+    ## Returns the currently running terminal emulator
+    when defined linux:
+        result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
+        if result == "login" or result == "sshd":
+            result = "tty"
+
+    when defined windows:
+        result = "PowerShell"
 
 proc getShell*(): string =
     ## Returns the system shell
     when defined linux:
-        result = getParrentPid(getCurrentProcessID()).getProcessName()
+        result = getCurrentProcessID().getParentPid().getProcessName()
 
     when defined windows:
         result = "PowerShell"
@@ -108,9 +118,7 @@ proc getDesktop*(): string =
                 result = "Headless"
 
         if result == "": # Check if in tty mode (Method 2)
-            let starterProcess = getParrentPid(getCurrentProcessID()).getParrentPid().getProcessName()
-            # Check if the current shell was executed by the login or sshd process
-            if starterProcess == "login" or starterProcess == "sshd":
+            if getTerminal() == "tty":
                 result = "Headless"
 
         if result == "": # Unknown desktop
@@ -118,3 +126,21 @@ proc getDesktop*(): string =
 
     when defined windows:
         result = "Windows"
+
+proc getMemory*(mb: bool): string =
+    ## Returns statistics about the memory
+    let 
+        fileSeq: seq[string] = "/proc/meminfo".readLines(3)
+
+        dividend: uint = if mb: 1000 else: 1024
+        suffix: string = if mb: "MB" else: "MiB"
+
+        memTotalString = fileSeq[0].split(" ")[^2]
+        memAvailableString = fileSeq[2].split(" ")[^2]
+
+        memTotalInt = memTotalString.parseUInt div dividend
+        memAvailableInt = memAvailableString.parseUInt div dividend
+
+        memUsedInt = memTotalInt - memAvailableInt
+  
+    result = &"{memUsedInt}/{memTotalInt} {suffix}"

@@ -46,7 +46,9 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     stats.setDistro(config.stats.getStat("distro"))
     stats.setKernel(config.stats.getStat("kernel"))
     stats.setDesktop(config.stats.getStat("desktop"))
+    stats.setTerminal(config.stats.getStat("terminal"))
     stats.setShell(config.stats.getStat("shell"))
+    stats.setMemory(config.stats.getStat("memory"))
     stats.setColors(config.stats.getStat("colors"))
 
     # Build the stat_block buffer

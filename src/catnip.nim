@@ -324,5 +324,9 @@ else:
             echo fetchinfo.desktop
         of "shell":
             echo fetchinfo.shell
+        of "memory":
+            echo fetchinfo.memory
+        of "terminal":
+            echo fetchinfo.terminal
         else:
             logError(&"Unknown StatName '{statname}'!")

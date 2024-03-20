@@ -40,6 +40,8 @@ type
         kernel*: Stat
         desktop*: Stat
         shell*: Stat
+        memory*: Stat
+        terminal*: Stat
         colors*: Stat
         color_symbol*: string
 
@@ -52,6 +54,8 @@ type
         kernel*: string
         shell*: string
         desktop*: string
+        memory*: string
+        terminal*: string
         logo*: Logo
 
     Config* = object
@@ -61,7 +65,7 @@ type
         misc*: TomlValueRef
 
 const
-    STATNAMES*    = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell"]
+    STATNAMES*    = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell", "memory", "terminal"]
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
     DISTROSGPATH* = joinPath(getConfigDir(), "catnip/distros.toml")
