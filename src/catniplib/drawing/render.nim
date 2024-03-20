@@ -40,16 +40,16 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
     ##### Build stat_block buffer #####
     var stats: Stats = newStats()
-    stats.setUsername(config.stats.getStat("username"))
-    stats.setHostname(config.stats.getStat("hostname"))
-    stats.setUptime(config.stats.getStat("uptime"))
-    stats.setDistro(config.stats.getStat("distro"))
-    stats.setKernel(config.stats.getStat("kernel"))
-    stats.setDesktop(config.stats.getStat("desktop"))
-    stats.setTerminal(config.stats.getStat("terminal"))
-    stats.setShell(config.stats.getStat("shell"))
-    stats.setMemory(config.stats.getStat("memory"))
-    stats.setColors(config.stats.getStat("colors"))
+    stats.setStat(username, config.stats.getStat("username"))
+    stats.setStat(hostname, config.stats.getStat("hostname"))
+    stats.setStat(uptime, config.stats.getStat("uptime"))
+    stats.setStat(distro, config.stats.getStat("distro"))
+    stats.setStat(kernel, config.stats.getStat("kernel"))
+    stats.setStat(desktop, config.stats.getStat("desktop"))
+    stats.setStat(terminal, config.stats.getStat("terminal"))
+    stats.setStat(shell, config.stats.getStat("shell"))
+    stats.setStat(memory, config.stats.getStat("memory"))
+    stats.setStat(colors, config.stats.getStat("colors"))
 
     # Build the stat_block buffer
     var stats_block = buildStatBlock(stats, fetchinfo)
