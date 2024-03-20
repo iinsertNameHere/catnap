@@ -91,10 +91,20 @@ proc getProcessName(pid: int): string =
         if stat[0] == "Name": # Filter ParentProcessInfo for Parent Name
             return stat[1].strip()
 
+proc getTerminal*(): string =
+    ## Returns the currently running terminal emulator
+    when defined linux:
+        result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
+        if result == "login" or result == "sshd":
+            result = "tty"
+
+    when defined windows:
+        result = "PowerShell"
+
 proc getShell*(): string =
     ## Returns the system shell
     when defined linux:
-        result = getParentPid(getCurrentProcessID()).getProcessName()
+        result = getCurrentProcessID().getParentPid().getProcessName()
 
     when defined windows:
         result = "PowerShell"
@@ -108,9 +118,7 @@ proc getDesktop*(): string =
                 result = "Headless"
 
         if result == "": # Check if in tty mode (Method 2)
-            let starterProcess = getParentPid(getCurrentProcessID()).getParentPid().getProcessName()
-            # Check if the current shell was executed by the login or sshd process
-            if starterProcess == "login" or starterProcess == "sshd":
+            if getTerminal() == "tty":
                 result = "Headless"
 
         if result == "": # Unknown desktop
@@ -120,19 +128,19 @@ proc getDesktop*(): string =
         result = "Windows"
 
 proc getMemory*(mb: bool): string =
-  let fileSeq: seq[string] = "/proc/meminfo".readLines(3)
-  
-  let
-    dividend: uint = if mb: 1000 else: 1024
-    suffix: string = if mb: "MB" else: "MiB"
+    ## Returns statistics about the memory
+    let 
+        fileSeq: seq[string] = "/proc/meminfo".readLines(3)
 
-  let
-    memTotalString = fileSeq[0].split(" ")[^2]
-    memAvailableString = fileSeq[2].split(" ")[^2]
+        dividend: uint = if mb: 1000 else: 1024
+        suffix: string = if mb: "MB" else: "MiB"
+
+        memTotalString = fileSeq[0].split(" ")[^2]
+        memAvailableString = fileSeq[2].split(" ")[^2]
+
+        memTotalInt = memTotalString.parseUInt div dividend
+        memAvailableInt = memAvailableString.parseUInt div dividend
+
+        memUsedInt = memTotalInt - memAvailableInt
   
-    memTotalInt = memTotalString.parseUInt div dividend
-    memAvailableInt = memAvailableString.parseUInt div dividend
-  
-    memUsedInt = memTotalInt - memAvailableInt
-  
-  result = &"{memUsedInt}/{memTotalInt} {suffix}"
+    result = &"{memUsedInt}/{memTotalInt} {suffix}"

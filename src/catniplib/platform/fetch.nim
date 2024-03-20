@@ -13,6 +13,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.uptime   = probe.getUptime()
     result.kernel   = probe.getKernel()
     result.desktop  = probe.getDesktop()
+    result.terminal = probe.getTerminal()
     result.shell    = probe.getShell()
     result.memory   = probe.getMemory(true)
     result.distroId = probe.getDistroId()
