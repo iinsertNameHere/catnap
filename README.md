@@ -52,13 +52,16 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 <br>
 
 ## 📷 Demo Images
->*Default*
+>*Default:*
+>
 ><img src="image/demo1.png">
 
->*FigletLogos ([Nitch](https://github.com/ssleert/nitch) mode)*
+>*FigletLogos ([Nitch](https://github.com/ssleert/nitch) mode):*
+>
 ><img src="image/demo2.png">
 
->*Distro Showcase*
+>*Distro Showcase:*
+>
 ><img src="image/distros.png">
 
 <br>
