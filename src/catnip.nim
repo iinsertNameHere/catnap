@@ -1,6 +1,6 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/common/definitions" import CONFIGPATH, Config
+from "catniplib/common/definitions" import CONFIGPATH, Config, STATNAMES
 import "catniplib/common/config"
 import "catniplib/terminal/logging"
 import "catniplib/common/parsetoml"
@@ -33,7 +33,7 @@ proc printHelp(cfg: Config) =
     echo "    -ff --figletLogos.font     <Font>        Overwrite figletLogos font"
     echo ""
     echo "StatNames:"
-    echo "    username, hostname, uptime, distro, kernel, desktop, shell"
+    echo "    " & STATNAMES.join(", ").wrapWords(80).replace("\n", "\n    ")
     echo ""
     echo "DistroIds:"
     echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
