@@ -36,7 +36,9 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
     <li>kernel</li>
     <li>desktop</li>
     <li>shell</li>
-    <li>terminal colors</li>
+    <li>terminal</li>
+    <li>memory</li>
+    <li>colors</li>
   </ul>
 </details>
 
