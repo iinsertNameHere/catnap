@@ -51,8 +51,15 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 <br>
 
-## 📷 Demo Image
-> <img width=500 src="image/demo.png">
+## 📷 Demo Images
+*Default*
+<img src="image/demo1.png">
+
+*FigletLogos ([Nitch](https://github.com/ssleert/nitch) mode)*
+<img src="image/demo2.png">
+
+*Distro Showcase*
+<img src="image/distros.png">
 
 <br>
 
