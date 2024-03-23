@@ -15,14 +15,11 @@ proc newStats*(): Stats =
     for name in STATNAMES:
         result.list[name] = newStat("", "", "")
 
-proc testFunc(x: TomlValueRef): int =
-    unicode.runeLen(x.getStr())
-
 proc setStat*(stats: var Stats, stat_name: string, rawstat: TomlValueRef) =
-    ## Template function that generates a Stat object an parses it to the related stats field
+    ## Function that generates a Stat object an parses it to the related stats field
     if rawstat != nil: # Set to empty stat
         # Merge icon with stat name and color
-        let l = uint(rawstat["icon"].testFunc() + rawstat["name"].testFunc() + 1)
+        let l = uint(unicode.runeLen(rawstat["icon"].getStr()) + unicode.runeLen(rawstat["name"].getStr()) + 1)
         if l > stats.maxlen:
             stats.maxlen = l
         stats.list[stat_name] = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
