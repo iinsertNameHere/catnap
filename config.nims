@@ -1,5 +1,6 @@
 proc compile(srcfile: string, outdir: string, release: bool, verbose: bool) =
     var cmd = "nim c "
+    cmd &= "--cincludes:" & thisDir() & "/src/extern "
     if not verbose: cmd &= "--verbosity:0 "
     if release: cmd &= "-d:release "
     cmd &= "--outdir:" & outdir & " "

@@ -149,8 +149,8 @@ proc getMemory*(mb: bool): string =
 
 proc getDisk*(): string =
     when defined linux:
-        proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "/home/iinsert/catnip/src/extern/getDiskSpace.h".}
-        proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "/home/iinsert/catnip/src/extern/getDiskSpace.h".}
+        proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.h".}
+        proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.h".}
 
         let total = getTotalDiskSpace().round().int()
         let used = getUsedDiskSpace().round().int()
