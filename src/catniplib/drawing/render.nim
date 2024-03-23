@@ -1,7 +1,7 @@
 import strformat
 
 import "../terminal/logging"
-from "../common/definitions" import FetchInfo, Stats, Stat, Config
+from "../common/definitions" import FetchInfo, Stats, Stat, Config, STATNAMES
 import "../common/parsetoml"
 import "../terminal/colors"
 import "../generation/utils"
@@ -40,17 +40,8 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
     ##### Build stat_block buffer #####
     var stats: Stats = newStats()
-    stats.setStat(username, config.stats.getStat("username"))
-    stats.setStat(hostname, config.stats.getStat("hostname"))
-    stats.setStat(uptime, config.stats.getStat("uptime"))
-    stats.setStat(distro, config.stats.getStat("distro"))
-    stats.setStat(kernel, config.stats.getStat("kernel"))
-    stats.setStat(desktop, config.stats.getStat("desktop"))
-    stats.setStat(terminal, config.stats.getStat("terminal"))
-    stats.setStat(shell, config.stats.getStat("shell"))
-    stats.setStat(memory, config.stats.getStat("memory"))
-    stats.setStat(disk, config.stats.getStat("disk"))
-    stats.setStat(colors, config.stats.getStat("colors"))
+    for stat_name in STATNAMES:
+        stats.setStat(stat_name, config.stats.getStat(stat_name))
 
     # Build the stat_block buffer
     var stats_block = buildStatBlock(stats, fetchinfo)

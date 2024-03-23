@@ -1,4 +1,5 @@
 import unicode
+import tables
 
 from "../common/definitions" import Stats, Stat, FetchInfo
 from "stats" import newStat
@@ -40,29 +41,39 @@ proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
 
     # Construct the stats section with all stats that are not NIL
     sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
-    if stats.username != NIL_STAT:
-        addStat(stats.username, fi.username)
-    if stats.hostname != NIL_STAT:
-        addStat(stats.hostname, fi.hostname)
-    if stats.uptime != NIL_STAT:
-        addStat(stats.uptime,   fi.uptime)
-    if stats.distro != NIL_STAT:
-        addStat(stats.distro,   fi.distro)
-    if stats.kernel != NIL_STAT:
-        addStat(stats.kernel,   fi.kernel)
-    if stats.desktop != NIL_STAT:
-        addStat(stats.desktop,  fi.desktop)
-    if stats.terminal != NIL_STAT:
-        addStat(stats.terminal, fi.terminal)
-    if stats.shell != NIL_STAT:
-        addStat(stats.shell,    fi.shell)
-    if stats.memory != NIL_STAT:
-        addStat(stats.memory,   fi.memory)
-    if stats.disk != NIL_STAT:
-        addStat(stats.disk,   fi.disk)
-    if stats.colors != NIL_STAT:
+    if stats.list["username"] != NIL_STAT:
+        addStat(stats.list["username"], fi.username)
+
+    if stats.list["hostname"] != NIL_STAT:
+        addStat(stats.list["hostname"], fi.hostname)
+
+    if stats.list["uptime"] != NIL_STAT:
+        addStat(stats.list["uptime"], fi.uptime)
+
+    if stats.list["distro"] != NIL_STAT:
+        addStat(stats.list["distro"], fi.distro)
+
+    if stats.list["kernel"] != NIL_STAT:
+        addStat(stats.list["kernel"], fi.kernel)
+
+    if stats.list["desktop"] != NIL_STAT:
+        addStat(stats.list["desktop"], fi.desktop)
+
+    if stats.list["terminal"] != NIL_STAT:
+        addStat(stats.list["terminal"], fi.terminal)
+
+    if stats.list["shell"] != NIL_STAT:
+        addStat(stats.list["shell"], fi.shell)
+
+    if stats.list["memory"] != NIL_STAT:
+        addStat(stats.list["memory"], fi.memory)
+
+    if stats.list["disk"] != NIL_STAT:
+        addStat(stats.list["disk"], fi.disk)
+
+    if stats.list["colors"] != NIL_STAT:
         sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
-        addStat(stats.colors, colorval)
+        addStat(stats.list["colors"], colorval)
     sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
 
     return sb

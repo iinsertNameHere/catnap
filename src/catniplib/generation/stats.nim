@@ -1,6 +1,7 @@
-from "../common/definitions" import Stats, Stat, Color
+from "../common/definitions" import Stats, Stat, Color, STATNAMES
 import "../common/parsetoml"
-import std/unicode
+import unicode
+import tables
 
 proc newStat*(icon: string, name: string, color: Color): Stat =
     ## Create a new Stat object
@@ -9,17 +10,20 @@ proc newStat*(icon: string, name: string, color: Color): Stat =
     result.color = color
 
 proc newStats*(): Stats =
-    ## Create a new Stats object
+    ## Create a new Stanamets object
     result.maxlen = 0
+    for name in STATNAMES:
+        result.list[name] = newStat("", "", "")
 
-template setStat*(stats: var Stats, stat_name: untyped, rawstat: TomlValueRef): untyped =
+proc testFunc(x: TomlValueRef): int =
+    unicode.runeLen(x.getStr())
+
+proc setStat*(stats: var Stats, stat_name: string, rawstat: TomlValueRef) =
     ## Template function that generates a Stat object an parses it to the related stats field
-    if rawstat == nil: # Set to empty stat
-        stats.`stat_name` = newStat("", "", "")
-    else:
+    if rawstat != nil: # Set to empty stat
         # Merge icon with stat name and color
-        let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
+        let l = uint(rawstat["icon"].testFunc() + rawstat["name"].testFunc() + 1)
         if l > stats.maxlen:
             stats.maxlen = l
-        stats.`stat_name` = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
-        if astToStr(stat_name) == "colors": stats.color_symbol = rawstat["symbol"].getStr()
+        stats.list[stat_name] = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
+        if stat_name == "colors": stats.color_symbol = rawstat["symbol"].getStr()

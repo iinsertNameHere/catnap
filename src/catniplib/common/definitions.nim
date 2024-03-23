@@ -33,17 +33,7 @@ type
 
     Stats* = object
         maxlen*: uint
-        username*: Stat
-        hostname*: Stat
-        uptime*: Stat
-        distro*: Stat
-        kernel*: Stat
-        desktop*: Stat
-        shell*: Stat
-        memory*: Stat
-        terminal*: Stat
-        disk*: Stat
-        colors*: Stat
+        list*: Table[string, Stat]
         color_symbol*: string
 
     FetchInfo* = object
@@ -67,7 +57,7 @@ type
         misc*: TomlValueRef
 
 const
-    STATNAMES*    = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell", "memory", "terminal", "disk"]
+    STATNAMES*    = @["username", "hostname", "uptime", "distro", "kernel", "desktop", "shell", "memory", "terminal", "disk", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
     DISTROSGPATH* = joinPath(getConfigDir(), "catnip/distros.toml")
