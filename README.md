@@ -38,6 +38,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
     <li>shell</li>
     <li>terminal</li>
     <li>memory</li>
+    <li>disk space</li>
     <li>colors</li>
   </ul>
 </details>

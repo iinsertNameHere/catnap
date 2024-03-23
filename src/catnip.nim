@@ -328,5 +328,7 @@ else:
             echo fetchinfo.memory
         of "terminal":
             echo fetchinfo.terminal
+        of "disk":
+            echo fetchinfo.disk
         else:
             logError(&"Unknown StatName '{statname}'!")
