@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <sys/statvfs.h>
 
-const unsigned int GB = 1073741824;//1000000000;
+const unsigned int GB = 1073741824;
 
 double getTotalDiskSpace() {
     struct statvfs buffer;
