@@ -1,6 +1,5 @@
 import os
 import strformat
-import system/ctypes
 import math
 
 when defined linux:
