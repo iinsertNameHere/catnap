@@ -1,6 +1,6 @@
 from "../common/definitions" import Stats, Stat, Color
 import "../common/parsetoml"
-import unicode
+import std/unicode
 
 proc newStat*(icon: string, name: string, color: Color): Stat =
     ## Create a new Stat object
