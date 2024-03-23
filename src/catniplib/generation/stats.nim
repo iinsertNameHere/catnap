@@ -16,11 +16,10 @@ template setStat*(stats: var Stats, stat_name: untyped, rawstat: TomlValueRef): 
     ## Template function that generates a Stat object an parses it to the related stats field
     if rawstat == nil: # Set to empty stat
         stats.`stat_name` = newStat("", "", "")
-        return
-
-    # Merge icon with stat name and color
-    let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
-    if l > stats.maxlen:
-        stats.maxlen = l
-    stats.`stat_name` = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
-    if astToStr(stat_name) == "colors": stats.color_symbol = rawstat["symbol"].getStr()
+    else:
+        # Merge icon with stat name and color
+        let l = uint(rawstat["icon"].getStr().runeLen + rawstat["name"].getStr().runeLen + 1)
+        if l > stats.maxlen:
+            stats.maxlen = l
+        stats.`stat_name` = newStat(rawstat["icon"].getStr(), rawstat["name"].getStr(), rawstat["color"].getStr())
+        if astToStr(stat_name) == "colors": stats.color_symbol = rawstat["symbol"].getStr()
