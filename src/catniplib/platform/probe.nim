@@ -1,5 +1,7 @@
 import os
 import strformat
+import system/ctypes
+import math
 
 when defined linux:
     import strutils
@@ -144,3 +146,16 @@ proc getMemory*(mb: bool): string =
         memUsedInt = memTotalInt - memAvailableInt
   
     result = &"{memUsedInt}/{memTotalInt} {suffix}"
+
+proc getDisk*(): string =
+    when defined linux:
+        proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "/home/iinsert/catnip/src/extern/getDiskSpace.h".}
+        proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "/home/iinsert/catnip/src/extern/getDiskSpace.h".}
+
+        let total = getTotalDiskSpace().round().int()
+        let used = getUsedDiskSpace().round().int()
+        let percentage = ((used / total) * 100).round().int()
+        result = &"{used} / {total} GB ({percentage}%)"
+    
+    when defined windows:
+        result = "Not implemented for now..."
