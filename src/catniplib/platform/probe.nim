@@ -148,14 +148,10 @@ proc getMemory*(mb: bool): string =
     result = &"{memUsedInt}/{memTotalInt} {suffix}"
 
 proc getDisk*(): string =
-    when defined linux:
-        proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.h".}
-        proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.h".}
+    proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
+    proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
 
-        let total = getTotalDiskSpace().round().int()
-        let used = getUsedDiskSpace().round().int()
-        let percentage = ((used / total) * 100).round().int()
-        result = &"{used} / {total} GB ({percentage}%)"
-    
-    when defined windows:
-        result = "Not implemented for now..."
+    let total = getTotalDiskSpace().round().int()
+    let used = getUsedDiskSpace().round().int()
+    let percentage = ((used / total) * 100).round().int()
+    result = &"{used} / {total} GB ({percentage}%)"
