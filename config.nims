@@ -1,12 +1,16 @@
-proc compile(srcfile: string, outdir: string, release: bool, verbose: bool) =
-    var cmd = "nim c "
-    cmd &= "--cincludes:" & thisDir() & "/src/extern "
-    if not verbose: cmd &= "--verbosity:0 "
-    if release: cmd &= "-d:release "
-    cmd &= "--outdir:" & outdir & " "
-    cmd &= srcfile
-    echo "Run '" & cmd & "'"
-    exec cmd
+import strformat
+import strutils
+
+proc compile(release: bool) =
+    var args: seq[string]
+    args.add(&"--cincludes:{thisDir()}/src/extern")
+    if release:
+        args.add(&"--verbosity:0")
+        args.add(&"-d:release")
+    args.add(&"--outdir:{thisDir()}/bin")
+    args.add(&"{thisDir()}/src/catnip.nim")
+
+    exec("nim c " & args.join(" "))
 
 proc configure() =
     when defined linux:
@@ -33,21 +37,27 @@ proc configure() =
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"
-    compile(thisDir() & "/src/catnip.nim", thisDir() & "/bin", true, false)
+    compile(true)
 
 task debug, "Builds the project in debug mode":
     echo "\e[36;1mBuilding\e[0;0m in debug mode"
-    compile(thisDir() & "/src/catnip.nim", thisDir() & "/bin", false, true)
+    compile(false)
 
-task install, "Installs the config files":
+task install_cfg, "Installs the config files":
     echo "\e[36;1mInstalling\e[0;0m config files"
     configure()
 
 when defined linux:
     task install_bin, "Installs the bin file inside /usr/local/bin":
         echo "\e[36;1mInstalling\e[0;0m bin file"
-        exec "sudo cp ./bin/catnip /usr/local/bin"
+        echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
+        exec &"sudo cp {thisDir()}/bin/catnip /usr/local/bin"
 
-task setup, "'release' and 'install'":
+    task install, "'release', 'install_bin' and 'install_cfg'":
+        releaseTask()
+        install_cfgTask()
+        install_binTask()
+
+task setup, "'release' and 'install_cfg'":
     releaseTask()
-    installTask()
+    install_cfgTask()
