@@ -3,7 +3,8 @@ import strutils
 
 proc compile(release: bool) =
     var args: seq[string]
-    args.add(&"--cincludes:{thisDir()}/src/extern")
+    args.add(&"--cincludes:{thisDir()}/src/extern/headers")
+    args.add(&"--path:{thisDir()}/src/extern/libraries")
     if release:
         args.add(&"--verbosity:0")
         args.add(&"-d:release")
@@ -53,6 +54,7 @@ when defined linux:
         echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
         exec &"sudo cp {thisDir()}/bin/catnip /usr/local/bin"
         echo &"\e[36;1mInstalling\e[0;0m man page"
+        echo &"Copying {thisDir()}/docs/catnip.1 to /usr/share/man/man1"
         exec &"gzip -k {thisDir()}/docs/catnip.1 && sudo cp {thisDir()}/docs/catnip.1.gz /usr/share/man/man1"
 
     task install, "'release', 'install_linux' and 'install_cfg'":

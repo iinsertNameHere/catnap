@@ -1,5 +1,6 @@
-from "../common/definitions" import Stats, Stat, Color, STATNAMES
-import "../common/parsetoml"
+from "../global/definitions" import Stats, Stat, Color, STATNAMES
+
+import parsetoml
 import unicode
 import tables
 
