@@ -28,7 +28,7 @@ proc printHelp(cfg: Config) =
     echo "    -m  --margin               <Margin>      Overwrite margin value for the displayed logo (Example: 1,2,3)"
     echo "    -l  --layout               <Layout>      Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
     echo ""
-    echo "    -fe --figletLogos.enable   <on/off>      Overwrite figletLogos enable"
+    echo "    -fe --figletLogos.enable   <on/off>      Overwrite figletLogos mode"
     echo "    -fm --figletLogos.margin   <Margin>      Overwrite figletLogos margin (Example: 1,2,3)"
     echo "    -ff --figletLogos.font     <Font>        Overwrite figletLogos font"
     echo ""
