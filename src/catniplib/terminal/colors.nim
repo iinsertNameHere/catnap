@@ -1,4 +1,4 @@
-from "../common/definitions" import Color, ColorSet
+from "../global/definitions" import Color, ColorSet
 import strutils
 import re
 

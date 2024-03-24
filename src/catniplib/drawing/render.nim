@@ -1,8 +1,8 @@
 import strformat
+import parsetoml
 
 import "../terminal/logging"
-from "../common/definitions" import FetchInfo, Stats, Stat, Config, STATNAMES
-import "../common/parsetoml"
+from "../global/definitions" import FetchInfo, Stats, Stat, Config, STATNAMES
 import "../terminal/colors"
 import "../generation/utils"
 import "../generation/stats"

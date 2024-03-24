@@ -1,9 +1,9 @@
-import "parsetoml"
 import "../terminal/logging"
 from "definitions" import Config, STATNAMES, STATKEYS, Logo, DISTROSGPATH
 from os import fileExists
 import strformat
 import strutils
+import parsetoml
 
 # Chars that a alias can contain
 const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}

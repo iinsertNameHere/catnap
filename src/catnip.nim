@@ -1,9 +1,9 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/common/definitions" import CONFIGPATH, Config, STATNAMES
-import "catniplib/common/config"
+from "catniplib/global/definitions" import CONFIGPATH, Config, STATNAMES
+import "catniplib/global/config"
 import "catniplib/terminal/logging"
-import "catniplib/common/parsetoml"
+import parsetoml
 import os
 from unicode import toLower
 import strutils

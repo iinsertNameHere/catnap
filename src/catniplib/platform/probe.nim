@@ -8,7 +8,7 @@ when defined linux:
     import posix_utils
     from unicode import toLower
 
-from "../common/definitions" import DistroId
+from "../global/definitions" import DistroId
 
 proc getDistro*(): string =
     ## Returns the name of the running linux distro

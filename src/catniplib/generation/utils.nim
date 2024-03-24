@@ -1,7 +1,7 @@
 import unicode
 import tables
 
-from "../common/definitions" import Stats, Stat, FetchInfo
+from "../global/definitions" import Stats, Stat, FetchInfo
 from "stats" import newStat
 import "../terminal/colors"
 

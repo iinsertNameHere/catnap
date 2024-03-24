@@ -2,8 +2,8 @@ import osproc
 import strformat
 import strutils
 
-from "../common/definitions" import FetchInfo, Config
-import "../common/parsetoml"
+from "../global/definitions" import FetchInfo, Config
+import parsetoml
 import "probe"
 
 proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
