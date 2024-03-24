@@ -16,13 +16,13 @@ proc configure() =
     when defined linux:
         var configpath = ""
 
-        # Use XDG_CONFIG_HOME only if it is defined. Else use ~/.confg 
+        # Use XDG_CONFIG_HOME only if it is defined. Else use ~/.confg
         let XDG_CONFIG_HOME = getEnv("XDG_CONFIG_HOME")
         if XDG_CONFIG_HOME == "":
             configpath = getEnv("HOME") & "/.config/catnip/"
         else:
             configpath = XDG_CONFIG_HOME & "/catnip/"
-        
+
     when defined windows:
         let configpath = "C:/Users/" & getEnv("USERPROFILE") & "AppData/Local/catnip/"
 
@@ -48,15 +48,17 @@ task install_cfg, "Installs the config files":
     configure()
 
 when defined linux:
-    task install_bin, "Installs the bin file inside /usr/local/bin":
+    task install_linux, "Installs the bin file and man page:":
         echo "\e[36;1mInstalling\e[0;0m bin file"
         echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
         exec &"sudo cp {thisDir()}/bin/catnip /usr/local/bin"
+        echo &"\e[36;1mInstalling\e[0;0m man page"
+        exec &"gzip -k {thisDir()}/docs/catnip.1 && sudo cp {thisDir()}/docs/catnip.1.gz /usr/share/man/man1"
 
-    task install, "'release', 'install_bin' and 'install_cfg'":
+    task install, "'release', 'install_linux' and 'install_cfg'":
         releaseTask()
         install_cfgTask()
-        install_binTask()
+        install_linuxTask()
 
 task setup, "'release' and 'install_cfg'":
     releaseTask()

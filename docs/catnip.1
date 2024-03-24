@@ -1,0 +1,52 @@
+.TH catnip 1 "2024-03-23" "1.0" "User Commands"
+.SH NAME
+Catnip \- A highly customizable systemfetch written in nim
+.SH SYNOPSIS
+.B catnip
+.B -d
+.RI [\| DistroId \|]
+.br
+.B catnip
+.B -g
+.RI [\| StatName \|]
+.br
+.B catnip
+.B -l
+.RI [\| Layout \|]
+.SH DESCRIPTION
+Catnip is a simple system-information concatenation tool writen with nim. It has the ability to alter the names and colors of the statistics via its configuration file.
+.SH OPTIONS
+.TP
+\fB\-c\fR, \fB\-\-config\fR=File
+Uses a custom location for the config file
+.TP
+\fB\-d\fR, \fB\-\-distroid\fR=DistroId
+Set which DistroId to use
+.TP
+\fB\-g\fR, \fB\-\-grep\fR=StatName
+Get the specified stats value
+.TP
+\fB\-l\fR, \fB\-\-layout\fR=Layout
+Overwrite layout config value
+.TP
+\fB\-fe\fR, \fB\-\-figletLogos.enable\fR=On/Off
+Overwrite figletLogos mode
+.TP
+\fB\-ff\fR, \fB\-\-figletLogos.font\fR=Font
+Overwrite figletLogos font
+.TP
+\fB\-fm\fR, \fB\-\-figletLogos.margin\fR=Margin
+Overwrite figletLogos margin
+.SH FILES
+.TP
+\fB\.config/catnip/config.toml\fR
+Configuration file
+.TP
+\fB\.config/catnip/distros.toml\fR
+Distribution logos file
+.SH BUGS
+.TP
+Report all bugs to https://github.com/iinsertNameHere/catnip/issues
+.SH SEE ALSO
+.TP
+\fBfiglet\fP(6)

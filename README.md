@@ -73,6 +73,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 Dependencies (Linux only):
 - pcre
 - figlet
+- gzip
 ```
 
 **2.** Clone the repo:
