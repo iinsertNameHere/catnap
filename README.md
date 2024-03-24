@@ -87,12 +87,7 @@ cd ./catnip
 
 **4.** Run setup using `nim👑`:
 ```shell
-nim setup
-```
-
-**5.** Your compiled executable can be found in ./bin:
-```shell
-./bin/catnip
+nim install
 ```
 
 > **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
