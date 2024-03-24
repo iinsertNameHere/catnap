@@ -52,10 +52,10 @@ when defined linux:
     task install_linux, "Installs the bin file and man page:":
         echo "\e[36;1mInstalling\e[0;0m bin file"
         echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
-        exec &"sudo cp {thisDir()}/bin/catnip /usr/local/bin"
+        exec &"sudo install -Dm755 {thisDir()}/bin/catnip /usr/local/bin"
         echo &"\e[36;1mInstalling\e[0;0m man page"
         echo &"Copying {thisDir()}/docs/catnip.1 to /usr/share/man/man1"
-        exec &"gzip -k {thisDir()}/docs/catnip.1 && sudo cp {thisDir()}/docs/catnip.1.gz /usr/share/man/man1"
+        exec &"gzip -k {thisDir()}/docs/catnip.1 && sudo install -Dm755 {thisDir()}/docs/catnip.1.gz /usr/share/man/man1"
 
     task install, "'release', 'install_linux' and 'install_cfg'":
         releaseTask()
