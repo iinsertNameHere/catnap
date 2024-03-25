@@ -114,8 +114,7 @@ $ catnip --help
 
 ## 📒 Configuration
 > **The config files are located at:**
-> -  `~/.config/catnip`: Linux
-> -  `C:\Users\%USERNAME%\AppData\Local\catnip`: Windows
+> -  `~/.config/catnip`
 
 <br>
 
@@ -189,8 +188,6 @@ In the layout you can define how the logo and stats will be arranged.
 - Use `StatsOnTop` to place the stats on top of the logo.
 
 #### Figlet Logos
-> **WARNING:** FigletLogos are not supported on windows yet.
-
 In the `figletLogos` section you can find 3 keys:
 1. `enable`
 2. `color`
