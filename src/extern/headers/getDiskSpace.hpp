@@ -1,7 +1,5 @@
-#define GB 1073741824
-
-#ifdef __linux__ 
 #include <sys/statvfs.h>
+#define GB 1073741824
 
 double getTotalDiskSpace() {
     struct statvfs buffer;
@@ -18,20 +16,3 @@ double getUsedDiskSpace() {
     const double used = total - available;
     return used;
 }
-
-#else
-#include <Windows.h>
-
-double getTotalDiskSpace() {
-    ULARGE_INTEGER totalSize, freeSize, totalFreeSize;
-    GetDiskFreeSpaceEx(NULL, &freeSize, &totalSize, &totalFreeSize)
-    return (double)totalSize.QuadPart / GB;
-}
-
-double getUsedDiskSpace() {
-    ULARGE_INTEGER totalSize, freeSize, totalFreeSize;
-    GetDiskFreeSpaceEx(NULL, &freeSize, &totalSize, &totalFreeSize)
-    return (double)(totalSize.QuadPart - freeSize.QuadPart) / GB;
-}
-
-#endif

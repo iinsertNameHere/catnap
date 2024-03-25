@@ -1,45 +1,30 @@
 import os
 import strformat
 import math
-
-when defined linux:
-    import strutils
-    import parsecfg
-    import posix_utils
-    from unicode import toLower
-
+import strutils
+import parsecfg
+import posix_utils
+from unicode import toLower
 from "../global/definitions" import DistroId
 
 proc getDistro*(): string =
     ## Returns the name of the running linux distro
-    when defined linux:
-        result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
-    when defined windows:
-        result = "Windows"
+    result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
 
 proc getDistroId*(): DistroId =
     ## Returns the DistroId of the running linux distro
-    when defined linux:
-        if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
-            result.id = "raspbian"
-            result.like = "debian"
-        else:
-            result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
-            result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
-
-    when defined windows:
-        result.id = "windows"
-        result.like = "nt"
+    if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
+        result.id = "raspbian"
+        result.like = "debian"
+    else:
+        result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
+        result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
 
 proc getUptime*(): string =
     ## Returns the system uptime as a string (DAYS, HOURS, MINUTES)
 
     # Uptime in sec
-    when defined linux:
-        let uptime = "/proc/uptime".open.readLine.split(".")[0]
-    when defined windows:
-        proc GetTickCount64(): cint {.importc, varargs, header: "sysinfoapi.h".}
-        let uptime = int(GetTickCount64().float / 1000.float)
+    let uptime = "/proc/uptime".open.readLine.split(".")[0]
 
     let
         utu = uptime.parseUInt
@@ -56,24 +41,15 @@ proc getUptime*(): string =
 
 proc getHostname*(): string =
     ## Returns the system hostname
-    when defined linux:
-        result = uname().nodename
-    when defined windows:
-        result = getEnv("COMPUTERNAME")
+    result = uname().nodename
 
 proc getUser*(): string =
     ## Returns the current username
-    when defined linux:
-        result = getEnv("USER")
-    when defined windows:
-        result = getEnv("USERNAME")
+    result = getEnv("USER")
 
 proc getKernel*(): string =
     ## Returns the active kernel version
-    when defined linux:
-        result = "/proc/version".open.readLine.split(" ")[2]
-    when defined windows:
-        result = "nt"
+    result = "/proc/version".open.readLine.split(" ")[2]
 
 proc getParentPid(pid: int): int =
     let statusFilePath = "/proc/" & $pid & "/status"
@@ -94,39 +70,27 @@ proc getProcessName(pid: int): string =
 
 proc getTerminal*(): string =
     ## Returns the currently running terminal emulator
-    when defined linux:
-        result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
-        if result == "login" or result == "sshd":
-            result = "tty"
-
-    when defined windows:
-        result = "PowerShell"
+    result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
+    if result == "login" or result == "sshd":
+        result = "tty"
 
 proc getShell*(): string =
     ## Returns the system shell
-    when defined linux:
-        result = getCurrentProcessID().getParentPid().getProcessName()
-
-    when defined windows:
-        result = "PowerShell"
+    result = getCurrentProcessID().getParentPid().getProcessName()
 
 proc getDesktop*(): string =
     ## Returns the running desktop env
-    when defined linux:
-        result = getEnv("XDG_CURRENT_DESKTOP")
-        if result == "":
-            if getEnv("XDG_SESSION_TYPE") == "tty": # Check if in tty mode (Method 1)
-                result = "Headless"
+    result = getEnv("XDG_CURRENT_DESKTOP")
+    if result == "":
+        if getEnv("XDG_SESSION_TYPE") == "tty": # Check if in tty mode (Method 1)
+            result = "Headless"
 
-        if result == "": # Check if in tty mode (Method 2)
-            if getTerminal() == "tty":
-                result = "Headless"
+    if result == "": # Check if in tty mode (Method 2)
+        if getTerminal() == "tty":
+            result = "Headless"
 
-        if result == "": # Unknown desktop
-                result = "Unknown"
-
-    when defined windows:
-        result = "Windows"
+    if result == "": # Unknown desktop
+            result = "Unknown"
 
 proc getMemory*(mb: bool): string =
     ## Returns statistics about the memory
