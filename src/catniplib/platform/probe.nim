@@ -122,11 +122,18 @@ proc getDisk*(): string =
 
 proc getCpu*(): string =
     let rawLines = readFile("/proc/cpuinfo").split("\n")
+    
+    var key_name = "model name"
+    if getDistroId().id == "raspbian": key_name = "Model"
+
     for rawLine in rawLines:
+        let line = rawLine.split(":")
+
+        if line.len < 2: continue
+
         let
-            line = rawLine.split(":")
             key  = line[0].strip()
             val  = line[1].strip()
-        if key == "model name": 
+        if key == key_name: 
             result = val
             break
