@@ -37,18 +37,8 @@ type
         color_symbol*: string
 
     FetchInfo* = object
-        username*: string
-        hostname*: string
-        distro*: string
+        list*: Table[string, string]
         distroId*: DistroId
-        uptime*: string
-        kernel*: string
-        shell*: string
-        desktop*: string
-        memory*: string
-        terminal*: string
-        disk*: string
-        cpu*: string
         logo*: Logo
 
     Config* = object

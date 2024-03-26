@@ -16,9 +16,9 @@ kernel   = {icon = " ", name = "kernel", color = "(MA)"}
 desktop  = {icon = " ", name = "desktp", color = "(CN)"}
 terminal = {icon = " ", name = "term", color = "(RD)"}
 shell    = {icon = " ", name = "shell", color = "(MA)"}
+# cpu      = {icon = " ", name = "cpu", color = "(RD)"}
+# disk     = {icon = " ", name = "disk", color = "(GN)"}
 memory   = {icon = " ", name = "memory", color = "(YW)"}
-disk     = {icon = " ", name = "disk", color = "(GN)"}
-cpu      = {icon = " ", name = "cpu", color = "(CN)"}
 colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
 ##############################################

@@ -7,17 +7,17 @@ import parsetoml
 import "probe"
 
 proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
-    result.username = probe.getUser()
-    result.hostname = probe.getHostname()
-    result.distro   = probe.getDistro()
-    result.uptime   = probe.getUptime()
-    result.kernel   = probe.getKernel()
-    result.desktop  = probe.getDesktop()
-    result.terminal = probe.getTerminal()
-    result.shell    = probe.getShell()
-    result.memory   = probe.getMemory(true)
-    result.disk     = probe.getDisk()
-    result.cpu      = probe.getCpu()
+    result.list["username"] = probe.getUser()
+    result.list["hostname"] = probe.getHostname()
+    result.list["distro"]   = probe.getDistro()
+    result.list["uptime"]   = probe.getUptime()
+    result.list["kernel"]   = probe.getKernel()
+    result.list["desktop"]  = probe.getDesktop()
+    result.list["terminal"] = probe.getTerminal()
+    result.list["shell"]    = probe.getShell()
+    result.list["memory"]   = probe.getMemory(true)
+    result.list["disk"]     = probe.getDisk()
+    result.list["cpu"]      = probe.getCpu()
     result.distroId = probe.getDistroId()
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)

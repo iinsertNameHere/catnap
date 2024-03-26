@@ -1,7 +1,7 @@
 import unicode
 import tables
 
-from "../global/definitions" import Stats, Stat, FetchInfo
+from "../global/definitions" import Stats, Stat, FetchInfo, STATNAMES
 from "stats" import newStat
 import "../terminal/colors"
 
@@ -14,7 +14,7 @@ proc reallen*(s: string): int =
     ## Get the length of a string without ansi color codes
     result = Uncolorize(s).runeLen
 
-proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
+proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[string] =
     ## Build output lines from Stats object and FetchInfo object
 
     var sb: seq[string]
@@ -41,38 +41,11 @@ proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
 
     # Construct the stats section with all stats that are not NIL
     sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
-    if stats.list["username"] != NIL_STAT:
-        addStat(stats.list["username"], fi.username)
 
-    if stats.list["hostname"] != NIL_STAT:
-        addStat(stats.list["hostname"], fi.hostname)
-
-    if stats.list["uptime"] != NIL_STAT:
-        addStat(stats.list["uptime"], fi.uptime)
-
-    if stats.list["distro"] != NIL_STAT:
-        addStat(stats.list["distro"], fi.distro)
-
-    if stats.list["kernel"] != NIL_STAT:
-        addStat(stats.list["kernel"], fi.kernel)
-
-    if stats.list["desktop"] != NIL_STAT:
-        addStat(stats.list["desktop"], fi.desktop)
-
-    if stats.list["terminal"] != NIL_STAT:
-        addStat(stats.list["terminal"], fi.terminal)
-
-    if stats.list["shell"] != NIL_STAT:
-        addStat(stats.list["shell"], fi.shell)
-
-    if stats.list["cpu"] != NIL_STAT:
-        addStat(stats.list["cpu"], fi.cpu)
-
-    if stats.list["memory"] != NIL_STAT:
-        addStat(stats.list["memory"], fi.memory)
-
-    if stats.list["disk"] != NIL_STAT:
-        addStat(stats.list["disk"], fi.disk)
+    for stat in stat_names:
+        if stat == "colors": continue
+        if stats.list[stat] != NIL_STAT:
+            addStat(stats.list[stat], fi.list[stat])
 
     if stats.list["colors"] != NIL_STAT:
         sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")

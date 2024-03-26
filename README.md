@@ -153,6 +153,22 @@ kernel   = {icon = ">", name = "kernel", color = "(MA)"}
 colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ``` 
 
+*You can change the order in which the stats are displayed by just changing the order in the config:*
+```toml
+##############################################
+##          FetchInfo stats Config          ##
+##############################################
+[stats]
+uptime   = {icon = ">", name = "uptime", color = "(BE)"}
+distro   = {icon = ">", name = "distro", color = "(GN)"}
+kernel   = {icon = ">", name = "kernel", color = "(MA)"}
+desktop  = {icon = ">", name = "desktp", color = "(CN)"}
+shell    = {icon = ">", name = "shell", color = "(RD)"}
+username = {icon = ">", name = "user", color = "(RD)"} # Username is now on the bottom
+hostname = {icon = ">", name = "hname", color = "(YW)"} # Hostname is now on the bottom
+colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+``` 
+
 ### 🎨 Colors:
 Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
 
