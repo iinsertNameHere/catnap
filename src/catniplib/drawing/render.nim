@@ -40,11 +40,24 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
     ##### Build stat_block buffer #####
     var stats: Stats = newStats()
+
     for stat_name in STATNAMES:
         stats.setStat(stat_name, config.stats.getStat(stat_name))
 
+    # Get ordered statnames list
+    var keys: seq[string]
+    for k in config.stats.getTable().keys:
+        keys.add(k)
+
+    var delta: seq[string]
+    for stat in STATNAMES:
+        if stat notin keys:
+            delta.add(stat)
+
+    let ORDERED_STATNAMES = keys & delta
+
     # Build the stat_block buffer
-    var stats_block = buildStatBlock(stats, fetchinfo)
+    var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, fetchinfo)
 
     ##### Merge buffers and output #####
     case layout:

@@ -309,26 +309,8 @@ if statname == "nil":
 
 else:
     let fetchinfo = fetchSystemInfo(cfg)
-    case statname:
-        of "username":
-            echo fetchinfo.username
-        of "hostname":
-            echo fetchinfo.hostname
-        of "uptime":
-            echo fetchinfo.uptime
-        of "distro":
-            echo fetchinfo.distro
-        of "kernel":
-            echo fetchinfo.kernel
-        of "desktop":
-            echo fetchinfo.desktop
-        of "shell":
-            echo fetchinfo.shell
-        of "memory":
-            echo fetchinfo.memory
-        of "terminal":
-            echo fetchinfo.terminal
-        of "disk":
-            echo fetchinfo.disk
-        else:
-            logError(&"Unknown StatName '{statname}'!")
+    
+    if fetchinfo.list.contains(statname):
+        logError(&"Unknown StatName '{statname}'!")
+    
+    echo fetchinfo.list[statname]
