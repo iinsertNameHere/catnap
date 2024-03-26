@@ -70,7 +70,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 ## 🪡 Installation/Build
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
 ```
-Dependencies (Linux only):
+Dependencies:
 - pcre
 - figlet
 - gzip
@@ -80,12 +80,13 @@ Dependencies (Linux only):
 ```shell
 git clone https://github.com/iinsertNameHere/catnip.git
 ```
+
 **3.** Change dir to repo
 ```shell
 cd ./catnip
 ```
 
-**4.** Run setup using `nim👑`:
+**4.** Run install using `nim👑`:
 ```shell
 nim install
 ```
