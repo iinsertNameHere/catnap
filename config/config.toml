@@ -18,6 +18,7 @@ terminal = {icon = " ", name = "term", color = "(RD)"}
 shell    = {icon = " ", name = "shell", color = "(MA)"}
 memory   = {icon = " ", name = "memory", color = "(YW)"}
 disk     = {icon = " ", name = "disk", color = "(GN)"}
+cpu      = {icon = " ", name = "cpu", color = "(CN)"}
 colors   = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
 ##############################################

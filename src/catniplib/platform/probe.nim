@@ -4,6 +4,7 @@ import math
 import strutils
 import parsecfg
 import posix_utils
+import tables
 from unicode import toLower
 from "../global/definitions" import DistroId
 
@@ -118,3 +119,14 @@ proc getDisk*(): string =
     let used = getUsedDiskSpace().round().int()
     let percentage = ((used / total) * 100).round().int()
     result = &"{used} / {total} GB ({percentage}%)"
+
+proc getCpu*(): string =
+    let rawLines = readFile("/proc/cpuinfo").split("\n")
+    for rawLine in rawLines:
+        let
+            line = rawLine.split(":")
+            key  = line[0].strip()
+            val  = line[1].strip()
+        if key == "model name": 
+            result = val
+            break
