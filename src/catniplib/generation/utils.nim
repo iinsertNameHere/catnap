@@ -65,6 +65,9 @@ proc buildStatBlock*(stats: Stats, fi: FetchInfo): seq[string] =
     if stats.list["shell"] != NIL_STAT:
         addStat(stats.list["shell"], fi.shell)
 
+    if stats.list["cpu"] != NIL_STAT:
+        addStat(stats.list["cpu"], fi.cpu)
+
     if stats.list["memory"] != NIL_STAT:
         addStat(stats.list["memory"], fi.memory)
 
