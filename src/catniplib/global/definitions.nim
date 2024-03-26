@@ -44,7 +44,7 @@ type
     Config* = object
         file*: string
         stats*: TomlValueRef
-        distroart*: Table[string, Logo]
+        distroart*: OrderedTable[string, Logo]
         misc*: TomlValueRef
 
 const
