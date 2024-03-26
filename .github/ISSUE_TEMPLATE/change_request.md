@@ -2,7 +2,7 @@
 name: Change request
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: 'Change: ...'
 assignees: ''
 
 ---
