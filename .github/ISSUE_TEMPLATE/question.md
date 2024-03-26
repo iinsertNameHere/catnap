@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-### Ask your Question
+### Ask your Question:
 Ask a question about the project here.
 
-### Additional context
+### Additional context:
 Add any other context or screenshots about the feature request here.
