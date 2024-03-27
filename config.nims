@@ -53,9 +53,21 @@ when defined linux:
         echo "\e[36;1mInstalling\e[0;0m bin file"
         echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
         exec &"sudo install -Dm755 {thisDir()}/bin/catnip /usr/local/bin"
-        echo &"\e[36;1mInstalling\e[0;0m man page"
-        echo &"Copying {thisDir()}/docs/catnip.1 to /usr/share/man/man1"
-        exec &"gzip -k {thisDir()}/docs/catnip.1 && sudo install -Dm755 {thisDir()}/docs/catnip.1.gz /usr/share/man/man1"
+
+        let
+            man_path = "/usr/share/man/man1/catnip.1.gz"
+            local_path = &"{thisDir()}/docs/catnip.1"
+
+        # Install man page only if it 
+        echo &"\e[36;1mInstalling\e[0;0m man page" 
+        exec &"gzip -kf {local_path}" # Create .gz file
+
+        # If man page dose not exist or there is a new version, install the new man page
+        if not fileExists(man_path) or readFile(local_path & ".gz") != readFile(man_path):
+            echo &"Copying {local_path} to /usr/share/man/man1"
+            exec &"sudo install -Dm755 {local_path}.gz /usr/share/man/man1"
+        else:
+            echo &"Copying {local_path} to /usr/share/man/man1 - SKIPPED"
 
     task install, "'release', 'install_linux' and 'install_cfg'":
         releaseTask()
