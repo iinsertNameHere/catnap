@@ -2,11 +2,11 @@ import strformat
 import parsetoml
 import osproc
 import terminal
+import math
 
 import "../terminal/logging"
 from "../global/definitions" import FetchInfo, Stats, Stat, Config, STATNAMES
 import "../terminal/colors"
-import "../terminal/getCursorPos"
 import "../generation/utils"
 import "../generation/stats"
 
@@ -84,25 +84,21 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     path  = config.misc["imageMode"]["path"].getStr()
                     tmargin = config.misc["imageMode"]["margin"]
                     margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-
+                    hight = round(scale / 2).int
                     cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
-
-                var startPos = getCursorPos()[1]
 
                 # Display image
                 if execCmd(cmd) != 0:
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
 
-                var endPos = getCursorPos()[1]
-
-                cursorUp(int(endPos - startPos))
+                cursorUp(hight)
 
                 # Display Stats
                 for idx in countup(0, stats_block.len - 1):
                     echo " ".repeat(margin[1] + scale + margin[2]) & stats_block[idx]
 
-                startPos = getCursorPos()[1]
-                cursorDown(int(endPos - startPos) + 1)
+                cursorDown(hight - stats_block.len)
+                
 
         of "ArtOnTop": # Handle ArtOnTop Layout
             if not config.misc["imageMode"]["enable"].getBool():
