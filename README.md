@@ -6,7 +6,7 @@
 
 <h1 align="center"><code>Catnip🌿</code> Systemfetch</h3>
   <p align="center">
-    <a href="#-demo-image">View Demo</a>
+    <a href="#-demo-images">View Demo</a>
     ·
     <a href="#-installationbuild">Installation</a>
     ·
