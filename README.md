@@ -69,12 +69,13 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 ## 🪡 Installation/Build
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
-```
-Dependencies:
-- pcre
-- figlet
-- gzip
-```
+
+>#### Dependencies:
+>- pcre
+>- gzip
+>#### Optional:
+>- figlet (required for figletLogos)
+>- [viu](https://github.com/atanunq/viu) (required for imageMode)
 
 **2.** Clone the repo:
 ```shell
@@ -194,9 +195,10 @@ So `{GN}` translates to: Foreground-Bright-Green.
 To set the color to Default, use `!DT!`.
 
 ### 🚩 Misc
-In the `misc` section of `config.toml` you can find 2 keys.
+In the `misc` section of `config.toml` you can find 3 keys.
 1. `layout`
 2. `figletLogos`
+3. `imageMode`
 
 #### Layout
 In the layout you can define how the logo and stats will be arranged.
@@ -205,14 +207,28 @@ In the layout you can define how the logo and stats will be arranged.
 - Use `StatsOnTop` to place the stats on top of the logo.
 
 #### Figlet Logos
-In the `figletLogos` section you can find 3 keys:
+In the `figletLogos` section you can find 4 keys:
 1. `enable`
 2. `color`
-3. `margin`
+3. `font`
+4. `margin`
 
 - Set `enable` to `true`/`false` to enable or disable *figlet* generated logos.
 - Use `color` to set the color the *figlet* logos should have.
+- Use `font` to set what font *figlet* should use.
 - Use `margin` to define the margins of the *figlet* logos.
+
+#### Image Mode
+In the `imageMode` section you can find 4 keys:
+1. `enable`
+2. `path`
+3. `scale`
+4. `margin`
+
+- Set `enable` to `true`/`false` to enable or disable *image mode*.
+- Use `path` to define what image file to display.
+- Use `scale` to set the scale of the image.
+- Use `margin` to define the logo margins.
 
 ### 🖌️ Distro Art
 To create a new DistroArt object inside the `distros.toml` file, add a new section to the file (replace `distroname` with the name of your distro):
