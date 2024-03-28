@@ -1,7 +1,7 @@
 <br />
 <div align="center">
-  <a href="https://github.com/iinsertNameHere/Catnip">
-    <img src="image/logo.png" alt="Logo" width="200" height="200">
+  <a href="https://github.com/iinsertNameHere/catnip">
+    <center><img width="80%" src="image/demo3.png"></center>
   </a>
 
 <h1 align="center"><code>Catnip🌿</code> Systemfetch</h3>
@@ -18,6 +18,7 @@
   </p>
 </div>
 <br>
+
 
 ## 🌿 What is Catnip
 I created `Catnip🌿` as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
@@ -61,9 +62,9 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 >
 ><img src="image/demo2.png">
 
->*Distro Showcase:*
+>*Image Mode:*
 >
-><img src="image/distros.png">
+><img src="image/demo3.png">
 
 <br>
 
