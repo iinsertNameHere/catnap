@@ -267,6 +267,7 @@ if paramCount() > 0:
 
         idx += 1
 
+# Getting config
 var cfg = LoadConfig(cfgPath)
 
 # Handle argument errors and help
