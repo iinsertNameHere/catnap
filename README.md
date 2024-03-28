@@ -54,19 +54,23 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 <br>
 
 ## 📷 Demo Images
->*Default:*
->
-><img src="image/demo1.png">
+<details>
+  <summary style="font-size: 18px; font-weight: 600;">Demo Images ✨</summary>
 
->*FigletLogos ([Nitch](https://github.com/ssleert/nitch) mode):*
->
-><img src="image/demo2.png">
+<i>Default:</i>
+<img src="image/demo1.png">
 
->*Image Mode:*
->
-><img src="image/demo3.png">
+<i>FigletLogos (<a href="https://github.com/ssleert/nitch">Nitch</a> mode):</i>
+<img src="image/demo2.png">
+
+<i>Image Mode:</i>
+<img src="image/demo3.png">
+
+<i>Distro Showcase:</i>
+<img src="image/distros.png">
 
 <br>
+</details>
 
 ## 🪡 Installation/Build
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
