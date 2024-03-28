@@ -4,7 +4,6 @@ import math
 import strutils
 import parsecfg
 import posix_utils
-import tables
 from unicode import toLower
 from "../global/definitions" import DistroId
 

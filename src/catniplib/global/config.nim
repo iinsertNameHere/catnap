@@ -1,12 +1,20 @@
 import "../terminal/logging"
 from "definitions" import Config, STATNAMES, STATKEYS, Logo, DISTROSGPATH
-from os import fileExists
+from os import fileExists, getEnv, existsEnv
 import strformat
 import strutils
 import parsetoml
 
 # Chars that a alias can contain
 const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
+const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color","xterm","xterm-256color"]
+
+proc isImageTerm(): bool =
+    ## Returns true if terminal supports image mode
+    if getEnv("TERM_PROGRAM") != "":
+        return false
+    let term = getEnv("TERM")
+    return (term in  VALID_TERMS or "iTerm" in term or "WezTerm" in term or "mintty" in term or "kitty" in term)
 
 proc LoadConfig*(path: string): Config =
     ## Lads a config file and validates it
@@ -48,7 +56,24 @@ proc LoadConfig*(path: string): Config =
         logError(&"{path}:misc:figletLogos - missing 'font'!")
     if not tcfg["misc"]["figletLogos"].contains("margin"):
         logError(&"{path}:misc:figletLogos - missing 'margin'!")
+    if not tcfg["misc"].contains("imageMode"):
+        logError(&"{path}:misc - missing 'imageMode'!")
+    if not tcfg["misc"]["imageMode"].contains("enable"):
+        logError(&"{path}:misc:imageMode - missing 'enable'!")
+    if not tcfg["misc"]["imageMode"].contains("path"):
+        logError(&"{path}:misc:imageMode - missing 'path'!")
+    if not tcfg["misc"]["imageMode"].contains("scale"):
+        logError(&"{path}:misc:imageMode - missing 'scale'!")
+    if not tcfg["misc"]["imageMode"].contains("margin"):
+        logError(&"{path}:misc:imageMode - missing 'font'!")
 
+    if tcfg["misc"]["figletLogos"]["enable"].getBool() and tcfg["misc"]["imageMode"]["enable"].getBool():
+        logError(&"{path}:misc - 'figletLogos' and 'imageMode' can't be used together!")
+
+    # Check if terminal supports image mode
+    if tcfg["misc"]["imageMode"]["enable"].getBool() and not isImageTerm():
+        tcfg["misc"]["imageMode"]["enable"] = parsetoml.parseString(&"val = false")["val"]
+        
     ### Fill out the result object ###
     result.file = path
 

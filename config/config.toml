@@ -32,3 +32,9 @@ enable = false
 color  = "(YW)"
 font   = "slant"
 margin = [0, 0, 0,]
+
+[misc.imageMode]
+enable = false
+path   = "/path/to/some/image.png" # Please use only absolute paths
+scale  = 18
+margin = [2, 2, 3,]

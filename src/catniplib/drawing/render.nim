@@ -1,9 +1,12 @@
 import strformat
 import parsetoml
+import osproc
+import terminal
 
 import "../terminal/logging"
 from "../global/definitions" import FetchInfo, Stats, Stat, Config, STATNAMES
 import "../terminal/colors"
+import "../terminal/getCursorPos"
 import "../generation/utils"
 import "../generation/stats"
 
@@ -62,26 +65,93 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     ##### Merge buffers and output #####
     case layout:
         of "Inline": # Handle Inline Layout
-            let lendiv = stats_block.len - distro_art.len
-            if lendiv < 0:
-                for _ in countup(1, lendiv - lendiv*2):
-                    stats_block.add(" ")
-            elif lendiv > 0:
-                for _ in countup(1, lendiv):
-                    distro_art.add(" ".repeat(distro_art[0].reallen - 1))
+            if not config.misc["imageMode"]["enable"].getBool():
+                ### ASCII mode ###
+                let lendiv = stats_block.len - distro_art.len
+                if lendiv < 0:
+                    for _ in countup(1, lendiv - lendiv*2):
+                        stats_block.add(" ")
+                elif lendiv > 0:
+                    for _ in countup(1, lendiv):
+                        distro_art.add(" ".repeat(distro_art[0].reallen - 1))
 
-            for idx in countup(0, distro_art.len - 1):
-                echo distro_art[idx] & stats_block[idx]
+                for idx in countup(0, distro_art.len - 1):
+                    echo distro_art[idx] & stats_block[idx]
+            else:
+                ### IMAGE mode ###
+                let
+                    scale = config.misc["imageMode"]["scale"].getInt()
+                    path  = config.misc["imageMode"]["path"].getStr()
+                    tmargin = config.misc["imageMode"]["margin"]
+                    margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+
+                var startPos = getCursorPos()[1]
+
+                # Display image
+                if execCmd(cmd) != 0:
+                    logError(&"\"{cmd}\" - Non ZERO exit code!")
+
+                var endPos = getCursorPos()[1]
+
+                cursorUp(int(endPos - startPos))
+
+                # Display Stats
+                for idx in countup(0, stats_block.len - 1):
+                    echo " ".repeat(margin[1] + scale + margin[2]) & stats_block[idx]
+
+                startPos = getCursorPos()[1]
+                cursorDown(int(endPos - startPos) + 1)
+
         of "ArtOnTop": # Handle ArtOnTop Layout
-            for idx in countup(0, distro_art.len - 1):
-                echo distro_art[idx]
-            for idx in countup(0, stats_block.len - 1):
-                echo stats_block[idx]
+            if not config.misc["imageMode"]["enable"].getBool():
+                ### ASCII mode ###
+                for idx in countup(0, distro_art.len - 1):
+                    echo distro_art[idx]
+                for idx in countup(0, stats_block.len - 1):
+                    echo stats_block[idx]
+            else:
+                ### IMAGE mode ###
+                let
+                    scale = config.misc["imageMode"]["scale"].getInt()
+                    path  = config.misc["imageMode"]["path"].getStr()
+                    tmargin = config.misc["imageMode"]["margin"]
+                    margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+
+                # Display image
+                if execCmd(cmd) != 0:
+                    logError(&"\"{cmd}\" - Non ZERO exit code!")
+                # Display Stats
+                for idx in countup(0, stats_block.len - 1):
+                    echo stats_block[idx]
+
         of "StatsOnTop": # Handle StatsOnTop Layout
-            for idx in countup(0, stats_block.len - 1):
-                echo stats_block[idx]
-            for idx in countup(0, distro_art.len - 1):
-                echo distro_art[idx]
+            if not config.misc["imageMode"]["enable"].getBool():
+                ### ASCII mode ###
+                for idx in countup(0, stats_block.len - 1):
+                    echo stats_block[idx]
+                for idx in countup(0, distro_art.len - 1):
+                    echo distro_art[idx]
+            else:
+                ### IMAGE mode ###
+                let
+                    scale = config.misc["imageMode"]["scale"].getInt()
+                    path  = config.misc["imageMode"]["path"].getStr()
+                    tmargin = config.misc["imageMode"]["margin"]
+                    margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
+
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+
+                # Display Stats
+                for idx in countup(0, stats_block.len - 1):
+                    echo stats_block[idx]
+                # Display image
+                if execCmd(cmd) != 0:
+                    logError(&"\"{cmd}\" - Non ZERO exit code!")
+                    
         else: # Invalid Layout
             logError(&"{config.file}:misc:layout - Invalid value")
             quit(1)
