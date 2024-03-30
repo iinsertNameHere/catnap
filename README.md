@@ -143,8 +143,13 @@ uptime   = {icon = ">", name = "uptime", color = "(BE)"}
 distro   = {icon = ">", name = "distro", color = "(GN)"}
 kernel   = {icon = ">", name = "kernel", color = "(MA)"}
 desktop  = {icon = ">", name = "desktp", color = "(CN)"}
-shell    = {icon = ">", name = "shell", color = "(RD)"}
-colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+terminal = {icon = ">", name = "term", color = "(RD)"}
+shell    = {icon = ">", name = "shell", color = "(MA)"}
+cpu      = {icon = ">", name = "cpu", color = "(RD)"}
+disk     = {icon = ">", name = "disk", color = "(GN)"}
+memory    = {icon = ">", name = "memory", color = "(YW)"}
+sep_color = "SEPARATOR"
+colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ```
 
 *If you don't want to display a stat, you can just comment out the line:*
@@ -158,9 +163,14 @@ hostname = {icon = ">", name = "hname", color = "(YW)"}
 uptime   = {icon = ">", name = "uptime", color = "(BE)"}
 distro   = {icon = ">", name = "distro", color = "(GN)"}
 kernel   = {icon = ">", name = "kernel", color = "(MA)"}
-# desktop  = {icon = ">", name = "desktp", color = "(CN)"}
-# shell    = {icon = ">", name = "shell", color = "(RD)"}
-colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+desktop  = {icon = ">", name = "desktp", color = "(CN)"}
+terminal = {icon = ">", name = "term", color = "(RD)"}
+shell    = {icon = ">", name = "shell", color = "(MA)"}
+# cpu      = {icon = ">", name = "cpu", color = "(RD)"}
+# disk     = {icon = ">", name = "disk", color = "(GN)"}
+memory    = {icon = ">", name = "memory", color = "(YW)"}
+sep_color = "SEPARATOR"
+colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ``` 
 
 *You can change the order in which the stats are displayed by just changing the order in the config:*
@@ -173,11 +183,40 @@ uptime   = {icon = ">", name = "uptime", color = "(BE)"}
 distro   = {icon = ">", name = "distro", color = "(GN)"}
 kernel   = {icon = ">", name = "kernel", color = "(MA)"}
 desktop  = {icon = ">", name = "desktp", color = "(CN)"}
-shell    = {icon = ">", name = "shell", color = "(RD)"}
-username = {icon = ">", name = "user", color = "(RD)"} # Username is now on the bottom
-hostname = {icon = ">", name = "hname", color = "(YW)"} # Hostname is now on the bottom
-colors   = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+terminal = {icon = ">", name = "term", color = "(RD)"}
+shell    = {icon = ">", name = "shell", color = "(MA)"}
+cpu      = {icon = ">", name = "cpu", color = "(RD)"}
+disk     = {icon = ">", name = "disk", color = "(GN)"}
+memory    = {icon = ">", name = "memory", color = "(YW)"}
+# Username and hostname are now displayed at the bottom
+username = {icon = ">", name = "user", color = "(RD)"}
+hostname = {icon = ">", name = "hname", color = "(YW)"}
+
+sep_color = "SEPARATOR"
+colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ``` 
+
+*Separators are defined by creating a new key with the `sep_` prefix. The value of the key can be anything.* 
+```toml
+##############################################
+##          FetchInfo stats Config          ##
+##############################################
+[stats]
+username = {icon = ">", name = "user", color = "(RD)"}
+hostname = {icon = ">", name = "hname", color = "(YW)"}
+sep_1    = "SEPARATOR" # Separates uname and hname from rest 
+uptime   = {icon = ">", name = "uptime", color = "(BE)"}
+distro   = {icon = ">", name = "distro", color = "(GN)"}
+kernel   = {icon = ">", name = "kernel", color = "(MA)"}
+desktop  = {icon = ">", name = "desktp", color = "(CN)"}
+terminal = {icon = ">", name = "term", color = "(RD)"}
+shell    = {icon = ">", name = "shell", color = "(MA)"}
+cpu      = {icon = ">", name = "cpu", color = "(RD)"}
+disk     = {icon = ">", name = "disk", color = "(GN)"}
+memory    = {icon = ">", name = "memory", color = "(YW)"}
+sep_color = "SEPARATOR"
+colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+```
 
 ### 🎨 Colors:
 Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
