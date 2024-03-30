@@ -202,17 +202,17 @@ colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ##          FetchInfo stats Config          ##
 ##############################################
 [stats]
-username = {icon = ">", name = "user", color = "(RD)"}
-hostname = {icon = ">", name = "hname", color = "(YW)"}
-sep_1    = "SEPARATOR" # Separates uname and hname from rest 
-uptime   = {icon = ">", name = "uptime", color = "(BE)"}
-distro   = {icon = ">", name = "distro", color = "(GN)"}
-kernel   = {icon = ">", name = "kernel", color = "(MA)"}
-desktop  = {icon = ">", name = "desktp", color = "(CN)"}
-terminal = {icon = ">", name = "term", color = "(RD)"}
-shell    = {icon = ">", name = "shell", color = "(MA)"}
-cpu      = {icon = ">", name = "cpu", color = "(RD)"}
-disk     = {icon = ">", name = "disk", color = "(GN)"}
+username  = {icon = ">", name = "user", color = "(RD)"}
+hostname  = {icon = ">", name = "hname", color = "(YW)"}
+sep_1     = "SEPARATOR" # Separates uname and hname from rest 
+uptime    = {icon = ">", name = "uptime", color = "(BE)"}
+distro    = {icon = ">", name = "distro", color = "(GN)"}
+kernel    = {icon = ">", name = "kernel", color = "(MA)"}
+desktop   = {icon = ">", name = "desktp", color = "(CN)"}
+terminal  = {icon = ">", name = "term", color = "(RD)"}
+shell     = {icon = ">", name = "shell", color = "(MA)"}
+cpu       = {icon = ">", name = "cpu", color = "(RD)"}
+disk      = {icon = ">", name = "disk", color = "(GN)"}
 memory    = {icon = ">", name = "memory", color = "(YW)"}
 sep_color = "SEPARATOR"
 colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
