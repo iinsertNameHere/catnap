@@ -1,5 +1,6 @@
 import unicode
 import tables
+import strutils
 
 from "../global/definitions" import Stats, Stat, FetchInfo, STATNAMES
 from "stats" import newStat
@@ -44,11 +45,15 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[
 
     for stat in stat_names:
         if stat == "colors": continue
+        
+        if stat.split('_')[0] == "sep":
+            sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
+            continue
+
         if stats.list[stat] != NIL_STAT:
             addStat(stats.list[stat], fi.list[stat])
 
     if stats.list["colors"] != NIL_STAT:
-        sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
         addStat(stats.list["colors"], colorval)
     sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
 
