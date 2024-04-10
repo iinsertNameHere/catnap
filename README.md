@@ -279,15 +279,9 @@ In the `imageMode` section you can find 4 keys:
 - Use `margin` to define the logo margins.
 
 > **NOTE:** Terminals supporting Image Mode:
-> - mlterm
-> - yaft
-> - foot
-> - st
-> - xterm
-> - iterm
-> - wezterm
-> - mintty
-> - kitty
+> - Konsole
+> - iTerm
+> - Kitty
 
 ### 🖌️ Distro Art
 To create a new DistroArt object inside the `distros.toml` file, add a new section to the file (replace `distroname` with the name of your distro):

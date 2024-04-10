@@ -11,10 +11,12 @@ const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color"
 
 proc isImageTerm(): bool =
     ## Returns true if terminal supports image mode
+    var term = ""
     if getEnv("TERM_PROGRAM") != "":
-        return false
-    let term = getEnv("TERM")
-    return (term in  VALID_TERMS or "iTerm" in term or "WezTerm" in term or "mintty" in term or "kitty" in term)
+        term = getEnv("TERM_PROGRAM")
+    else: 
+        term = getEnv("TERM")
+    return (term in VALID_TERMS or "iTerm" in term or "WezTerm" in term or "mintty" in term or "kitty" in term)
 
 proc LoadConfig*(path: string): Config =
     ## Lads a config file and validates it

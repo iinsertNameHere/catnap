@@ -84,20 +84,20 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     path  = config.misc["imageMode"]["path"].getStr()
                     tmargin = config.misc["imageMode"]["margin"]
                     margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-                    hight = round(scale / 2).int
+                    height = round(scale / 2).int
                     cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
 
                 # Display image
                 if execCmd(cmd) != 0:
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
 
-                cursorUp(hight)
+                cursorUp(height)
 
                 # Display Stats
                 for idx in countup(0, stats_block.len - 1):
                     echo " ".repeat(margin[1] + scale + margin[2]) & stats_block[idx]
 
-                cursorDown(hight - stats_block.len)
+                cursorDown(height - stats_block.len)
                 
 
         of "ArtOnTop": # Handle ArtOnTop Layout
@@ -144,6 +144,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                 # Display Stats
                 for idx in countup(0, stats_block.len - 1):
                     echo stats_block[idx]
+                    
                 # Display image
                 if execCmd(cmd) != 0:
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
