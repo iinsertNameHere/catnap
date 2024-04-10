@@ -4,8 +4,11 @@ import math
 import strutils
 import parsecfg
 import posix_utils
+import tables
+import osproc
 from unicode import toLower
-from "../global/definitions" import DistroId
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS
+import "../terminal/logging"
 
 proc getDistro*(): string =
     ## Returns the name of the running linux distro
@@ -136,3 +139,34 @@ proc getCpu*(): string =
         if key == key_name: 
             result = val
             break
+
+proc getPkgManager(distroId: DistroId): string =
+    for key in PKGMANAGERS.keys:
+        if distroId.id == key:
+            return PKGMANAGERS[key]
+
+    for key in PKGMANAGERS.keys:
+        if distroId.like == key:
+            return PKGMANAGERS[key]
+    
+    return "unknown"
+
+proc getPackages*(distroId: DistroId): string =
+    let pkgManager = getPkgManager(distroId)
+    if pkgManager == "unknown":
+        return "unknown"
+
+    var foundPkgCmd = false
+    for key in PKGCOUNTCOMMANDS.keys:
+        if pkgManager == key:
+            foundPkgCmd = true
+            break
+    if not foundPkgCmd:
+        return "unknown"
+
+    let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > /tmp/catnip_pkgcount.txt"
+    if execCmd(cmd) != 0:
+        logError("Failed to fetch pkg count!")
+    
+    let count = readFile("/tmp/catnip_pkgcount.txt").strip()
+    return count & " [" & pkgManager & "]" 
