@@ -40,6 +40,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
     <li>terminal</li>
     <li>memory</li>
     <li>disk space</li>
+    <li>cpu info</li>
+    <li>packages</li>
     <li>colors</li>
   </ul>
 </details>

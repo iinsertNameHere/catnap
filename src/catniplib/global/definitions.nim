@@ -50,7 +50,23 @@ type
 const
     STATNAMES*    = @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "terminal",
-                    "disk", "cpu", "colors"]
+                    "disk", "cpu", "packages", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
     DISTROSGPATH* = joinPath(getConfigDir(), "catnip/distros.toml")
+    PKGMANAGERS*  = {
+        "fedora": "dnf",
+        "redhat": "yum",
+        "centos": "yum",
+        "ubuntu": "apt",
+        "debian": "apt",
+        "opensuse": "zypper",
+        "arch": "pacman",
+    }.toOrderedTable
+    PKGCOUNTCOMMANDS* = {
+        "dnf": "dnf list installed | wc -l",
+        "yum": "yum list installed | wc -l",
+        "apt": "apt list --installed | grep -c 'installed'",
+        "zypper": "rpm -qa --last | wc --l",
+        "pacman": "pacman -Q | wc -l"
+    }.toOrderedTable

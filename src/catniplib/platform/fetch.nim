@@ -7,6 +7,7 @@ import parsetoml
 import "probe"
 
 proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
+    result.distroId = probe.getDistroId()
     result.list["username"] = probe.getUser()
     result.list["hostname"] = probe.getHostname()
     result.list["distro"]   = probe.getDistro()
@@ -18,7 +19,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["memory"]   = probe.getMemory(true)
     result.list["disk"]     = probe.getDisk()
     result.list["cpu"]      = probe.getCpu()
-    result.distroId = probe.getDistroId()
+    result.list["packages"] = probe.getPackages(result.distroId)
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
     let figletLogos = config.misc["figletLogos"]
