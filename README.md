@@ -278,11 +278,6 @@ In the `imageMode` section you can find 4 keys:
 - Use `scale` to set the scale of the image.
 - Use `margin` to define the logo margins.
 
-> **NOTE:** Terminals supporting Image Mode:
-> - Konsole
-> - iTerm
-> - Kitty
-
 ### 🖌️ Distro Art
 To create a new DistroArt object inside the `distros.toml` file, add a new section to the file (replace `distroname` with the name of your distro):
 ```toml

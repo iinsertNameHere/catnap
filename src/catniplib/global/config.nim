@@ -7,7 +7,7 @@ import parsetoml
 
 # Chars that a alias can contain
 const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
-const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color","xterm","xterm-256color"]
+const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color","xterm","xterm-256color", "alacritty"]
 
 proc isImageTerm(): bool =
     ## Returns true if terminal supports image mode
