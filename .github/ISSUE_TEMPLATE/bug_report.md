@@ -16,6 +16,7 @@ If applicable, add screenshots to help explain your problem.
 ### Device:
  - OS: [e.g. Linux]
  - WM: [e.g. KDE Plasma 6]
+ - TERMINAL: [e.g. Kitty]
 
 ### Additional context:
 Add any other context about the problem here.
