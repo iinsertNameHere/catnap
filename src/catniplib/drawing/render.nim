@@ -84,8 +84,11 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     path  = config.misc["imageMode"]["path"].getStr()
                     tmargin = config.misc["imageMode"]["margin"]
                     margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-                    height = round(scale / 2).int
-                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+                    height = round(scale / 2).int + margin[0]
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]}"
+                
+                for _ in countup(0, margin[0]):
+                    echo ""
 
                 # Display image
                 if execCmd(cmd) != 0:
@@ -115,11 +118,15 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     tmargin = config.misc["imageMode"]["margin"]
                     margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
 
-                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]}"
 
                 # Display image
                 if execCmd(cmd) != 0:
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
+
+                for _ in countup(0, margin[0]):
+                    echo ""
+
                 # Display Stats
                 for idx in countup(0, stats_block.len - 1):
                     echo stats_block[idx]
@@ -139,12 +146,15 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     tmargin = config.misc["imageMode"]["margin"]
                     margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
 
-                    cmd = &"viu '{path}' -w {scale} -x {margin[1]} -y {margin[0]}"
+                    cmd = &"viu '{path}' -w {scale} -x {margin[1]}"
 
                 # Display Stats
                 for idx in countup(0, stats_block.len - 1):
                     echo stats_block[idx]
                     
+                for _ in countup(0, margin[0]):
+                    echo ""
+
                 # Display image
                 if execCmd(cmd) != 0:
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
