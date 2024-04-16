@@ -332,7 +332,9 @@ art = [
   "Test",
   "Test",
   "Test"
-]
+]## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline)](https://star-history.com/#iinsertNameHere/catnip&Timeline)
 ```
 
 <br>
@@ -343,3 +345,7 @@ art = [
 <a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
    <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
 </a>
+
+### Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline)](https://star-history.com/#iinsertNameHere/catnip&Timeline)
