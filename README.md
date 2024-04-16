@@ -346,7 +346,8 @@ art = [
    <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
 </a>
 
-### Star History
+<br>
+<br>
 
 <a href="https://star-history.com/#">
  <picture>
