@@ -66,7 +66,7 @@ const
     PKGCOUNTCOMMANDS* = {
         "dnf": "dnf list installed | wc -l",
         "yum": "yum list installed | wc -l",
-        "apt": "dpkg-query -l | grep "^ii" | wc -l",
+        "apt": "dpkg-query -l | grep '^ii' | wc -l",
         "zypper": "rpm -qa --last | wc --l",
         "pacman": "pacman -Q | wc -l"
     }.toOrderedTable
