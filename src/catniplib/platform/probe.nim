@@ -93,14 +93,10 @@ proc getDesktop*(): string =
             result = "Headless"
 
     if result == "": # Check $XDG_SESSION_DESKTOP and $DESKTOP_SESSION
-        result2 = getEnv("XDG_SESSION_DESKTOP")
-        if result2 != "":
-            result = result2
-        if result2 == "":
-            result3 = getEnv("DESKTOP_SESSION") 
-            if result3 != "":
-                result = result3
-            if result3 == "":
+        result = getEnv("XDG_SESSION_DESKTOP")
+        if result == "":
+            result = getEnv("DESKTOP_SESSION")
+            if result == "":
                 result = "Unknown"
 
 proc getMemory*(mb: bool): string =
