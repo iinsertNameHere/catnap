@@ -332,9 +332,7 @@ art = [
   "Test",
   "Test",
   "Test"
-]## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline)](https://star-history.com/#iinsertNameHere/catnip&Timeline)
+]
 ```
 
 <br>
