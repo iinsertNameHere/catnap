@@ -92,8 +92,12 @@ proc getDesktop*(): string =
         if getTerminal() == "tty":
             result = "Headless"
 
-    if result == "": # Unknown desktop
-            result = "Unknown"
+    if result == "": # Check $XDG_SESSION_DESKTOP and $DESKTOP_SESSION
+        result = getEnv("XDG_SESSION_DESKTOP")
+        if result == "":
+            result = getEnv("DESKTOP_SESSION")
+            if result == "":
+                result = "Unknown"
 
 proc getMemory*(mb: bool): string =
     ## Returns statistics about the memory
