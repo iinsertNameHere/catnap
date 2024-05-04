@@ -1,0 +1,23 @@
+name: Nim
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Install Nim'
+      run: |
+        sudo apt update -y
+        sudo apt install nim
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+    - name: 'Setup Nim'
+      uses: jiro4989/setup-nim-action@v1
+      with:
+        nim-version: '2.x'
+    - name: 'Build Nim'
+      run: nim release
