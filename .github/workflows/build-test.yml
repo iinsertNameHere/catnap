@@ -1,0 +1,21 @@
+name: build-test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout Repository'
+      uses: actions/checkout@v3
+    - name: 'Install Nim'
+      uses: iffy/install-nim@v5
+    - name: 'Setup Nim'
+      uses: jiro4989/setup-nim-action@v1
+      with:
+        nim-version: '2.x'
+    - name: 'Build Catnip'
+      run: nim release

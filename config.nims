@@ -68,6 +68,12 @@ task install_bin, "Installs the bin file and man page:":
     else:
         echo &"Copying {local_path} to /usr/share/man/man1 - SKIPPED"
 
+task uninstall_bin, "Uninstalls the bin file and man page:":
+    echo "\e[36;1mUninstalling\e[0;0m bin file"
+    exec &"sudo rm /usr/local/bin/catnip"
+    echo "\e[36;1mUninstalling\e[0;0m man page"
+    exec &"sudo rm /usr/share/man/man1/catnip.1.gz"
+
 task install, "'release', 'install_linux' and 'install_cfg'":
     releaseTask()
     install_cfgTask()
