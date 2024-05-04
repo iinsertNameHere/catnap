@@ -83,17 +83,24 @@ proc getShell*(): string =
 
 proc getDesktop*(): string =
     ## Returns the running desktop env
-    result = getEnv("XDG_CURRENT_DESKTOP")
-    if result == "":
-        if getEnv("XDG_SESSION_TYPE") == "tty": # Check if in tty mode (Method 1)
+    result = getEnv("XDG_CURRENT_DESKTOP") # Check Current Desktop (Method 1)
+
+    if result == "": # Check Current Desktop (Method 2)
+        result = getEnv("XDG_SESSION_DESKTOP")
+
+    if result == "": # Check Current Desktop (Method 3)
+        result = getEnv("DESKTOP_SESSION")
+
+    if result == "": # Check if in tty mode (Method 1)
+        if getEnv("XDG_SESSION_TYPE") == "tty":
             result = "Headless"
 
     if result == "": # Check if in tty mode (Method 2)
         if getTerminal() == "tty":
             result = "Headless"
 
-    if result == "": # Unknown desktop
-            result = "Unknown"
+    if result == "": # Default to Unknown
+        result = "Unknown"
 
 proc getMemory*(mb: bool): string =
     ## Returns statistics about the memory
