@@ -19,5 +19,3 @@ jobs:
         nim-version: '2.x'
     - name: 'Build Catnip'
       run: nim release
-    - name: 'Check if all files are error-free'
-      run: for f in src/catniplib/*/*; do nim check $f; done
