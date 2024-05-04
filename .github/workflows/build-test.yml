@@ -1,4 +1,4 @@
-name: Nim
+name: build-test
 on:
   push:
   pull_request:
@@ -17,5 +17,5 @@ jobs:
       uses: jiro4989/setup-nim-action@v1
       with:
         nim-version: '2.x'
-    - name: 'Build Nim'
+    - name: 'Build Catnip'
       run: nim release
