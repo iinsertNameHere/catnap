@@ -323,7 +323,7 @@ if statname == "nil":
 else:
     let fetchinfo = fetchSystemInfo(cfg)
     
-    if fetchinfo.list.contains(statname):
+    if not fetchinfo.list.contains(statname):
         logError(&"Unknown StatName '{statname}'!")
     
     echo fetchinfo.list[statname]
