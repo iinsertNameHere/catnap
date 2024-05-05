@@ -160,5 +160,5 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                     logError(&"\"{cmd}\" - Non ZERO exit code!")
                     
         else: # Invalid Layout
-            logError(&"{config.file}:misc:layout - Invalid value")
+            logError(&"{config.configFile}:misc:layout - Invalid value")
             quit(1)

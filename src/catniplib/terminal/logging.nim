@@ -1,5 +1,6 @@
 import strformat
+import "colors.nim"
 
 proc logError*(msg: string, fatal: bool = true) =
-    echo &"ERROR: {msg}"
+    echo Foreground.Red & &"ERROR: {msg}" & Default
     if fatal: quit(1)

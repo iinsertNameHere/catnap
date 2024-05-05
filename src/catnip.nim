@@ -1,6 +1,6 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/global/definitions" import CONFIGPATH, Config, STATNAMES
+from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES
 import "catniplib/global/config"
 import "catniplib/terminal/logging"
 import parsetoml
@@ -20,17 +20,18 @@ proc printHelp(cfg: Config) =
     echo "    catnip [options] [arguments]"
     echo ""
     echo "Options:"
-    echo "    -h  --help                               Show help list"
-    echo "    -d  --distroid             <DistroId>    Set which DistroId to use"
-    echo "    -g  --grep                 <StatName>    Get the stats value"
-    echo "    -c  --config               <ConfigDir>   Uses a custom location for the config file"
+    echo "    -h  --help                                Show help list"
+    echo "    -d  --distroid             <DistroId>     Set which DistroId to use"
+    echo "    -g  --grep                 <StatName>     Get the stats value"
+    echo "    -c  --config               <ConfigPath>   Uses a custom location for the config file"
+    echo "    -a  --art                  <DistrosPath>  Uses a custom location for the distros file"
     echo ""
-    echo "    -m  --margin               <Margin>      Overwrite margin value for the displayed logo (Example: 1,2,3)"
-    echo "    -l  --layout               <Layout>      Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
+    echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
+    echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
     echo ""
-    echo "    -fe --figletLogos.enable   <on/off>      Overwrite figletLogos mode"
-    echo "    -fm --figletLogos.margin   <Margin>      Overwrite figletLogos margin (Example: 1,2,3)"
-    echo "    -ff --figletLogos.font     <Font>        Overwrite figletLogos font"
+    echo "    -fe --figletLogos.enable   <on/off>       Overwrite figletLogos mode"
+    echo "    -fm --figletLogos.margin   <Margin>       Overwrite figletLogos margin (Example: 1,2,3)"
+    echo "    -ff --figletLogos.font     <Font>         Overwrite figletLogos font"
     echo ""
     echo "StatNames:"
     echo "    " & STATNAMES.join(", ").wrapWords(80).replace("\n", "\n    ")
@@ -49,6 +50,7 @@ var figletLogos_font = "nil"
 var layout = "nil"
 var margin: seq[int]
 var cfgPath = CONFIGPATH
+var dstPath = DISTROSPATH
 var help = false
 var error = false
 
@@ -66,6 +68,16 @@ if paramCount() > 0:
                 continue
             idx += 1
             cfgPath = paramStr(idx)
+
+        # Art Argument
+        elif param == "-a" or param == "--art":
+            if paramCount() - idx < 1:
+                logError(&"'{param}' - No Value was specified!", false)
+                error = true
+                idx += 1
+                continue
+            idx += 1
+            dstPath = paramStr(idx)
 
         # Help Argument
         elif param == "-h" or param == "--help":
@@ -268,7 +280,7 @@ if paramCount() > 0:
         idx += 1
 
 # Getting config
-var cfg = LoadConfig(cfgPath)
+var cfg = LoadConfig(cfgPath, dstPath)
 
 # Handle argument errors and help
 if help: printHelp(cfg)

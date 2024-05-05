@@ -42,7 +42,8 @@ type
         logo*: Logo
 
     Config* = object
-        file*: string
+        configFile*: string
+        distrosFile*: string
         stats*: TomlValueRef
         distroart*: OrderedTable[string, Logo]
         misc*: TomlValueRef
@@ -53,7 +54,7 @@ const
                     "disk", "cpu", "packages", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
-    DISTROSGPATH* = joinPath(getConfigDir(), "catnip/distros.toml")
+    DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")
     PKGMANAGERS*  = {
         "fedora": "dnf",
         "redhat": "yum",
