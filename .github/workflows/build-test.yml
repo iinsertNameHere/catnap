@@ -20,6 +20,6 @@ jobs:
     - name: 'Build Catnip'
       run: nim release
     - name: 'Install Figlet'
-      run: apt-get install figlet
+      run: sudo apt-get install figlet
     - name: 'Test Catnip'
       run: ./test.sh
