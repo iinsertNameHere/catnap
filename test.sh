@@ -1,14 +1,12 @@
-# alias for config
-alias catnip='./bin/catnip -c config/config.toml -a config/distros.toml'
 # test help
-catnip -h
+./bin/catnip -c config/config.toml -a config/distros.toml -h
 # test distroid
-catnip -d arch
+./bin/catnip -c config/config.toml -a config/distros.toml -d arch
 # test margin
-catnip -m 1,2,3
+./bin/catnip -c config/config.toml -a config/distros.toml -m 1,2,3
 # test layout
-catnip -l ArtOnTop
+./bin/catnip -c config/config.toml -a config/distros.toml -l ArtOnTop
 # test figletlogos mode
-catnip -fe on
+./bin/catnip -c config/config.toml -a config/distros.toml -fe on
 # test figletlogos margin
-catnip -fe on -fm 1,2,3
+./bin/catnip -c config/config.toml -a config/distros.toml -fe on -fm 1,2,3
