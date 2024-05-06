@@ -15,6 +15,7 @@ when not defined release:
     import times
     let t0 = epochTime()
 
+# Help text
 proc printHelp(cfg: Config) =
     echo "Usage:"
     echo "    catnip [options] [arguments]"

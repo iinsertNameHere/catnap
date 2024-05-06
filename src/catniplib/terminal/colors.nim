@@ -12,7 +12,6 @@ proc initForeground(): ColorSet = # (..)
     result.Cyan    = "\e[36m"   # CN
     result.White   = "\e[37m"   # WE
 
-
 proc initForegroundBright(): ColorSet = # {..}
     result.Black   = "\e[30;1m" # BK
     result.Red     = "\e[31;1m" # RD
@@ -42,7 +41,6 @@ proc initBackgroundBright(): ColorSet = # <..>
     result.Magenta = "\e[45;1m" # MA
     result.Cyan    = "\e[46;1m" # CN
     result.White   = "\e[47;1m" # WE
-
 
 # Global ColorSets:
 const

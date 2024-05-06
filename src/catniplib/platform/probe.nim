@@ -11,11 +11,11 @@ from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS
 import "../terminal/logging"
 
 proc getDistro*(): string =
-    ## Returns the name of the running linux distro
+    # Returns the name of the running linux distro
     result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
 
 proc getDistroId*(): DistroId =
-    ## Returns the DistroId of the running linux distro
+    # Returns the DistroId of the running linux distro
     if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
         result.id = "raspbian"
         result.like = "debian"
@@ -24,7 +24,7 @@ proc getDistroId*(): DistroId =
         result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
 
 proc getUptime*(): string =
-    ## Returns the system uptime as a string (DAYS, HOURS, MINUTES)
+    # Returns the system uptime as a string (DAYS, HOURS, MINUTES)
 
     # Uptime in sec
     let uptime = "/proc/uptime".open.readLine.split(".")[0]
@@ -43,15 +43,15 @@ proc getUptime*(): string =
       result = &"{utd}d {uth}h {utm}m" # return days, hours and mins
 
 proc getHostname*(): string =
-    ## Returns the system hostname
+    # Returns the system hostname
     result = uname().nodename
 
 proc getUser*(): string =
-    ## Returns the current username
+    # Returns the current username
     result = getEnv("USER")
 
 proc getKernel*(): string =
-    ## Returns the active kernel version
+    # Returns the active kernel version
     result = "/proc/version".open.readLine.split(" ")[2]
 
 proc getParentPid(pid: int): int =
@@ -72,17 +72,17 @@ proc getProcessName(pid: int): string =
             return stat[1].strip()
 
 proc getTerminal*(): string =
-    ## Returns the currently running terminal emulator
+    # Returns the currently running terminal emulator
     result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
     if result == "login" or result == "sshd":
         result = "tty"
 
 proc getShell*(): string =
-    ## Returns the system shell
+    # Returns the system shell
     result = getCurrentProcessID().getParentPid().getProcessName()
 
 proc getDesktop*(): string =
-    ## Returns the running desktop env
+    # Returns the running desktop env
     result = getEnv("XDG_CURRENT_DESKTOP") # Check Current Desktop (Method 1)
 
     if result == "": # Check Current Desktop (Method 2)
@@ -103,7 +103,7 @@ proc getDesktop*(): string =
         result = "Unknown"
 
 proc getMemory*(mb: bool): string =
-    ## Returns statistics about the memory
+    # Returns statistics about the memory
     let 
         fileSeq: seq[string] = "/proc/meminfo".readLines(3)
 
@@ -121,6 +121,7 @@ proc getMemory*(mb: bool): string =
     result = &"{memUsedInt}/{memTotalInt} {suffix}"
 
 proc getDisk*(): string =
+    # Returns disk space usage
     proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
     proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
 
@@ -130,6 +131,7 @@ proc getDisk*(): string =
     result = &"{used} / {total} GB ({percentage}%)"
 
 proc getCpu*(): string =
+    # Returns CPU model
     let rawLines = readFile("/proc/cpuinfo").split("\n")
     
     var key_name = "model name"
@@ -148,6 +150,7 @@ proc getCpu*(): string =
             break
 
 proc getPkgManager(distroId: DistroId): string =
+    # Returns main package manager of distro
     for key in PKGMANAGERS.keys:
         if distroId.id == key:
             return PKGMANAGERS[key]
@@ -159,6 +162,7 @@ proc getPkgManager(distroId: DistroId): string =
     return "unknown"
 
 proc getPackages*(distroId: DistroId): string =
+    # Return install package count of the main package manager of the distro
     let pkgManager = getPkgManager(distroId)
     if pkgManager == "unknown":
         return "unknown"

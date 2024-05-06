@@ -7,20 +7,20 @@ from "stats" import newStat
 import "../terminal/colors"
 
 proc repeat*(s: string, i: int): string =
-    ## Repeats a string 's', 'i' times
+    # Repeats a string 's', 'i' times
     for _ in countup(0, i):
         result &= s
 
 proc reallen*(s: string): int =
-    ## Get the length of a string without ansi color codes
+    # Get the length of a string without ansi color codes
     result = Uncolorize(s).runeLen
 
 proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[string] =
-    ## Build output lines from Stats object and FetchInfo object
+    # Build output lines from Stats object and FetchInfo object
 
     var sb: seq[string]
     proc addStat(stat: Stat, value: string) =
-        ## Function to add a stat/value pair to the result
+        # Function to add a stat/value pair to the result
         var line = stat.icon & " " & stat.name
         while uint(line.runeLen) < stats.maxlen:
             line &= " "
@@ -52,7 +52,8 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[
 
         if stats.list[stat] != NIL_STAT:
             addStat(stats.list[stat], fi.list[stat])
-
+    
+    # Color stat
     if stats.list["colors"] != NIL_STAT:
         addStat(stats.list["colors"], colorval)
     sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")

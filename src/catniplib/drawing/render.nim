@@ -17,18 +17,18 @@ proc getStat(stats: TomlValueRef, key: string): TomlValueRef =
     return nil
 
 proc Render*(config: Config, fetchinfo: FetchInfo) =
-    ## Function that Renders a FetchInfo object to the console
+    # Function that Renders a FetchInfo object to the console
 
-    ##### Define Margins #####
+    # Define Margins
     let
         margin_top = fetchinfo.logo.margin[0]
         margin_left = fetchinfo.logo.margin[1]
         margin_right = fetchinfo.logo.margin[2]
 
-    ##### Load Config #####
+    # Load Config
     let layout = config.misc["layout"].getStr()
 
-    ##### Build distro_art buffer #####
+    # Build distro_art buffer
     var distro_art: seq[string]
 
     # Fill distro_art buffer with fetchinfo.logo.art
@@ -41,7 +41,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
         for _ in countup(1, margin_top):
             distro_art = " ".repeat(l) & distro_art
 
-    ##### Build stat_block buffer #####
+    # Build stat_block buffer
     var stats: Stats = newStats()
 
     for stat_name in STATNAMES:
@@ -62,7 +62,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     # Build the stat_block buffer
     var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, fetchinfo)
 
-    ##### Merge buffers and output #####
+    # Merge buffers and output
     case layout:
         of "Inline": # Handle Inline Layout
             if not config.misc["imageMode"]["enable"].getBool():
@@ -78,7 +78,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                 for idx in countup(0, distro_art.len - 1):
                     echo distro_art[idx] & stats_block[idx]
             else:
-                ### IMAGE mode ###
+                # Image mode
                 let
                     scale = config.misc["imageMode"]["scale"].getInt()
                     path  = config.misc["imageMode"]["path"].getStr()
@@ -111,7 +111,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                 for idx in countup(0, stats_block.len - 1):
                     echo stats_block[idx]
             else:
-                ### IMAGE mode ###
+                # Image mode
                 let
                     scale = config.misc["imageMode"]["scale"].getInt()
                     path  = config.misc["imageMode"]["path"].getStr()
@@ -139,7 +139,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                 for idx in countup(0, distro_art.len - 1):
                     echo distro_art[idx]
             else:
-                ### IMAGE mode ###
+                # Image mode
                 let
                     scale = config.misc["imageMode"]["scale"].getInt()
                     path  = config.misc["imageMode"]["path"].getStr()
