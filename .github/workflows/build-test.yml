@@ -22,4 +22,5 @@ jobs:
     - name: 'Install Figlet'
       run: sudo apt-get install figlet
     - name: 'Test Catnip'
+      run: cd tests
       run: ./test.sh
