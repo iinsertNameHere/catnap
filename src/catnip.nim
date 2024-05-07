@@ -1,6 +1,6 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES
+from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, TEMPPATH
 import "catniplib/global/config"
 import "catniplib/terminal/logging"
 import parsetoml
@@ -14,6 +14,9 @@ import std/wordwrap
 when not defined release:
     import times
     let t0 = epochTime()
+
+if not existsDir(TEMPPATH):
+  createDir(TEMPPATH)
 
 # Help text
 proc printHelp(cfg: Config) =

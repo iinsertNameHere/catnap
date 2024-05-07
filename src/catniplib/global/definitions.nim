@@ -39,6 +39,7 @@ type
 
     FetchInfo* = object
         list*: Table[string, string]
+        disk_stats*: seq[string]
         distroId*: DistroId
         logo*: Logo
 
@@ -56,6 +57,7 @@ const
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
     DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")
+    TEMPPATH*     = "/tmp/catnip"
     PKGMANAGERS*  = {
         "fedora": "dnf",
         "redhat": "yum",

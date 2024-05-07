@@ -7,7 +7,7 @@ import posix_utils
 import tables
 import osproc
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, TEMPPATH
 import "../terminal/logging"
 
 proc getDistro*(): string =
@@ -120,15 +120,42 @@ proc getMemory*(mb: bool): string =
   
     result = &"{memUsedInt}/{memTotalInt} {suffix}"
 
-proc getDisk*(): string =
+proc getDisks*(): seq[string] =
     # Returns disk space usage
-    proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
-    proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
+    proc getTotalDiskSpace(path: cstring): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
+    proc getUsedDiskSpace(path: cstring): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
 
-    let total = getTotalDiskSpace().round().int()
-    let used = getUsedDiskSpace().round().int()
-    let percentage = ((used / total) * 100).round().int()
-    result = &"{used} / {total} GB ({percentage}%)"
+    if execCmd(&"lsblk | grep part > {TEMPPATH}/lsblk.txt") != 0:
+        logError("Failed to execute 'lsblk'")
+
+    let lsblk = readFile(TEMPPATH & "/lsblk.txt").strip().split('\n')
+
+    var raw: seq[tuple[p: string, r: string]]
+
+    for line in lsblk:
+        let path = line.split(" ")[^1]
+
+        if path == "/boot":
+            continue
+
+        let 
+            c_path = cstring(path.strip())
+            total = getTotalDiskSpace(c_path).round().int()
+            used = getUsedDiskSpace(c_path).round().int()
+            percentage = ((used / total) * 100).round().int()
+        raw.add((path.strip(), &"{used} / {total} GB ({percentage}%)"))
+
+    # Putting main disk at index 0
+    var idx = 0
+    while result.len < raw.len:
+        let r = raw[idx]
+        
+        if r[0] == "/" and result.len == 0:
+            result.add(r[1])
+        elif result.len > 0:
+            result.add(r[1])
+
+        idx += 1
 
 proc getCpu*(): string =
     # Returns CPU model

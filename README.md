@@ -84,6 +84,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 >#### Dependencies:
 >- pcre
 >- gzip
+>- util-linux
 >#### Optional:
 >- figlet (required for figletLogos)
 >- [viu](https://github.com/atanunq/viu) (required for imageMode)
@@ -148,7 +149,7 @@ desktop   = {icon = ">", name = "desktp", color = "(CN)"}
 terminal  = {icon = ">", name = "term", color = "(RD)"}
 shell     = {icon = ">", name = "shell", color = "(MA)"}
 cpu       = {icon = ">", name = "cpu", color = "(RD)"}
-disk      = {icon = ">", name = "disk", color = "(GN)"}
+disk_0    = {icon = ">", name = "disk", color = "(GN)"}
 memory    = {icon = ">", name = "memory", color = "(YW)"}
 sep_color = "SEPARATOR"
 colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
@@ -215,6 +216,28 @@ terminal  = {icon = ">", name = "term", color = "(RD)"}
 shell     = {icon = ">", name = "shell", color = "(MA)"}
 cpu       = {icon = ">", name = "cpu", color = "(RD)"}
 disk      = {icon = ">", name = "disk", color = "(GN)"}
+memory    = {icon = ">", name = "memory", color = "(YW)"}
+sep_color = "SEPARATOR"
+colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
+```
+
+*You can add more disks to you stats by just creating a new `disk_[index]` stat. Don't adding the `_[index]` suffix, uses index 0.* 
+```toml
+##############################################
+##          FetchInfo stats Config          ##
+##############################################
+[stats]
+username  = {icon = ">", name = "user", color = "(RD)"}
+hostname  = {icon = ">", name = "hname", color = "(YW)"}
+uptime    = {icon = ">", name = "uptime", color = "(BE)"}
+distro    = {icon = ">", name = "distro", color = "(GN)"}
+kernel    = {icon = ">", name = "kernel", color = "(MA)"}
+desktop   = {icon = ">", name = "desktp", color = "(CN)"}
+terminal  = {icon = ">", name = "term", color = "(RD)"}
+shell     = {icon = ">", name = "shell", color = "(MA)"}
+cpu       = {icon = ">", name = "cpu", color = "(RD)"}
+disk      = {icon = ">", name = "disk", color = "(GN)"}
+disk_1    = {icon = ">", name = "disk ext", color = "(GN)"} # Second disk stat
 memory    = {icon = ">", name = "memory", color = "(YW)"}
 sep_color = "SEPARATOR"
 colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}

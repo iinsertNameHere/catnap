@@ -44,7 +44,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     # Build stat_block buffer
     var stats: Stats = newStats()
 
-    for stat_name in STATNAMES:
+    for stat_name in STATNAMES & fetchinfo.disk_stats:
         stats.setStat(stat_name, config.stats.getStat(stat_name))
 
     # Get ordered statnames list

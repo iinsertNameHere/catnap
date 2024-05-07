@@ -5,6 +5,8 @@ import strutils
 from "../global/definitions" import Stats, Stat, FetchInfo, STATNAMES
 from "stats" import newStat
 import "../terminal/colors"
+import "../terminal/logging"
+import strformat
 
 proc repeat*(s: string, i: int): string =
     # Repeats a string 's', 'i' times
@@ -44,11 +46,15 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[
     sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
 
     for stat in stat_names:
+
         if stat == "colors": continue
-        
+
         if stat.split('_')[0] == "sep":
             sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
             continue
+
+        if not stats.list.contains(stat):
+            logError(&"Unknown StatName '{stat}'!")
 
         if stats.list[stat] != NIL_STAT:
             addStat(stats.list[stat], fi.list[stat])
