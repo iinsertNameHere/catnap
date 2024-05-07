@@ -14,7 +14,7 @@
     ·
     <a href="#-configuration">Configuration</a>
     ·
-    <a href="#thanks-to-all-contributors-">Contributors</a>
+    <a href="#contributing">Contributing</a>
   </p>
 </div>
 <br>
@@ -337,6 +337,9 @@ art = [
 
 <br>
 <br>
+
+# Contributing
+More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 # Thanks to all contributors ❤
 
