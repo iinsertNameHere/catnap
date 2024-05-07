@@ -145,6 +145,9 @@ proc getDisks*(): seq[string] =
             percentage = ((used / total) * 100).round().int()
         raw.add((path.strip(), &"{used} / {total} GB ({percentage}%)"))
 
+    if raw.len < 1:
+        return @["Unknown"]
+
     # Putting main disk at index 0
     var idx = 0
     while result.len < raw.len:
