@@ -10,7 +10,7 @@ const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
 const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color","xterm","xterm-256color", "alacritty"]
 
 proc isImageTerm(): bool =
-    ## Returns true if terminal supports image mode
+    # Returns true if terminal supports image mode
     var term = ""
     if getEnv("TERM_PROGRAM") != "":
         term = getEnv("TERM_PROGRAM")
@@ -19,18 +19,20 @@ proc isImageTerm(): bool =
     return (term in VALID_TERMS or "iTerm" in term or "WezTerm" in term or "mintty" in term or "kitty" in term)
 
 proc LoadConfig*(cfgPath: string, dstPath: string): Config =
-    ## Lads a config file and validates it
+    # Lads a config file and validates it
 
-    ### Validate the config file ###
+    # Validate the config file
     if not fileExists(cfgPath):
         logError(&"{cfgPath} - file not found!")
-
+    
+    # Validate the art file
     if not fileExists(dstPath):
         logError(&"{dstPath} - file not found!")
 
     let tcfg = parsetoml.parseFile(cfgPath)
     let tdistros = parsetoml.parseFile(dstPath)
-
+    
+    # Error out if stats missing
     if not tcfg.contains("stats"):
         logError(&"{cfgPath} - missing 'stats'!")
 
@@ -76,7 +78,7 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
     if tcfg["misc"]["imageMode"]["enable"].getBool() and not isImageTerm():
         tcfg["misc"]["imageMode"]["enable"] = parsetoml.parseString(&"val = false")["val"]
         
-    ### Fill out the result object ###
+    # Fill out the result object
     result.configFile = cfgPath
     result.distrosFile = dstPath
 

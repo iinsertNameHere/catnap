@@ -19,3 +19,7 @@ jobs:
         nim-version: '2.x'
     - name: 'Build Catnip'
       run: nim release
+    - name: 'Install Figlet'
+      run: sudo apt-get install figlet
+    - name: 'Test Catnip'
+      run: cd tests && ./test.sh
