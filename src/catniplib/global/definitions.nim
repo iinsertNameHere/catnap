@@ -2,6 +2,7 @@ import parsetoml
 import os
 import tables
 
+# Define all stats here
 type
     Color* = string
 

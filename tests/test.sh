@@ -12,5 +12,5 @@
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on
 # test figletlogos margin
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on -fm 1,2,3
-# test figletlogos font
+# test figletlogos font with example figlet font file
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on -ff basic.flf
