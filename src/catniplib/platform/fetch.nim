@@ -23,6 +23,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
 
     # Add disks by index
     var idx = 0
+    
     for disk in probe.getDisks():
         var key = "disk" & (if idx != 0: "_" & $idx else: "")
         result.disk_stats.add(key)
