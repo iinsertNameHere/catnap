@@ -79,6 +79,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 </details>
 
 ## 🪡 Installation/Build
+>Arch Linux users can install Catnip through the [AUR](https://aur.archlinux.org/packages/catnip-git) (git package)
+
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
 
 >#### Dependencies:
@@ -221,7 +223,7 @@ sep_color = "SEPARATOR"
 colors    = {icon = ">", name = "colors", color = "!DT!", symbol = "#"}
 ```
 
-*You can add more disks to you stats by just creating a new `disk_[index]` stat. Don't adding the `_[index]` suffix, uses index 0.* 
+*You can add more disks to you stats by just creating a new `disk_[index]` stat. If no`_[index]` is added to the end of `disk`, Catnip will use index 0. (aka the first disk)*
 ```toml
 ##############################################
 ##          FetchInfo stats Config          ##
@@ -358,13 +360,16 @@ art = [
 ]
 ```
 
-<br>
-<br>
+## 🧪 Testing
+To test the functionality of catnip, run this after compiling catnip:
+```bash
+$ ./tests/test.sh
+```
 
-# Contributing
+## Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-# Thanks to all contributors ❤
+## Thanks to all contributors ❤
 
 <a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
    <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
