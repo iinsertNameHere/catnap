@@ -117,8 +117,9 @@ proc getMemory*(mb: bool): string =
         memAvailableInt = memAvailableString.parseUInt div dividend
 
         memUsedInt = memTotalInt - memAvailableInt
-  
-    result = &"{memUsedInt} / {memTotalInt} {suffix}"
+        percentage = ((int(memUsedInt) / int(memTotalInt)) * 100).round().int()
+
+    result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
 
 proc getMounts*(): seq[string] =
     proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
