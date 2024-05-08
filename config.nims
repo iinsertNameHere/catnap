@@ -24,26 +24,14 @@ proc configure() =
     else:
         configpath = XDG_CONFIG_HOME & "/catnip/"
 
-    var ans = ""
-    if fileExists(configpath & "config.toml"):
-        ans = ""
-        while ans notin @["n", "N", "y", "Y"]:
-            echo "Overwrite the current config? [y/n] "
-            exec "read -n1 ans && echo $ans > /tmp/read_ans.txt"
-            ans = readFile("/tmp/read_ans.txt").strip()
+    echo "Creating " & configpath
+    mkdir(configpath)
 
-    if ans in @["y", "Y"]:
-        echo "Creating " & configpath
-        mkdir(configpath)
+    echo "Creating " & configpath & "config.toml"
+    cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
 
-        echo "Creating " & configpath & "config.toml"
-        cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
-
-        echo "Creating " & configpath & "distros.toml"
-        cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
-    else:
-        echo " Skipping..."
-        echo "\e[0;33mWarning\e[0;0m Make that you config file still is compatible!"
+    echo "Creating " & configpath & "distros.toml"
+    cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"
