@@ -21,10 +21,10 @@ jobs:
     - name: 'Run Tests'
       run: cd tests && ./test.sh
     - name: 'Add build Number'
-      run: echo 'const BUILDNUMBER = "${{ github.run_id }}"' > ./src/catniplib/global/buildnum.nim
+      run: echo 'const BUILDNUMBER* = "${{ github.run_id }}"' > ./src/catniplib/global/buildnum.nim
     - name: 'Push build Number'
       run: |
-        git config --global user.name 'iinsertNameHere'
-        git config --global user.email 'iinsertNameHere@users.noreply.github.com'
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git commit -am "Automatic build Number update"
         git push
