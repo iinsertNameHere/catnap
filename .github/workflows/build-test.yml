@@ -2,9 +2,6 @@ name: build-test
 on:
   push:
   pull_request:
-permissions:
-  contents: read|write
-  pull-requests: read|write
 jobs:
   build:
     runs-on: ubuntu-latest
