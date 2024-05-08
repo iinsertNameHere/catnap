@@ -9,8 +9,8 @@ from unicode import toLower
 import strutils
 import strformat
 import std/wordwrap
-
 import "catniplib/platform/probe"
+from "catniplib/global/buildnum" import BUILDNUMBER
 
 # Debug code for execution time
 when not defined release:
@@ -48,6 +48,8 @@ proc printHelp(cfg: Config) =
     echo ""
     echo "DistroIds:"
     echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
+    echo ""
+    echo "Catnip - Build " & BUILDNUMBER
     echo ""
     quit()
 

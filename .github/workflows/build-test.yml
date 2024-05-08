@@ -3,8 +3,8 @@ on:
   push:
   pull_request:
 permissions:
-  contents: read
-  pull-requests: read
+  contents: read|write
+  pull-requests: read|write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,5 +21,13 @@ jobs:
       run: nim release
     - name: 'Install Figlet'
       run: sudo apt-get install figlet
-    - name: 'Test Catnip'
+    - name: 'Run Tests'
       run: cd tests && ./test.sh
+    - name: 'Add build Number'
+      run: echo 'const BUILDNUMBER = "${{ github.run_id }}"' > ./src/catniplib/global/buildnum.nim
+    - name: 'Push build Number'
+      run: |
+        git config --global user.name 'iinsertNameHere'
+        git config --global user.email 'iinsertNameHere@users.noreply.github.com'
+        git commit -am "Automatic build Number update"
+        git push
