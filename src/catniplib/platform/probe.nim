@@ -118,7 +118,7 @@ proc getMemory*(mb: bool): string =
 
         memUsedInt = memTotalInt - memAvailableInt
   
-    result = &"{memUsedInt}/{memTotalInt} {suffix}"
+    result = &"{memUsedInt} / {memTotalInt} {suffix}"
 
 proc getMounts*(): seq[string] =
     proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
