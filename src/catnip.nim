@@ -334,7 +334,7 @@ else:
     if statname == "disks":
         var count = 0
         for p in probe.getMounts():
-            echo $count & ": " & p
+            echo "disk_" & $count & ": " & p
             count += 1
         quit()
     else:
