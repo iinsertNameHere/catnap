@@ -118,16 +118,41 @@ proc getMemory*(mb: bool): string =
 
         memUsedInt = memTotalInt - memAvailableInt
   
-    result = &"{memUsedInt}/{memTotalInt} {suffix}"
+    result = &"{memUsedInt} / {memTotalInt} {suffix}"
 
-proc getDisk*(): string =
+proc getMounts*(): seq[string] =
+    proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
+
+    let mounts_raw = $getMountPoints()
+    if mounts_raw == "":
+        logError("Failed to get disk mounting Points")
+
+    let mounts = mounts_raw.split(',')
+
+    for mount in mounts:
+        if mount == "":
+            continue
+        
+        if not mount.startsWith("/run/media"):
+            if mount.startsWith("/proc") or
+            mount.startsWith("/run")     or
+            mount.startsWith("/sys")     or
+            mount.startsWith("/tmp")     or
+            mount.startsWith("/boot")    or
+            mount.startsWith("/dev"):
+                continue
+
+        result.add(mount)
+
+proc getDisk*(mountingPoint: string): string =
     # Returns disk space usage
-    proc getTotalDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
-    proc getUsedDiskSpace(): cfloat {.importc, varargs, header: "getDiskSpace.hpp".}
+    proc getTotalDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
+    proc getUsedDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
 
-    let total = getTotalDiskSpace().round().int()
-    let used = getUsedDiskSpace().round().int()
-    let percentage = ((used / total) * 100).round().int()
+    let
+        total = getTotalDiskSpace(mountingPoint).round().int()
+        used = getUsedDiskSpace(mountingPoint).round().int()
+        percentage = ((used / total) * 100).round().int()
     result = &"{used} / {total} GB ({percentage}%)"
 
 proc getCpu*(): string =

@@ -18,7 +18,7 @@ terminal  = {icon = " ", name = "term", color = "(RD)"}
 shell     = {icon = " ", name = "shell", color = "(MA)"}
 packages  = {icon = " ", name = "packages", color = "(GN)"}
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
-# disk      = {icon = " ", name = "disk", color = "(GN)"}
+# disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 # memory    = {icon = " ", name = "memory", color = "(YW)"}
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}

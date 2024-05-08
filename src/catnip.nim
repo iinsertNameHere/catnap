@@ -10,6 +10,8 @@ import strutils
 import strformat
 import std/wordwrap
 
+import "catniplib/platform/probe"
+
 # Debug code for execution time
 when not defined release:
     import times
@@ -17,6 +19,13 @@ when not defined release:
 
 # Help text
 proc printHelp(cfg: Config) =
+    let mounts_len = probe.getMounts().len
+    var disk_statnames: seq[string]
+    var count = 0
+    while count < mounts_len:
+        disk_statnames.add("disk_" & $count)
+        count += 1
+
     echo "Usage:"
     echo "    catnip [options] [arguments]"
     echo ""
@@ -35,7 +44,7 @@ proc printHelp(cfg: Config) =
     echo "    -ff --figletLogos.font     <Font>         Overwrite figletLogos font"
     echo ""
     echo "StatNames:"
-    echo "    " & STATNAMES.join(", ").wrapWords(80).replace("\n", "\n    ")
+    echo "    " & (STATNAMES & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")
     echo ""
     echo "DistroIds:"
     echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
@@ -322,9 +331,16 @@ if statname == "nil":
         echo &"Execution finished in {time}s"
 
 else:
-    let fetchinfo = fetchSystemInfo(cfg)
-    
-    if not fetchinfo.list.contains(statname):
-        logError(&"Unknown StatName '{statname}'!")
-    
-    echo fetchinfo.list[statname]
+    if statname == "disks":
+        var count = 0
+        for p in probe.getMounts():
+            echo "disk_" & $count & ": " & p
+            count += 1
+        quit()
+    else:
+        let fetchinfo = fetchSystemInfo(cfg)
+        
+        if not fetchinfo.list.contains(statname):
+            logError(&"Unknown StatName '{statname}'!")
+        
+        echo fetchinfo.list[statname]
