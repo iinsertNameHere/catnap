@@ -1,10 +1,12 @@
 import unicode
 import tables
 import strutils
+import strformat
 
 from "../global/definitions" import Stats, Stat, FetchInfo, STATNAMES
 from "stats" import newStat
 import "../terminal/colors"
+import "../terminal/logging"
 
 proc repeat*(s: string, i: int): string =
     # Repeats a string 's', 'i' times
@@ -43,12 +45,19 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[
     # Construct the stats section with all stats that are not NIL
     sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
 
+    var fetchinfolist_keys: seq[string] 
+    for k in fi.list.keys:
+        fetchinfolist_keys.add(k)
+
     for stat in stat_names:
         if stat == "colors": continue
         
         if stat.split('_')[0] == "sep":
             sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
             continue
+
+        if stat notin fetchinfolist_keys:
+            logError(&"Unknown StatName '{stat}'!")
 
         if stats.list[stat] != NIL_STAT:
             addStat(stats.list[stat], fi.list[stat])

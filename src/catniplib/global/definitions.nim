@@ -39,6 +39,7 @@ type
 
     FetchInfo* = object
         list*: Table[string, string]
+        disk_statnames*: seq[string]
         distroId*: DistroId
         logo*: Logo
 
@@ -52,7 +53,7 @@ type
 const
     STATNAMES*    = @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "terminal",
-                    "disk", "cpu", "packages", "colors"]
+                    "cpu", "packages", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
     DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")

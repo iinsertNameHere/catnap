@@ -11,7 +11,7 @@ proc compile(release: bool) =
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnip.nim")
 
-    exec("nim c " & args.join(" "))
+    exec("nim c  " & args.join(" "))
 
 proc configure() =
     when defined linux:
