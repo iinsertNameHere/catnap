@@ -1,5 +1,6 @@
 import strformat
 import strutils
+import os
 
 proc compile(release: bool) =
     var args: seq[string]
@@ -14,27 +15,35 @@ proc compile(release: bool) =
     exec("nim c " & args.join(" "))
 
 proc configure() =
-    when defined linux:
-        var configpath = ""
+    var configpath = ""
 
-        # Use XDG_CONFIG_HOME only if it is defined. Else use ~/.confg
-        let XDG_CONFIG_HOME = getEnv("XDG_CONFIG_HOME")
-        if XDG_CONFIG_HOME == "":
-            configpath = getEnv("HOME") & "/.config/catnip/"
-        else:
-            configpath = XDG_CONFIG_HOME & "/catnip/"
+    # Use XDG_CONFIG_HOME only if it is defined. Else use ~/.confg
+    let XDG_CONFIG_HOME = getEnv("XDG_CONFIG_HOME")
+    if XDG_CONFIG_HOME == "":
+        configpath = getEnv("HOME") & "/.config/catnip/"
+    else:
+        configpath = XDG_CONFIG_HOME & "/catnip/"
 
-    when defined windows:
-        let configpath = "C:/Users/" & getEnv("USERPROFILE") & "AppData/Local/catnip/"
+    var ans = ""
+    if fileExists(configpath & "config.toml"):
+        ans = ""
+        while ans notin @["n", "N", "y", "Y"]:
+            echo "Overwrite the current config? [y/n] "
+            exec "read -n1 ans && echo $ans > /tmp/read_ans.txt"
+            ans = readFile("/tmp/read_ans.txt").strip()
 
-    echo "Creating " & configpath
-    mkdir(configpath)
+    if ans in @["y", "Y"]:
+        echo "Creating " & configpath
+        mkdir(configpath)
 
-    echo "Creating " & configpath & "config.toml"
-    cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
+        echo "Creating " & configpath & "config.toml"
+        cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
 
-    echo "Creating " & configpath & "distros.toml"
-    cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
+        echo "Creating " & configpath & "distros.toml"
+        cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
+    else:
+        echo " Skipping..."
+        echo "\e[0;33mWarning\e[0;0m Make that you config file still is compatible!"
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"
@@ -68,7 +77,7 @@ task install_bin, "Installs the bin file and man page:":
     else:
         echo &"Copying {local_path} to /usr/share/man/man1 - SKIPPED"
 
-task uninstall_bin, "Uninstalls the bin file and man page:":
+task uninstall, "Uninstalls the bin file and man page:":
     echo "\e[36;1mUninstalling\e[0;0m bin file"
     exec &"sudo rm /usr/local/bin/catnip"
     echo "\e[36;1mUninstalling\e[0;0m man page"
