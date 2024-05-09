@@ -20,11 +20,3 @@ jobs:
       run: sudo apt-get install figlet
     - name: 'Run Tests'
       run: cd tests && ./commandline_args.sh
-    - name: 'Set CURRENTCOMMIT const'
-      run: echo 'const CURRENTCOMMIT* = "${{ github.sha }}"' > ./src/catniplib/global/currentcommit.nim
-    - name: 'Push changes'
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git commit -am "Automatic build Number update"
-        git push
