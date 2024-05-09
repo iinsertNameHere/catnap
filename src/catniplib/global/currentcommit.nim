@@ -1,1 +1,1 @@
-const CURRENTCOMMIT* = "N/A"
+const CURRENTCOMMIT* = "c73a74c67993e0cd326a5aa5c5537e3ef4bf91ff"
