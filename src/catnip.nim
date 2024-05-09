@@ -10,12 +10,18 @@ import strutils
 import strformat
 import std/wordwrap
 import "catniplib/platform/probe"
-from "catniplib/global/buildnum" import BUILDNUMBER
+from "catniplib/global/currentcommit" import CURRENTCOMMIT
 
 # Debug code for execution time
 when not defined release:
     import times
     let t0 = epochTime()
+
+proc cap(s: string, length: int): string =
+    if s.len > length:
+        result = s[0..length]
+    else:
+        result = s
 
 # Help text
 proc printHelp(cfg: Config) =
@@ -31,6 +37,7 @@ proc printHelp(cfg: Config) =
     echo ""
     echo "Options:"
     echo "    -h  --help                                Show help list"
+    echo "    -v  --version                             Shows info about the version"
     echo "    -d  --distroid             <DistroId>     Set which DistroId to use"
     echo "    -g  --grep                 <StatName>     Get the stats value"
     echo "    -c  --config               <ConfigPath>   Uses a custom location for the config file"
@@ -48,8 +55,6 @@ proc printHelp(cfg: Config) =
     echo ""
     echo "DistroIds:"
     echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
-    echo ""
-    echo "Catnip - Build " & BUILDNUMBER
     echo ""
     quit()
 
@@ -71,8 +76,13 @@ if paramCount() > 0:
     while paramCount() > (idx - 1):
         var param = paramStr(idx)
 
+        # Version Argument
+        if param == "-v" or param == "--version":
+            echo "Commit " & CURRENTCOMMIT.cap(7)
+            quit()
+
         # Config Argument
-        if param == "-c" or param == "--config":
+        elif param == "-c" or param == "--config":
             if paramCount() - idx < 1:
                 logError(&"'{param}' - No Value was specified!", false)
                 error = true
@@ -327,11 +337,6 @@ if statname == "nil":
     Render(cfg, fetchinfo)
     echo ""
 
-    # Debug code for execution time
-    when not defined release:
-        let time = (epochTime() - t0).formatFloat(format = ffDecimal, precision = 3)
-        echo &"Execution finished in {time}s"
-
 else:
     if statname == "disks":
         var count = 0
@@ -346,3 +351,8 @@ else:
             logError(&"Unknown StatName '{statname}'!")
         
         echo fetchinfo.list[statname]
+
+# Debug code for execution time
+when not defined release:
+    let time = (epochTime() - t0).formatFloat(format = ffDecimal, precision = 3)
+    echo &"Execution finished in {time}s"

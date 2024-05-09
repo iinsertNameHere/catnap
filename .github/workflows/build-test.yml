@@ -19,10 +19,10 @@ jobs:
     - name: 'Install Figlet'
       run: sudo apt-get install figlet
     - name: 'Run Tests'
-      run: cd tests && ./test.sh
-    - name: 'Add build Number'
-      run: echo 'const BUILDNUMBER* = "${{ github.run_id }}"' > ./src/catniplib/global/buildnum.nim
-    - name: 'Push build Number'
+      run: cd tests && ./commandline_args.sh
+    - name: 'Set CURRENTCOMMIT const'
+      run: echo 'const CURRENTCOMMIT* = "${{ github.sha }}"' > ./src/catniplib/global/currentcommit.nim
+    - name: 'Push changes'
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'

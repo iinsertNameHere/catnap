@@ -1,16 +1,26 @@
-# test help
+# Test help
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -h
-# test distroid
+
+# Test version
+./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -v
+
+# Test distroid
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -d arch
-# test grep
+
+# Test grep
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -g kernel
-# test margin
+
+# Test margin
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -m 1,2,3
-# test layout
+
+# Test layout
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -l ArtOnTop
-# test figletlogos mode
+
+# Test figletlogos mode
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on
-# test figletlogos margin
+
+# Test figletlogos margin
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on -fm 1,2,3
-# test figletlogos font with example figlet font file
+
+# Test figletlogos font with example figlet font file
 ./../bin/catnip -c ../config/config.toml -a ../config/distros.toml -fe on -ff basic.flf
