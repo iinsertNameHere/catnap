@@ -2,3 +2,4 @@
 catnip
 *.exe
 *.gz
+src/catniplib/global/currentcommit.nim

@@ -35,10 +35,12 @@ proc configure() =
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"
+    exec &"./tests/git-commit-id.sh"
     compile(true)
 
 task debug, "Builds the project in debug mode":
     echo "\e[36;1mBuilding\e[0;0m in debug mode"
+    exec &"./tests/git-commit-id.sh"
     compile(false)
 
 task install_cfg, "Installs the config files":
