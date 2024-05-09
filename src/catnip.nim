@@ -17,12 +17,6 @@ when not defined release:
     import times
     let t0 = epochTime()
 
-proc cap(s: string, length: int): string =
-    if s.len > length:
-        result = s[0..length]
-    else:
-        result = s
-
 # Help text
 proc printHelp(cfg: Config) =
     let mounts_len = probe.getMounts().len
@@ -78,7 +72,7 @@ if paramCount() > 0:
 
         # Version Argument
         if param == "-v" or param == "--version":
-            echo "Commit " & CURRENTCOMMIT.cap(7)
+            echo "Commit " & CURRENTCOMMIT
             quit()
 
         # Config Argument
