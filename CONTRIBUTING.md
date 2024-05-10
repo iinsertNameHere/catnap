@@ -2,7 +2,7 @@
 Just create a new [Issue](https://github.com/iinsertNameHere/catnip/issues) using the Correct Template or Implement an existing one and create a Pull request for it.
 
 # Project structure
-```shell
+```graphql
 .
 ├── config/
 │   ├── config.toml  # Main config
@@ -11,14 +11,17 @@ Just create a new [Issue](https://github.com/iinsertNameHere/catnip/issues) usin
 ├── image/ # Contains all images for Readme
 ├── src/
 │   ├── catniplib/
-│   │   ├── drawing/    # Stuff rendering to output
-│   │   ├── generation/ # Stuff generating render objects
-│   │   ├── global/     # Stuff used globally
-│   │   ├── platform/   # Stuff related to fetching system info
-│   │   └── terminal/   # Stuff related to terminal stuff (Colors, Logging)
+│   │   ├── drawing/    # Files for rendering output
+│   │   ├── generation/ # Files for generating output objects
+│   │   ├── global/     # Files used globally
+│   │   ├── platform/   # Files related to fetching system info
+│   │   └── terminal/   # Files related to terminal stuff (Colors, Logging)
 │   ├── extern/
 │   │   ├── headers/   # Contains extern c++ headers (hpp)
 │   │   └── libraries/ # Contains extern libs
 │   └── catnip.nim # Entry src file
+├── scripts/
+│   ├── test-commandline-args.sh # Checks if catnip's cmd args work
+│   └── git-commit-id.sh         # Generates the currentcommit.nim file
 └── config.nims
 ```
