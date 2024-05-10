@@ -105,7 +105,8 @@ cd ./catnip
 nim install
 ```
 
-> **NOTE:** For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
+> [!IMPORTANT]
+> For the icons to work, make sure you set a [NerdFont](https://www.nerdfonts.com/) as you terminal font.
 
 <br>
 
@@ -254,7 +255,8 @@ Catnip's color system uses a ColorId, which is made up of the colors first and l
 - Background Normal -> `[#]`
 - Background Bright -> `<#>`
 
->**NOTE:** `#` Should be replaced by the color id.
+>[!NOTE]
+>`#` Should be replaced by the color id.
 
 **Color IDs:**
 - BLACK   -> `BK`
@@ -370,19 +372,19 @@ $ ./commandline_args.sh
 ## Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
+
 ## Thanks to all contributors ❤
 
-<a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
-   <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
-</a>
+<p align="center">
+  <a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
+     <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
+  </a>
+</p>
 
 <br>
 <br>
 
-<a href="https://star-history.com/#">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=iinsertNameHere/catnip&type=Timeline" />
- </picture>
-</a>
+
+<p align="center">
+    <img src="https://api.lucabubi.me/chart?username=iinsertNameHere&repository=catnip">
+</p>
