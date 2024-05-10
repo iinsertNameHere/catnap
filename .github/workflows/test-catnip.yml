@@ -20,4 +20,4 @@ jobs:
     - name: 'Install Figlet'
       run: sudo apt-get install figlet
     - name: 'Run Tests'
-      run: cd tests && ./commandline_args.sh
+      run: cd scripts && ./test-commandline-args.sh
