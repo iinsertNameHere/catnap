@@ -45,7 +45,7 @@ proc printHelp(cfg: Config) =
     echo "    -ff --figletLogos.font     <Font>         Overwrite figletLogos font"
     echo ""
     echo "StatNames:"
-    echo "    " & (STATNAMES & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")
+    echo "    " & (STATNAMES & @["disks"] & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")
     echo ""
     echo "DistroIds:"
     echo "    " &  cfg.getAllDistros().join(", ").wrapWords(80).replace("\n", "\n    ")
