@@ -64,6 +64,7 @@ const
         "ubuntu": "apt",
         "debian": "apt",
         "opensuse": "zypper",
+        "opensuse-tumbleweed": "zypper",
         "arch": "pacman",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {

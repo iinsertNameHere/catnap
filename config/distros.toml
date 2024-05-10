@@ -201,6 +201,28 @@ art    = [
 ]
 
 ### O ###
+[opensuse]
+margin = [0, 0, 2,]
+art    = [
+    "!DT!           .;ldkO0000Okdl;.           ",
+    "!DT!       .;d00xl:^''''''^:ok00d;.       ",
+    "!DT!     .d00l'                'o00d.     ",
+    "!DT!   .d0Kd'  (GN)Okxol:;,.          !DT!:O0d.   ",
+    "!DT!  .OK(GN)KKK0kOKKKKKKKKKKOxo:,      !DT!lK0.  ",
+    "!DT! ,0K(GN)KKKKKKKKKKKKKKKOP^!DT!,,,(GN)^dx:    !DT!;OO, ",
+    "!DT!.OK(GN)KKKKKKKKKKKKKKKk'!DT!.oOPPb.(GN)'Ok.   !DT!cKO.",
+    "!DT!:KK(GN)KKKKKKKKKKKKKKK: !DT!kKx..dd (GN)lKd   !DT!'OK:",
+    "!DT!dKK(GN)KKKKKKKKKOxOKKKd !DT!^OKKKO' (GN)kKKc   !DT!dKd",
+    "!DT!dKK(GN)KKKKKKKKKK;.;oOKx,..!DT!^(GN)..;kKKKO.  !DT!dKd",
+    "!DT!:KK(GN)KKKKKKKKKK0o;...^cdxxOK0O/^^'  !DT!.OK:",
+    "!DT! kKK(GN)KKKKKKKKKKKKKOx;,,......,;od  !DT!lKk ",
+    "!DT! '0K(GN)KKKKKKKKKKKKKKKKKKKK00KKOo^  !DT!c00' ",
+    "!DT!  'kK(GN)KKOxddxkOO00000Okxoc;''   !DT!.dKk'  ",
+    "!DT!    l0Ko.                    .c00l'   ",
+    "!DT!     'l0Kk:.              .;xK0l'     ",
+    "!DT!        'lkK0xl:;,,,,;:ldO0kl'        ",
+    "!DT!            '^:ldxkkkkxdl:^'          "
+]
 
 ### P ###
 [pop]
