@@ -17,10 +17,14 @@ proc reallen*(s: string): int =
     # Get the length of a string without ansi color codes
     result = Uncolorize(s).runeLen
 
-proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo): seq[string] =
+proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margin_top: int): seq[string] =
     # Build output lines from Stats object and FetchInfo object
 
     var sb: seq[string]
+
+    for idx in countup(1, margin_top):
+        sb.add("")
+
     proc addStat(stat: Stat, value: string) =
         # Function to add a stat/value pair to the result
         var line = stat.icon & " " & stat.name
