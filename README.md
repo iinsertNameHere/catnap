@@ -4,7 +4,7 @@
     <center><img width="80%" src="image/demo3.png"></center>
   </a>
 
-<h1 align="center"><code>Catnip🌿</code> Systemfetch</h3>
+<h1 align="center"><code>Catnip🌿</code> Systemfetch</h1>
   <p align="center">
     <a href="#-demo-images">View Demo</a>
     ·
