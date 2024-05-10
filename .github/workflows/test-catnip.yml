@@ -1,4 +1,4 @@
-name: build-test
+name: test-catnip
 on:
   push:
   pull_request:
@@ -7,15 +7,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout Repository'
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: 'Install Nim'
       uses: iffy/install-nim@v5
     - name: 'Setup Nim'
       uses: jiro4989/setup-nim-action@v1
       with:
-        nim-version: '2.x'
+        nim-version: 'stable'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: 'Build Catnip'
-      run: nim release
+      run: nim debug
     - name: 'Install Figlet'
       run: sudo apt-get install figlet
     - name: 'Run Tests'
