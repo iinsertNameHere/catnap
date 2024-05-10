@@ -59,8 +59,12 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
     let ORDERED_STATNAMES = keys & delta
 
+    var stats_margin_top = 0
+    if config.misc.contains("stats_margin_top"):
+        stats_margin_top = config.misc["stats_margin_top"].getInt()
+
     # Build the stat_block buffer
-    var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, fetchinfo)
+    var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, fetchinfo, stats_margin_top)
 
     # Merge buffers and output
     case layout:
