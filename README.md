@@ -79,6 +79,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 </details>
 
 ## 🪡 Installation/Build
+> Arch Linux users can install the [catnip-git](https://aur.archlinux.org/packages/catnip-git) package from the AUR.
+
 **1.** Install <a href="https://nim-lang.org/install.html">`nim👑`</a> and all dependencies
 
 >#### Dependencies:
@@ -358,13 +360,17 @@ art = [
 ]
 ```
 
-<br>
-<br>
+## 🧪 Testing
+To test Catnip, run the following command in the Catnip repo:
+```bash
+$ cd tests/
+$ ./commandline_args.sh
+```
 
-# Contributing
+## Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-# Thanks to all contributors ❤
+## Thanks to all contributors ❤
 
 <a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
    <img src = "https://contrib.rocks/image?repo=iinsertNameHere/catnip">
