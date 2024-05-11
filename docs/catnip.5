@@ -1,0 +1,108 @@
+.TH catnip 5 "2024-05-11" "1.0" "User Commands"
+.SH NAME
+config.toml and distros.toml \- Catnip configuration and art files
+.SH SYNOPSIS
+~/.config/catnip/config.toml ~/.config/catnip/distros.toml
+.SH DESCRIPTION
+You can change the names, colors, and icons for the various stats inside the stats section of the config.toml file.
+.TP
+To create a new DistroArt object inside the distros.toml file, add a new section to the file.
+.TP
+.SH CONFIGURATION
+.TP
+If you don't want to display a stat, you can just comment out the line.
+.TP
+You can change the order in which the stats are displayed by just changing the order in the config.
+.TP
+Separators are defined by creating a new key with the sep_ prefix. The value of the key can be anything.
+.TP
+To display multiple disks, just create a new stat is named disk_[index]. To check what the index of the disk you want to add is, just run catnip -g disks.
+.TP
+.SH LAYOUT
+.TP
+In the layout you can define how the logo and stats will be arranged.
+.TP
+Use Inline to place the logo and stats next to each other.
+.TP
+Use ArtOnTop to place the logo on top of the stats.
+.TP
+Use StatsOnTop to place the stats on top of the logo
+.TP
+.SH FIGLET LOGOS
+.TP
+\fBenable\fR
+Set enable to true/false to enable or disable figlet generated logos.
+.TP
+\fBcolor\fR
+Use color to set the color the figlet logos should have.
+.TP
+\fBfont\fR
+Use font to set what font figlet should use.
+.TP
+\fBmargin\fR
+Use margin to define the margins of the figlet logos.
+.TP
+.SH IMAGE MODE
+\fBenable\fR
+Set enable to true/false to enable or disable image mode.
+.TP
+\fBpath\fR
+Use path to define what image file to display.
+.TP
+\fBscale\fR
+Use scale to set the scale of the image.
+.TP
+\fBmargin\fR
+Use margin to define the logo margins.
+.TP
+.SH DISTRO ART
+.TP
+\fBmargin\fR
+The margin key is used to define the top, left and right margins of the art.
+.TP
+\fBart\fR
+The art key is used to define the ascii-art for your distro.
+.TP
+\fBalias\fR
+The alias key can be used to define alternate names that should also refer to the DistroArt Object.
+.TP
+.SH COLORS
+Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
+.TP
+\fBColor Types:\fR
+.TP
+Foreground Normal -> (#)
+.TP
+Foreground Bright -> {#}
+.TP
+Background Normal -> [#]
+.TP
+Background Bright -> <#>
+.TP
+"#" is a color ID.
+.TP
+\fBColor IDs:\fR
+.TP
+BLACK -> Background
+.TP
+RED -> RD
+.TP
+GREEN -> GN
+.TP
+YELLOW -> YW
+.TP
+BLUE -> BE
+.TP
+MAGENTA -> MA
+.TP
+CYAN -> CN
+.TP
+WHITE -> WE
+.TP
+.SH MORE INFORMATION
+For more information on configuration, go to https://github.com/iinsertNameHere/catnip
+.SH SEE ALSO
+.TP
+\fBfiglet\fP(6)
+.TP
+\fBcatnip\fP(1)
