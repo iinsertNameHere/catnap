@@ -78,6 +78,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 ## 📒 Documentation
 You can read the full documentation [here](https://iinsertNameHere.github.io/catnip-docs/)! 
+It covers installation, usage and configuration!
 
 <br>
 
@@ -87,6 +88,8 @@ To test Catnip, run the following command in the Catnip repo:
 $ cd tests/
 $ ./commandline_args.sh
 ```
+
+<br>
 
 ## Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
