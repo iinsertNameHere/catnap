@@ -8,9 +8,7 @@
   <p align="center">
     <a href="#-demo-images">View Demo</a>
     ·
-    <a href="#-usage">Basic Usage</a>
-    ·
-    <a href="#-configurationsetup">Configuration</a>
+    <a href="#-documentation">Documentation</a>
     ·
     <a href="#contributing">Contributing</a>
   </p>
@@ -78,26 +76,9 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 
 <br>
 
-## 📒 Configuration/Setup
+## 📒 Documentation
 You can read the full documentation [here](https://iinsertNameHere.github.io/catnip-docs/)! 
-
-<br>
-
-## 💻 Usage
-Run catnip in you terminal:
-```bash
-$ catnip
-```
-
-Change the distro icon using:
-```bash
-$ catnip -d <distro>
-```
-
-To get a full list of arguments use:
-```bash
-$ catnip --help
-```
+It covers installation, usage and configuration!
 
 <br>
 
@@ -108,10 +89,11 @@ $ cd tests/
 $ ./commandline_args.sh
 ```
 
+<br>
+
 ## Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
-<br>
 <br>
 
 ## Thanks to all contributors ❤

@@ -38,7 +38,7 @@ proc printHelp(cfg: Config) =
     echo "    -a  --art                  <DistrosPath>  Uses a custom location for the distros file"
     echo ""
     echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
-    echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,LogoOnTop,ArtOnTop]"
+    echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,LogoOnTop,StatsOnTop]"
     echo ""
     echo "    -fe --figletLogos.enable   <on/off>       Overwrite figletLogos mode"
     echo "    -fm --figletLogos.margin   <Margin>       Overwrite figletLogos margin (Example: 1,2,3)"
