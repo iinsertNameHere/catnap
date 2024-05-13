@@ -77,7 +77,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 <br>
 
 ## 📒 Documentation
-You can read the full documentation at: [doc.catnip-fetch.xyz](https://doc.catnip-fetch.xyz/)! 
+You can read the full documentation at: [doc.catnip-fetch.xyz](https://doc.catnip-fetch.xyz/)
+<br>
 It covers installation, usage and configuration!
 
 > If you think something is missing, feel free to open a Issue in the [catnip-docs](https://github.com/iinsertNameHere/catnip-docs) repository.
