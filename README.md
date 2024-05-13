@@ -80,7 +80,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 You can read the full documentation [here](https://iinsertNameHere.github.io/catnip-docs/)! 
 It covers installation, usage and configuration!
 
-> If you think Something is missing,feel free to Open a Issue in the [catnip-docs](https://github.com/iinsertNameHere/catnip-docs) Repository.
+> If you think something is missing, feel free to open a Issue in the [catnip-docs](https://github.com/iinsertNameHere/catnip-docs) repository.
 
 <br>
 
@@ -94,7 +94,7 @@ $ ./commandline_args.sh
 <br>
 
 ## 🐛 Bugs
-If you've found the bug, please follow the steps below:
+If you've found a bug, please follow the steps below:
 1. Make sure you're on the latest commit, as bugs that are in your current version might've been fixed in later commits.
 2. Run `catnip -v` and copy the output into your clipboard.
 3. Create an issue and remember to click on the bug report template!
