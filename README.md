@@ -42,7 +42,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
   </ul>
 </details>
 
-#### ❤ Shoutout to:
+#### ❤️ Shoutout to:
 - [NimParsers/parsetoml](https://github.com/NimParsers/parsetoml) for the toml parsing
 - [ssleert/Nitch](https://github.com/ssleert/nitch) for the inspiration
 - [All contributors](#thanks-to-all-contributors-)
@@ -91,12 +91,21 @@ $ ./commandline_args.sh
 
 <br>
 
-## Contributing
+## 🐛 Bugs
+If you've found the bug, please follow the steps below:
+1. Make sure you're on the latest commit, as bugs that are in your current version might've been fixed in later commits.
+2. Run `catnip -v` and copy the output into your clipboard.
+3. Create an issue and remember to click on the bug report template!
+4. Fill in the details and submit the report.
+
+<br>
+
+## 🔨 Contributing
 More info in [CONTRIBUTING.md](CONTRIBUTING.md)
 
 <br>
 
-## Thanks to all contributors ❤
+## ❤️ Thanks to all contributors!
 
 <p align="center">
   <a href = "https://github.com/iinsertNameHere/catnip/graphs/contributors">
