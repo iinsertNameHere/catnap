@@ -80,6 +80,8 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 You can read the full documentation [here](https://iinsertNameHere.github.io/catnip-docs/)! 
 It covers installation, usage and configuration!
 
+> If you think Something is missing,feel free to Open a Issue in the [catnip-docs](https://github.com/iinsertNameHere/catnip-docs) Repository.
+
 <br>
 
 ## 🧪 Testing
