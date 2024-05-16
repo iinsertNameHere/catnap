@@ -83,7 +83,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 <br>
 
 ## 📒 Documentation
-You can read the full documentation at: [doc.catnip-fetch.xyz](https://doc.catnip-fetch.xyz/)
+You can read the full documentation [here](https://documentation.catnip-fetch.xyz/)
 <br>
 It covers installation, usage and configuration!
 
