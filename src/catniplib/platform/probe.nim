@@ -229,10 +229,8 @@ proc getGpu*(): string =
 
     let vga_parts = vga.split(":")
 
-    echo vga_parts
-
-    if vga_parts.len < 3: 
+    if vga_parts.len < 2: 
         return "Unknown"
 
-    let gpu = vga_parts[3].split("(")[0]
+    let gpu = vga_parts[vga_parts.len - 1].split("(")[0]
     return gpu.strip()
