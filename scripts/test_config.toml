@@ -28,7 +28,7 @@ stats_margin_top = 0
 [misc.figletLogos]
 enable = false
 color  = ""
-font   = ""
+font   = "slant"
 margin = [0, 0, 0,]
 
 [misc.imageMode]
