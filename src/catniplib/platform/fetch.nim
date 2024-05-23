@@ -19,6 +19,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["shell"]    = probe.getShell()
     result.list["memory"]   = probe.getMemory(true)
     result.list["cpu"]      = probe.getCpu()
+    result.list["gpu"]      = probe.getGpu()
     result.list["packages"] = probe.getPackages(result.distroId)
 
     # Add a disk stat for all mounts

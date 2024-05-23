@@ -17,6 +17,7 @@ desktop   = {icon = " ", name = "desktp", color = "(CN)"}
 terminal  = {icon = " ", name = "term", color = "(RD)"}
 shell     = {icon = " ", name = "shell", color = "(MA)"}
 packages  = {icon = " ", name = "packages", color = "(GN)"}
+# gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 # disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 # memory    = {icon = " ", name = "memory", color = "(YW)"}

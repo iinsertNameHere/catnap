@@ -201,7 +201,7 @@ proc getPackages*(distroId: DistroId): string =
     if not foundPkgCmd:
         return "unknown"
 
-    let tmpFile = "catnip_pkgcount.txt".toTmpPath
+    let tmpFile = "pkgcount.txt".toTmpPath
 
     let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
     if execCmd(cmd) != 0:
@@ -209,3 +209,28 @@ proc getPackages*(distroId: DistroId): string =
     
     let count = readFile(tmpFile).strip()
     return count & " [" & pkgManager & "]" 
+
+proc getGpu*(): string =
+    # Returns the VGA line of lspci output
+    let tmpFile = "lspci.txt".toTmpPath
+    if execCmd("lspci > " & tmpFile) != 0:
+        logError("Failed to fetch GPU!")
+
+    var vga = ""
+
+    let lspci = readFile(tmpFile)
+    for line in lspci.split('\n'):
+        if line.split(' ')[1] == "VGA":
+            vga = line
+            break
+
+    if vga == "":
+        return "Unknown"
+
+    let vga_parts = vga.split(":")
+
+    if vga_parts.len < 2: 
+        return "Unknown"
+
+    let gpu = vga_parts[vga_parts.len - 1].split("(")[0]
+    return gpu.strip()

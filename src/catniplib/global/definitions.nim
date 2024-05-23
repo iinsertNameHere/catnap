@@ -55,7 +55,7 @@ const
     # Stats
     STATNAMES*    = @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "terminal",
-                    "cpu", "packages", "colors"]
+                    "cpu", "gpu", "packages", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     
     # Pkg Manager
