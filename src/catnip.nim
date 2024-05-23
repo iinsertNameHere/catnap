@@ -1,6 +1,6 @@
 import "catniplib/platform/fetch"
 import "catniplib/drawing/render"
-from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES
+from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, TMPPATH
 import "catniplib/global/config"
 import "catniplib/terminal/logging"
 import parsetoml
@@ -16,6 +16,10 @@ from "catniplib/global/currentcommit" import CURRENTCOMMIT
 when not defined release:
     import times
     let t0 = epochTime()
+
+# Create tmp folder
+if not dirExists(TMPPATH):
+    createDir(TMPPATH)
 
 # Help text
 proc printHelp(cfg: Config) =

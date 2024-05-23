@@ -51,12 +51,14 @@ type
         misc*: TomlValueRef
 
 const
+
+    # Stats
     STATNAMES*    = @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "terminal",
                     "cpu", "packages", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
-    CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
-    DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")
+    
+    # Pkg Manager
     PKGMANAGERS*  = {
         "fedora": "dnf",
         "redhat": "yum",
@@ -74,3 +76,13 @@ const
         "zypper": "rpm -qa --last | wc --l",
         "pacman": "pacman -Q | wc -l"
     }.toOrderedTable
+
+    # Files / Dirs
+    CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
+    DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")
+    TMPPATH*      = "/tmp/catnip"
+
+
+proc toTmpPath*(p: string): string =
+    # Converts a path [p] into a temp path 
+    return joinPath(TMPPATH, p)

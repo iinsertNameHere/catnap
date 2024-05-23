@@ -2,7 +2,7 @@ import osproc
 import strformat
 import strutils
 
-from "../global/definitions" import FetchInfo, Config
+from "../global/definitions" import FetchInfo, Config, toTmpPath
 import "../terminal/logging"
 import parsetoml
 import "probe"
@@ -47,9 +47,11 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
 
     else: # Generate logo using figlet
         let figletFont = figletLogos["font"]
-        if execCmd(&"figlet -f {figletFont} '{distroId}' > /tmp/catnip_figlet_art.txt") != 0:
+        let tmpFile = "figlet_art.txt".toTmpPath 
+
+        if execCmd(&"figlet -f {figletFont} '{distroId}' > {tmpFile}") != 0:
             logError("Failed to execute 'figlet'!")
-        let artLines = readFile("/tmp/catnip_figlet_art.txt").split('\n')
+        let artLines = readFile(tmpFile).split('\n')
         let tmargin = figletLogos["margin"]
         result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
         for line in artLines:

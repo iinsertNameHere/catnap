@@ -7,7 +7,7 @@ import posix_utils
 import tables
 import osproc
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toTmpPath
 import "../terminal/logging"
 
 proc getDistro*(): string =
@@ -201,9 +201,11 @@ proc getPackages*(distroId: DistroId): string =
     if not foundPkgCmd:
         return "unknown"
 
-    let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > /tmp/catnip_pkgcount.txt"
+    let tmpFile = "catnip_pkgcount.txt".toTmpPath
+
+    let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
     if execCmd(cmd) != 0:
         logError("Failed to fetch pkg count!")
     
-    let count = readFile("/tmp/catnip_pkgcount.txt").strip()
+    let count = readFile(tmpFile).strip()
     return count & " [" & pkgManager & "]" 
