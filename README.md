@@ -1,7 +1,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/iinsertNameHere/catnip">
-    <center><img width="80%" src="image/demo3.png"></center>
+    <center><img width="170px" src="image/logo/catnip.svg"></center>
   </a>
 
 <h1 align="center"><code>Catnip🌿</code> Systemfetch</h1>
