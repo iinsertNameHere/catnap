@@ -68,13 +68,15 @@ const
         "opensuse": "zypper",
         "opensuse-tumbleweed": "zypper",
         "arch": "pacman",
+        "alpine": "apk",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {
         "dnf": "dnf list installed | wc -l",
         "yum": "yum list installed | wc -l",
         "apt": "dpkg-query -l | grep '^ii' | wc -l",
         "zypper": "rpm -qa --last | wc --l",
-        "pacman": "pacman -Q | wc -l"
+        "pacman": "pacman -Q | wc -l",
+        "apk": "apk list --installed | wc -l",
     }.toOrderedTable
 
     # Files / Dirs
