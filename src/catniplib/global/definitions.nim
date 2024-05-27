@@ -60,17 +60,30 @@ const
     
     # Pkg Manager
     PKGMANAGERS*  = {
+        "gentoo": "emerge",
         "fedora": "dnf",
         "redhat": "yum",
         "centos": "yum",
         "ubuntu": "apt",
         "debian": "apt",
+        "kali": "apt",
+        "mint": "apt",
+        "pop": "apt",
+        "raspbian": "apt",
+        "zorin": "apt",
         "opensuse": "zypper",
         "opensuse-tumbleweed": "zypper",
         "arch": "pacman",
+        "archcraft": "pacman",
+        "artix": "pacman",
+        "manjaro": "pacman",
+        "endavour": "pacman",
         "alpine": "apk",
+        "void": "xbps",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {
+        "xbps": "xbps-query -l | wc -l",
+        "emerge": "equery list --duplicates '*' | wc -l",
         "dnf": "dnf list installed | wc -l",
         "yum": "yum list installed | wc -l",
         "apt": "dpkg-query -l | grep '^ii' | wc -l",
