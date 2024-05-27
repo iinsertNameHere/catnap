@@ -50,7 +50,7 @@ task install_cfg, "Installs the config files":
 task install_bin, "Installs the bin file and man page:":
     echo "\e[36;1mInstalling\e[0;0m bin file"
     echo &"Copying {thisDir()}/bin/catnip to /usr/local/bin"
-    exec &"doas install -Dm755 {thisDir()}/bin/catnip /usr/local/bin/catnip"
+    exec &"sudo install -Dm755 {thisDir()}/bin/catnip /usr/local/bin/catnip"
 
     let
         man_1_path = "/usr/share/man/man1/catnip.1.gz"
@@ -68,22 +68,22 @@ task install_bin, "Installs the bin file and man page:":
     # If man page dose not exist or there is a new version, install the new man page
     if not fileExists(man_1_path) or readFile(local_1_path & ".gz") != readFile(man_1_path):
         echo &"Copying {local_1_path} to /usr/share/man/man1"
-        exec &"doas install -Dm755 {local_1_path}.gz /usr/share/man/man1/catnip.1.gz"
+        exec &"sudo install -Dm755 {local_1_path}.gz /usr/share/man/man1/catnip.1.gz"
     else:
         echo &"Copying {local_1_path} to /usr/share/man/man1 - SKIPPED"
 
     if not fileExists(man_5_path) or readFile(local_5_path & ".gz") != readFile(man_5_path):
         echo &"Copying {local_5_path} to /usr/share/man/man5"
-        exec &"doas install -Dm755 {local_5_path}.gz /usr/share/man/man5/catnip.5.gz"
+        exec &"sudo install -Dm755 {local_5_path}.gz /usr/share/man/man5/catnip.5.gz"
     else:
         echo &"Copying {local_5_path} to /usr/share/man/man5 - SKIPPED"
 
 task uninstall, "Uninstalls the bin file and man page:":
     echo "\e[36;1mUninstalling\e[0;0m bin file"
-    exec &"doas rm /usr/local/bin/catnip"
+    exec &"sudo rm /usr/local/bin/catnip"
     echo "\e[36;1mUninstalling\e[0;0m man page"
-    exec &"doas rm /usr/share/man/man1/catnip.1.gz"
-    exec &"doas rm /usr/share/man/man5/catnip.5.gz"
+    exec &"sudo rm /usr/share/man/man1/catnip.1.gz"
+    exec &"sudo rm /usr/share/man/man5/catnip.5.gz"
 
 task install, "'release', 'install_linux' and 'install_cfg'":
     releaseTask()
