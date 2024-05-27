@@ -310,6 +310,16 @@ art    = [
 ]
 
 ### W ###
+[windows]
+margin = [2, 2, 4,]
+art    = [
+    "[RD]       [GN]       ",
+    "[RD]       [GN]       ",
+    "[RD]       [GN]       ",
+    "[BE]       [YW]       ",
+    "[BE]       [YW]       ",
+    "[BE]       [YW]       ",
+]
 
 ### X ###
 
