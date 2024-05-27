@@ -65,29 +65,18 @@ const
         "centos": "yum",
         "ubuntu": "apt",
         "debian": "apt",
-        "kali": "apt",
-        "mint": "apt",
-        "pop": "apt",
-        "zorin": "apt",
-        "arch": "pacman",
-        "archcraft": "pacman",
-        "artix": "pacman",
-        "endeavour": "pacman",
         "opensuse": "zypper",
         "opensuse-tumbleweed": "zypper",
-        "gentoo": "emerge",
+        "arch": "pacman",
         "alpine": "apk",
-        "void": "xbps",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {
-        "emerge": "equery list --duplicates '*' | wc -l",
         "dnf": "dnf list installed | wc -l",
         "yum": "yum list installed | wc -l",
         "apt": "dpkg-query -l | grep '^ii' | wc -l",
         "zypper": "rpm -qa --last | wc --l",
         "pacman": "pacman -Q | wc -l",
         "apk": "apk list --installed | wc -l",
-        "void": "xbps-query -l | wc -l",
     }.toOrderedTable
 
     # Files / Dirs
