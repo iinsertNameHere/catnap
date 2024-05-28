@@ -69,6 +69,7 @@ const
         "kali": "apt",
         "mint": "apt",
         "pop": "apt",
+        "android": "apt",
         "raspbian": "apt",
         "zorin": "apt",
         "opensuse": "zypper",
