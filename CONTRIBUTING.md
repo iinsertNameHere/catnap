@@ -1,14 +1,14 @@
 # How to contribute
-Just create a new [Issue](https://github.com/iinsertNameHere/catnip/issues) using the Correct Template or Implement an existing one and create a Pull request for it.
+Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the correct issue template or introduce a new feature/fix a bug and submit a pull request.
 
 # Project structure
 ```graphql
 .
 ├── config/
 │   ├── config.toml  # Main config
-│   └── distros.toml # Distro Art Config
+│   └── distros.toml # Distro art config
 ├── docs/  # Contains man docs
-├── image/ # Contains all images for Readme
+├── image/ # Contains all images for README.md
 ├── src/
 │   ├── catniplib/
 │   │   ├── drawing/    # Files for rendering output
