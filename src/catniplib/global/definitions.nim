@@ -80,8 +80,10 @@ const
         "endavour": "pacman",
         "alpine": "apk",
         "void": "xbps",
+        "nixos": "nix",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {
+        "nix": "nix-env --query --installed",
         "xbps": "xbps-query -l | wc -l",
         "emerge": "equery list '*' | wc -l",
         "dnf": "dnf list installed | wc -l",
