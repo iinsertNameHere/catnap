@@ -69,6 +69,7 @@ const
         "kali": "apt",
         "mint": "apt",
         "pop": "apt",
+        "android": "apt",
         "raspbian": "apt",
         "zorin": "apt",
         "opensuse": "zypper",
@@ -80,10 +81,12 @@ const
         "endavour": "pacman",
         "alpine": "apk",
         "void": "xbps",
+        "nixos": "nix",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = {
+        "nix": "nix-env --query --installed",
         "xbps": "xbps-query -l | wc -l",
-        "emerge": "equery list --duplicates '*' | wc -l",
+        "emerge": "equery list '*' | wc -l",
         "dnf": "dnf list installed | wc -l",
         "yum": "yum list installed | wc -l",
         "apt": "dpkg-query -l | grep '^ii' | wc -l",
