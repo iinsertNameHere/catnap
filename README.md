@@ -19,15 +19,12 @@
 </div>
 <br>
 
-
 ## 🌿 What is Catnip
 I created `Catnip🌿` as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
 > #### Website:
 > Catnip has a Website now!
 > You can visit the website [here](https://catnip-fetch.xyz).
-
-
 
 > #### ⏱️ Execution Time 
 > *Around **0.006** seconds on my laptop
