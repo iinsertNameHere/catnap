@@ -12,6 +12,9 @@
     ·
     <a href="#-contributing">Contributing</a>
   </p>
+  <p align="center">
+  [![test-catnip](https://github.com/iinsertNameHere/catnip/actions/workflows/test-catnip.yml/badge.svg?branch=main)](https://github.com/iinsertNameHere/catnip/actions/workflows/test-catnip.yml)
+  </p>
 </div>
 <br>
 
