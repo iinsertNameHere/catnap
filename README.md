@@ -111,7 +111,7 @@ If you've found a bug, please follow the steps below:
 <br>
 
 ## 🔨 Contributing
-More info in [CONTRIBUTING.md](CONTRIBUTING.md)
+For more info on how to contribute and how to add a new distro, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <br>
 
