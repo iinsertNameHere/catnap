@@ -25,3 +25,18 @@ Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the
 │   └── git-commit-id.sh         # Generates the currentcommit.nim file
 └── config.nims
 ```
+
+# How to add a new distro
+
+1. Add the distro's logo in the default `distros.toml` in the `config/` folder. Please arrange the distro in alphabetical order.
+2. In `src/catniplib/global/definitions.nim`, go to the `PKGMANAGERS` section.
+3. According to the name of the distro in `config/distros.toml`, put a new line like this:
+```nim
+"name of distro": "name of package manager",
+```
+4. If your distro's package manager is already in the `PKGCOUNTCOMMANDS` section, skip the next step.
+5. Put your distro's package manager in the `PKGCOUNTCOMMANDS` section like this:
+```nim
+"name of package manager": "command to get number of packages",
+```
+6. Submit a pull request to the Catnip repo.
