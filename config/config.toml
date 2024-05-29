@@ -9,18 +9,20 @@
 ##############################################
 [stats]
 username  = {icon = " ", name = "user", color = "(RD)"}
-hostname  = {icon = " ", name = "hname", color = "(YW)"}
+hostname  = {icon = " ", name = "hostname", color = "(YW)"}
 uptime    = {icon = " ", name = "uptime", color = "(BE)"}
 distro    = {icon = " ", name = "distro", color = "(GN)"}
 kernel    = {icon = " ", name = "kernel", color = "(MA)"}
-desktop   = {icon = " ", name = "desktp", color = "(CN)"}
+desktop   = {icon = " ", name = "desktop", color = "(CN)"}
 terminal  = {icon = " ", name = "term", color = "(RD)"}
 shell     = {icon = " ", name = "shell", color = "(MA)"}
-packages  = {icon = " ", name = "packages", color = "(GN)"}
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 # disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 # memory    = {icon = " ", name = "memory", color = "(YW)"}
+# The package and weather stats will increase the execution time of Catnip! Enable at your own discretion.
+# packages  = {icon = " ", name = "packages", color = "(GN)"}
+# weather   = {icon = " ", name = "weather", color = "(BE)"} # Requires cURL and an emoji font.
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
@@ -31,14 +33,14 @@ colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
 stats_margin_top = 0
 
-[misc.figletLogos]
+[misc.figletLogos] # Requires Figlet.
 enable = false
 color  = "(YW)"
 font   = "slant"
 margin = [0, 0, 0,]
 
-[misc.imageMode]
+[misc.imageMode] # Requires Viu.
 enable = false
-path   = "/path/to/some/image.png" # Please use only absolute paths
+path   = "/path/to/some/image.png" # Please only use absolute paths.
 scale  = 18
 margin = [2, 2, 3,]

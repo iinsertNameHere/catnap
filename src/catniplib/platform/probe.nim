@@ -234,3 +234,12 @@ proc getGpu*(): string =
 
     let gpu = vga_parts[vga_parts.len - 1].split("(")[0]
     return gpu.strip()
+
+proc getWeather*(): string =
+    let tmpFile = "weather.txt".toTmpPath
+    if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
+        logError("Failed to fetch weather!")
+
+    # Returns the weather and discards the annoying newline.
+    let weather = readFile(tmpFile)
+    result = $weather.replace("\n", "")
