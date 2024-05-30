@@ -348,7 +348,7 @@ else:
         if not fetchinfo.list.contains(statname):
             logError(&"Unknown StatName '{statname}'!")
         
-        echo fetchinfo.list[statname]
+        echo fetchinfo.list[statname]()
 
 # Debug code for execution time
 when not defined release:

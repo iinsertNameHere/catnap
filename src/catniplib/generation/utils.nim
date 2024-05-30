@@ -64,7 +64,7 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margi
             logError(&"Unknown StatName '{stat}'!")
 
         if stats.list[stat] != NIL_STAT:
-            addStat(stats.list[stat], fi.list[stat])
+            addStat(stats.list[stat], fi.list[stat]())
     
     # Color stat
     if stats.list["colors"] != NIL_STAT:

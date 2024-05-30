@@ -9,18 +9,18 @@ import "probe"
 
 proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.distroId = probe.getDistroId()
-    result.list["username"] = probe.getUser()
-    result.list["hostname"] = probe.getHostname()
-    result.list["distro"]   = probe.getDistro()
-    result.list["uptime"]   = probe.getUptime()
-    result.list["kernel"]   = probe.getKernel()
-    result.list["desktop"]  = probe.getDesktop()
-    result.list["terminal"] = probe.getTerminal()
-    result.list["shell"]    = probe.getShell()
-    result.list["memory"]   = probe.getMemory(true)
-    result.list["cpu"]      = probe.getCpu()
-    result.list["gpu"]      = probe.getGpu()
-    result.list["packages"] = probe.getPackages(result.distroId)
+    result.list["username"] = proc(): string = return probe.getUser()
+    result.list["hostname"] = proc(): string = return probe.getHostname()
+    result.list["distro"]   = proc(): string = return probe.getDistro()
+    result.list["uptime"]   = proc(): string = return probe.getUptime()
+    result.list["kernel"]   = proc(): string = return probe.getKernel()
+    result.list["desktop"]  = proc(): string = return probe.getDesktop()
+    result.list["terminal"] = proc(): string = return probe.getTerminal()
+    result.list["shell"]    = proc(): string = return probe.getShell()
+    result.list["memory"]   = proc(): string = return probe.getMemory()
+    result.list["cpu"]      = proc(): string = return probe.getCpu()
+    result.list["gpu"]      = proc(): string = return probe.getGpu()
+    result.list["packages"] = proc(): string = return probe.getPackages()
 
     # Add a disk stat for all mounts
     let mounts = probe.getMounts()
@@ -28,11 +28,20 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
         var index = 0
         for mount in mounts:
             let name = "disk_" & $index
-            result.list[name] = probe.getDisk(mount)
+            
+            var refmount: ref string
+            new(refmount)
+            refmount[] = mount
+
+            result.list[name] = proc(): string = return probe.getDisk(refmount)
             result.disk_statnames.add(name)
             index += 1
     else:
-        result.list["disk_0"] = probe.getDisk("disk_0")
+        var refmount: ref string
+        new(refmount)
+        refmount[] = "disk_0"
+
+        result.list["disk_0"] = proc(): string = return probe.getDisk(refmount)
         result.disk_statnames.add("disk_0")
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
