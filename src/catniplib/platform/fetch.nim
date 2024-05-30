@@ -21,6 +21,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["cpu"]      = proc(): string = return probe.getCpu()
     result.list["gpu"]      = proc(): string = return probe.getGpu()
     result.list["packages"] = proc(): string = return probe.getPackages()
+    result.list["weather"]  = proc(): string = return probe.getWeather()
 
     # Add a disk stat for all mounts
     let mounts = probe.getMounts()

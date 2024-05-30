@@ -45,6 +45,7 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
     <li>disk space</li>
     <li>cpu info</li>
     <li>packages</li>
+    <li>weather</li>
     <li>colors</li>
   </ul>
 </details>
