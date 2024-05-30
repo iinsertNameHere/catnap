@@ -11,7 +11,7 @@ import "../generation/utils"
 import "../generation/stats"
 
 proc getStat(stats: TomlValueRef, key: string): TomlValueRef =
-    ## Returns the value of stats[key] if it exists, else returns nil
+    # Returns the value of stats[key] if it exists, else returns nil
     if stats.contains(key):
         return stats[key]
     return nil

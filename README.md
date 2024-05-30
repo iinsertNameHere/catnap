@@ -12,9 +12,12 @@
     ·
     <a href="#-contributing">Contributing</a>
   </p>
+  <p align="center">
+    <a href="https://github.com/iinsertNameHere/catnip/actions/workflows/test-catnip.yml">
+      <img src="https://github.com/iinsertNameHere/catnip/actions/workflows/test-catnip.yml/badge.svg?branch=main" />
+  </p>
 </div>
 <br>
-
 
 ## 🌿 What is Catnip
 I created `Catnip🌿` as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
@@ -22,8 +25,6 @@ I created `Catnip🌿` as a playful, simple system-information **concatenation**
 > #### Website:
 > Catnip has a Website now!
 > You can visit the website [here](https://catnip-fetch.xyz).
-
-
 
 > #### ⏱️ Execution Time 
 > *Around **0.006** seconds on my laptop
@@ -110,7 +111,7 @@ If you've found a bug, please follow the steps below:
 <br>
 
 ## 🔨 Contributing
-More info in [CONTRIBUTING.md](CONTRIBUTING.md)
+For more info on how to contribute and how to add a new distro, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <br>
 
