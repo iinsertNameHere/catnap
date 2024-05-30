@@ -38,7 +38,7 @@ type
         color_symbol*: string
 
     FetchInfo* = object
-        list*: Table[string, string]
+        list*: Table[string, proc(): string]
         disk_statnames*: seq[string]
         distroId*: DistroId
         logo*: Logo

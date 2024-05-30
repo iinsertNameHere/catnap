@@ -102,7 +102,7 @@ proc getDesktop*(): string =
     if result == "": # Default to Unknown
         result = "Unknown"
 
-proc getMemory*(mb: bool): string =
+proc getMemory*(mb: bool = true): string =
     # Returns statistics about the memory
     let 
         fileSeq: seq[string] = "/proc/meminfo".readLines(3)
@@ -145,14 +145,14 @@ proc getMounts*(): seq[string] =
 
         result.add(mount)
 
-proc getDisk*(mountingPoint: string): string =
+proc getDisk*(mountingPoint: ref string): string =
     # Returns disk space usage
     proc getTotalDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
     proc getUsedDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
 
     let
-        total = getTotalDiskSpace(mountingPoint).round().int()
-        used = getUsedDiskSpace(mountingPoint).round().int()
+        total = getTotalDiskSpace(mountingPoint[].cstring).round().int()
+        used = getUsedDiskSpace(mountingPoint[].cstring).round().int()
         percentage = ((used / total) * 100).round().int()
     result = &"{used} / {total} GB ({percentage}%)"
 
@@ -187,7 +187,7 @@ proc getPkgManager(distroId: DistroId): string =
     
     return "unknown"
 
-proc getPackages*(distroId: DistroId): string =
+proc getPackages*(distroId: DistroId = getDistroId()): string =
     # Return install package count of the main package manager of the distro
     let pkgManager = getPkgManager(distroId)
     if pkgManager == "unknown":
