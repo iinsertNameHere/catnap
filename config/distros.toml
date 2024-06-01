@@ -131,6 +131,20 @@ art    = [
 ]
 
 ### C ####
+[cachy]
+alias  = "cachyos"
+margin = [2, 2, 2,]
+art    = [
+    "{CN}   /''''''''''''/  ",
+    "{CN}  /''''''''''''/   ",
+    "{CN} /''''''/          ",
+    "{CN}/''''''/           ",
+    "{CN}\\......\\           ",
+    "{CN} \\......\\          ",
+    "{CN}  \\.............../",
+    "{CN}   \\............./ ",
+]
+
 [catnip]
 alias  = "default"
 margin = [1, 2, 2,]
@@ -215,6 +229,19 @@ art    = [
     "(RD)        ^^°=  ",
 ]
 
+[deepin]
+margin = [2, 2, 2,]
+art    = [
+    "{BE}    ____________    ",
+    "{BE}   /  /  /   ___\\   ",
+    "{BE}  /   | / __/ ___\\  ",
+    "{BE} /     \\/ / /     \\ ",
+    "{BE}|        \\   \\     |",
+    "{BE} \\_______/  _/    / ",
+    "{BE}  \\________/     /  ",
+    "{BE}   \\____________/   ",
+]
+
 [devuan]
 margin = [2, 2, 2,]
 art    = [
@@ -250,6 +277,21 @@ art    = [
     "{RD}  / {MA}/     _) {CN})",
     "{RD} /_{MA}/___-- {CN}__- ",
     "{CN}/____--       ",
+]
+
+[evolution]
+alias  = "evolutionos"
+margin = [2, 3, 3,]
+art    = [
+    "{GN}      $2,coddoc'                "
+    "{GN}   'cddddddddddc'               "
+    "{GN} 'ddd$1OWWXXXXXXK$2ddo.         "
+    "{GN}.dddd$1OMX$2ddddddddddd.        "
+    "{GN}odddd$1OMX$2k$100O$2k$1OO$2ddddo"
+    "{GN}.dddd$1OMX$2kOOOxOkdddd.        "
+    "{GN} .ddd$1OWW$2X$1XXXXXK$2ddd'     "
+    "{GN}   'dddddddddddd'               "
+    "{GN}      'cddddd,                  "
 ]
 
 ### F ###
@@ -361,6 +403,17 @@ art    = [
     "{BE}     ⠉⠛⠷⣦⣄⡀     ⠈⠁ ",
     "{BE}         ⠉⠛⢷⣄      ",
     "{BE}            ⠈⢿     ",
+]
+
+[neon]
+alias  = "kdeneon"
+margin = [3, 3, 3,]
+art    = [
+    "{GN}    --- _   ",
+    "{GN} /  ---  \\  ",
+    "{GN}|  |   |  | ",
+    "{GN} \\  --- _/  ",
+    "{GN}    ---     ",
 ]
 
 ### L ###  
@@ -552,6 +605,19 @@ art    = [
     "{RD}   (__)    ",
 ]
 
+[reborn]
+alias  = "rebornos"
+margin = [2, 3, 3,]
+art    = [
+    "{BE}   _______   ",
+    "{BE}  /\\_____/\\  ",
+    "{BE} / /\\___/\\ \\ ",
+    "{BE}/_/_/   \\_\\_\\",
+    "{BE}\\ \\ \\___/ / /",
+    "{BE} \\ \\/___\\/ / ",
+    "{BE}  \\/_____\\/  ",
+]
+
 [rocky]
 margin = [1, 2, 3]
 art    = [
@@ -710,6 +776,18 @@ art    = [
 ### W ###
 
 ### X ###
+[xero]
+alias  = "xerolinux"
+margin = [3, 2, 2,]
+art    = [
+    "{WE}        /\\       ",
+    "{WE}______ /  \\______",
+    "{WE}      /\\  /\\     ",
+    "{WE}     /  ||  \\    ",
+    "{WE}____/__/__\\__\\___",
+    "{WE}   / __|  |__-\\  ",
+    "{WE}  /_-''    ''-_\\ ",
+]
 
 ### Y ###
 
