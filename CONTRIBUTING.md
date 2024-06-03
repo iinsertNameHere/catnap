@@ -1,5 +1,5 @@
 # How to contribute
-Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the correct issue template or introduce a new feature/fix a bug and submit a pull request.
+Create a new [issue](https://github.com/iinsertNameHere/catnap/issues) using the correct issue template or introduce a new feature/fix a bug and submit a pull request.
 
 # Project structure
 ```graphql
@@ -10,7 +10,7 @@ Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the
 ├── docs/  # Contains man docs
 ├── image/ # Contains all images for README.md
 ├── src/
-│   ├── catniplib/
+│   ├── catnaplib/
 │   │   ├── drawing/    # Files for rendering output
 │   │   ├── generation/ # Files for generating output objects
 │   │   ├── global/     # Files used globally
@@ -19,9 +19,9 @@ Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the
 │   ├── extern/
 │   │   ├── headers/   # Contains extern c++ headers (hpp)
 │   │   └── libraries/ # Contains extern libs
-│   └── catnip.nim # Entry src file
+│   └── catnap.nim # Entry src file
 ├── scripts/
-│   ├── test-commandline-args.sh # Checks if catnip's cmd args work
+│   ├── test-commandline-args.sh # Checks if catnap's cmd args work
 │   └── git-commit-id.sh         # Generates the currentcommit.nim file
 └── config.nims
 ```
@@ -29,7 +29,7 @@ Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the
 # How to add a new distro
 
 1. Add the distro's logo in the default `distros.toml` in the `config/` folder. Please arrange the distro in alphabetical order.
-2. In `src/catniplib/global/definitions.nim`, go to the `PKGMANAGERS` section.
+2. In `src/catnaplib/global/definitions.nim`, go to the `PKGMANAGERS` section.
 3. According to the name of the distro in `config/distros.toml`, put a new line like this:
 ```nim
 "name of distro": "name of package manager",
@@ -39,4 +39,4 @@ Create a new [issue](https://github.com/iinsertNameHere/catnip/issues) using the
 ```nim
 "name of package manager": "command to get number of packages",
 ```
-6. Submit a pull request to the Catnip repo.
+6. Submit a pull request to the Catnap repo.

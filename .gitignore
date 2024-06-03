@@ -1,5 +1,5 @@
 /bin
-catnip
+catnap
 *.exe
 *.gz
-src/catniplib/global/currentcommit.nim
+src/catnaplib/global/currentcommit.nim

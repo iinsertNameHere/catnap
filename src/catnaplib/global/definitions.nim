@@ -133,9 +133,9 @@ const
     }.toOrderedTable
 
     # Files / Dirs
-    CONFIGPATH*   = joinPath(getConfigDir(), "catnip/config.toml")
-    DISTROSPATH*  = joinPath(getConfigDir(), "catnip/distros.toml")
-    TMPPATH*      = "/tmp/catnip"
+    CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
+    DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
+    TMPPATH*      = "/tmp/catnap"
 
 
 proc toTmpPath*(p: string): string =

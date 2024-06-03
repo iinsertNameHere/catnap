@@ -1,8 +1,8 @@
-# This is the distro logos file for catnip.
+# This is the distro logos file for catnap.
 # Here you can configure all distro logos 
 # or add a new one.
 #
-# https://github.com/iinsertNameHere/catnip
+# https://github.com/iinsertNameHere/catnap
 
 ##############################################
 ##         Distro ASCII-Art Config          ##
@@ -123,10 +123,10 @@ art    = [
 [buildroot]
 margin = [3, 3, 3,]
 art    = [
-		"{YW}   ___     "
-		"{YW} / \\`   \\  "
-		"{YW}|   :  :|  "
-		"{YW} -. _:__.- "
+		"{YW}   ___     ",
+		"{YW} / \\`   \\  ",
+		"{YW}|   :  :|  ",
+		"{YW} -. _:__.- ",
 		"{YW} \\` ---- \\`"
 ]
 
@@ -143,22 +143,6 @@ art    = [
     "{CN} \\......\\          ",
     "{CN}  \\.............../",
     "{CN}   \\............./ ",
-]
-
-[catnip]
-alias  = "default"
-margin = [1, 2, 2,]
-art    = [
-    "(GN)          ⣀⣀⣠⣠⣶⠦⢴⣦⣀⣠⣀  ",
-    "(GN)     ⢀⣤⣴⠿⠋⠿⠋⠁   ⠉⠉⠉⠉⣿⡇ ",
-    "(GN)    ⣴⡟⠙⠁   ⡆        ⣰⡿ ",
-    "(GN)  ⣰⡿⡟   ⡇ ⢸⣧⣚⡀     ⢻⡇  ",
-    "(GN) ⢠⣿⠁ ⢸  ⣇⡴⠋⠉⠉     ⣰⡿⠁  ",
-    "(GN) ⢸⣏  ⢸⣀⣴⠟⠛⠛⠉⠁    ⢚⣿    ",
-    "(GN) ⠸⣿  ⣼⣿⠧⠤⠤⠔   ⣀⣤⡾⠛⠁    ",
-    "(GN)  ⠹⣧⣾⡟⠁     ⢀⣠⣼⡿       ",
-    "(GN)  ⢀⣼⠟⣼⡟⠻⠿⠛⠛⠛⠉⠁         ",
-    "(GN)  ⠘⠿⠾⠏                 ",
 ]
 
 [centos]
@@ -283,14 +267,14 @@ art    = [
 alias  = "evolutionos"
 margin = [2, 3, 3,]
 art    = [
-    "{GN}      $2,coddoc'                "
-    "{GN}   'cddddddddddc'               "
-    "{GN} 'ddd$1OWWXXXXXXK$2ddo.         "
-    "{GN}.dddd$1OMX$2ddddddddddd.        "
-    "{GN}odddd$1OMX$2k$100O$2k$1OO$2ddddo"
-    "{GN}.dddd$1OMX$2kOOOxOkdddd.        "
-    "{GN} .ddd$1OWW$2X$1XXXXXK$2ddd'     "
-    "{GN}   'dddddddddddd'               "
+    "{GN}      $2,coddoc'                ",
+    "{GN}   'cddddddddddc'               ",
+    "{GN} 'ddd$1OWWXXXXXXK$2ddo.         ",
+    "{GN}.dddd$1OMX$2ddddddddddd.        ",
+    "{GN}odddd$1OMX$2k$100O$2k$1OO$2ddddo",
+    "{GN}.dddd$1OMX$2kOOOxOkdddd.        ",
+    "{GN} .ddd$1OWW$2X$1XXXXXK$2ddd'     ",
+    "{GN}   'dddddddddddd'               ",
     "{GN}      'cddddd,                  "
 ]
 
@@ -687,6 +671,7 @@ art    = [
 
 ### T ###
 [tux]
+alias = "default"
 margin = [2, 2, 3,]
 art    = [
     "(BK)      .--.     ",

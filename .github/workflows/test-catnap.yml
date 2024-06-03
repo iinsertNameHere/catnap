@@ -1,9 +1,9 @@
-name: test-catnip
+name: test-catnap
 on:
   push:
   pull_request:
 jobs:
-  test-catnip:
+  test-catnap:
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout Repository'
@@ -15,7 +15,7 @@ jobs:
       with:
         nim-version: 'stable'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: 'Build Catnip'
+    - name: 'Build Catnap'
       run: nim debug
     - name: 'Install Figlet'
       run: sudo apt-get install figlet

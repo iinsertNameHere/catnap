@@ -1,8 +1,8 @@
-# This is the configuration file for catnip.
+# This is the configuration file for catnap.
 # Here you can configure the stat colors,
 # stat names, stat icons and more!
 #
-# https://github.com/iinsertNameHere/catnip
+# https://github.com/iinsertNameHere/catnap
 
 ##############################################
 ##          FetchInfo stats Config          ##
@@ -15,8 +15,8 @@ distro    = {icon = " ", name = "distro", color = "(GN)"}
 kernel    = {icon = " ", name = "kernel", color = "(MA)"}
 desktop   = {icon = " ", name = "desktp", color = "(CN)"}
 # terminal  = {icon = " ", name = "term", color = "(RD)"}
-shell     = {icon = " ", name = "shell", color = "(MA)"}
-# packages  = {icon = " ", name = "packages", color = "(GN)"}  # WARNING: Resource Intensive
+# shell     = {icon = " ", name = "shell", color = "(MA)"}
+packages  = {icon = " ", name = "packages", color = "(GN)"}  # WARNING: Resource Intensive
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 disk_0    = {icon = " ", name = "disk", color = "(GN)"}

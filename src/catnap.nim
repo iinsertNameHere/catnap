@@ -1,16 +1,16 @@
-import "catniplib/platform/fetch"
-import "catniplib/drawing/render"
-from "catniplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, TMPPATH
-import "catniplib/global/config"
-import "catniplib/terminal/logging"
+import "catnaplib/platform/fetch"
+import "catnaplib/drawing/render"
+from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, TMPPATH
+import "catnaplib/global/config"
+import "catnaplib/terminal/logging"
 import parsetoml
 import os
 from unicode import toLower
 import strutils
 import strformat
 import std/wordwrap
-import "catniplib/platform/probe"
-from "catniplib/global/currentcommit" import CURRENTCOMMIT
+import "catnaplib/platform/probe"
+from "catnaplib/global/currentcommit" import CURRENTCOMMIT
 
 # Debug code for execution time
 when not defined release:
@@ -31,7 +31,7 @@ proc printHelp(cfg: Config) =
         count += 1
 
     echo "Usage:"
-    echo "    catnip [options] [arguments]"
+    echo "    catnap [options] [arguments]"
     echo ""
     echo "Options:"
     echo "    -h  --help                                Show help list"

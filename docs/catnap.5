@@ -1,8 +1,8 @@
-.TH catnip 5 "2024-05-11" "1.0" "User Commands"
+.TH catnap 5 "2024-05-11" "1.0" "User Commands"
 .SH NAME
-config.toml and distros.toml \- Catnip configuration and art files
+config.toml and distros.toml \- Catnap configuration and art files
 .SH SYNOPSIS
-~/.config/catnip/config.toml ~/.config/catnip/distros.toml
+~/.config/catnap/config.toml ~/.config/catnap/distros.toml
 .SH DESCRIPTION
 You can change the names, colors, and icons for the various stats inside the stats section of the config.toml file.
 .TP
@@ -16,7 +16,7 @@ You can change the order in which the stats are displayed by just changing the o
 .TP
 Separators are defined by creating a new key with the sep_ prefix. The value of the key can be anything.
 .TP
-To display multiple disks, just create a new stat is named disk_[index]. To check what the index of the disk you want to add is, just run catnip -g disks.
+To display multiple disks, just create a new stat is named disk_[index]. To check what the index of the disk you want to add is, just run catnap -g disks.
 .TP
 .SH LAYOUT
 .TP
@@ -67,7 +67,7 @@ The art key is used to define the ascii-art for your distro.
 The alias key can be used to define alternate names that should also refer to the DistroArt Object.
 .TP
 .SH COLORS
-Catnip's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
+Catnap's color system uses a ColorId, which is made up of the colors first and last letter, enclosed in characters that indicate the type of color.
 .TP
 \fBColor Types:\fR
 .TP
@@ -100,9 +100,9 @@ CYAN -> CN
 WHITE -> WE
 .TP
 .SH MORE INFORMATION
-For more information on configuration, go to https://github.com/iinsertNameHere/catnip
+For more information on configuration, go to https://github.com/iinsertNameHere/catnap
 .SH SEE ALSO
 .TP
 \fBfiglet\fP(6)
 .TP
-\fBcatnip\fP(1)
+\fBcatnap\fP(1)

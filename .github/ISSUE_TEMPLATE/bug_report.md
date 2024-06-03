@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-### What version of Catnip are you running?
-Paste the output of `catnip -v` here.
+### What version of Catnap are you running?
+Paste the output of `catnap -v` here.
 
 ### Describe the bug:
 A clear and concise description of what the bug is.
