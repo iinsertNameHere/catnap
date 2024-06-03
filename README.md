@@ -22,10 +22,6 @@
 ## 🌿 What is Catnap
 I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
-> #### Website:
-> Catnap has a Website now!
-> You can visit the website [here](https://catnip-fetch.xyz).
-
 > #### ⏱️ Execution Time 
 > *Around **0.006** seconds on my laptop
 
@@ -85,7 +81,7 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 <br>
 
 ## 📒 Documentation
-You can read the full documentation [here](https://documentation.catnip-fetch.xyz/)
+You can read the full documentation [here](https://catnip-fetch.xyz/)
 <br>
 It covers installation, usage and configuration!
 
