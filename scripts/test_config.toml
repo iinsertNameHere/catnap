@@ -23,6 +23,7 @@ colors    = {icon = "> ", name = "colors", color = "!DT!", symbol = "#"}
 ##############################################
 
 [misc]
+borderstyle = "doubleline"
 layout = "Inline"
 stats_margin_top = 0
 

@@ -64,13 +64,13 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
         stats_margin_top = config.misc["stats_margin_top"].getInt()
 
     # Build the stat_block buffer
-    var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, fetchinfo, stats_margin_top)
+    var stats_block = buildStatBlock(ORDERED_STATNAMES, stats, config, fetchinfo, stats_margin_top)
 
     # Merge buffers and output
     case layout:
         of "Inline": # Handle Inline Layout
             if not config.misc["imageMode"]["enable"].getBool():
-                ### ASCII mode ###
+                # ASCII mode
                 let lendiv = stats_block.len - distro_art.len
                 if lendiv < 0:
                     for _ in countup(1, lendiv - lendiv*2):
@@ -109,7 +109,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
         of "ArtOnTop": # Handle ArtOnTop Layout
             if not config.misc["imageMode"]["enable"].getBool():
-                ### ASCII mode ###
+                # ASCII mode
                 for idx in countup(0, distro_art.len - 1):
                     echo distro_art[idx]
                 for idx in countup(0, stats_block.len - 1):
@@ -137,7 +137,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
 
         of "StatsOnTop": # Handle StatsOnTop Layout
             if not config.misc["imageMode"]["enable"].getBool():
-                ### ASCII mode ###
+                # ASCII mode
                 for idx in countup(0, stats_block.len - 1):
                     echo stats_block[idx]
                 for idx in countup(0, distro_art.len - 1):
