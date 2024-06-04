@@ -2,8 +2,9 @@ import unicode
 import tables
 import strutils
 import strformat
+import parsetoml
 
-from "../global/definitions" import Stats, Stat, FetchInfo, STATNAMES
+from "../global/definitions" import Stats, Stat, Config, FetchInfo, STATNAMES
 from "stats" import newStat
 import "../terminal/colors"
 import "../terminal/logging"
@@ -17,7 +18,7 @@ proc reallen*(s: string): int =
     # Get the length of a string without ansi color codes
     result = Uncolorize(s).runeLen
 
-proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margin_top: int): seq[string] =
+proc buildStatBlock*(stat_names: seq[string], stats: Stats, config: Config, fi: FetchInfo, margin_top: int): seq[string] =
     # Build output lines from Stats object and FetchInfo object
 
     var sb: seq[string]
@@ -25,15 +26,32 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margi
     for idx in countup(1, margin_top):
         sb.add("")
 
+    var borderstyle = ""
+    if config.misc.contains("borderstyle"):
+        borderstyle = config.misc["borderstyle"].getStr()
+
     proc addStat(stat: Stat, value: string) =
         # Function to add a stat/value pair to the result
         var line = stat.icon & " " & stat.name
         while uint(line.runeLen) < stats.maxlen:
             line &= " "
-        sb.add("│ " & stat.color.Colorize() & line & colors.Default & " │ " & value)
+        case borderstyle:
+            of "line":
+                sb.add("│ " & stat.color.Colorize() & line & colors.Default & " │ " & value)
+            of "dashed":
+                sb.add("┊ " & stat.color.Colorize() & line & colors.Default & " ┊ " & value)
+            of "dotted":
+                sb.add("┇ " & stat.color.Colorize() & line & colors.Default & " ┇ " & value)
+            of "noborder":
+                sb.add("  " & stat.color.Colorize() & line & colors.Default & "   " & value)
+            of "doubleline":
+                sb.add("║ " & stat.color.Colorize() & line & colors.Default & " ║ " & value)
+            else: # Invalid borderstyle
+                logError(&"{config.configFile}:misc:borderstyle - Invalid style")
+                quit(1)
 
     let colorval = Colorize( # Construct color showcase
-        "(WE)"&stats.color_symbol&
+        " (WE)"&stats.color_symbol&
         " (RD)"&stats.color_symbol&
         " (YW)"&stats.color_symbol&
         " (GN)"&stats.color_symbol&
@@ -47,8 +65,17 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margi
     let NIL_STAT = newStat("", "", "") # Define empty Stat object
 
     # Construct the stats section with all stats that are not NIL
-    sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
-
+    case borderstyle:
+        of "line":
+            sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
+        of "dashed":
+            sb.add("╭" & "┄".repeat(int(stats.maxlen + 1)) & "╮")
+        of "dotted":
+            sb.add("•" & "•".repeat(int(stats.maxlen + 1)) & "•")
+        of "noborder":
+            sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+        of "doubleline":
+            sb.add("╔" & "═".repeat(int(stats.maxlen + 1)) & "╗")
     var fetchinfolist_keys: seq[string] 
     for k in fi.list.keys:
         fetchinfolist_keys.add(k)
@@ -57,7 +84,17 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margi
         if stat == "colors": continue
         
         if stat.split('_')[0] == "sep":
-            sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
+            case borderstyle:
+                of "line":
+                    sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
+                of "dashed":
+                    sb.add("┊" & "┄".repeat(int(stats.maxlen + 1)) & "┊")
+                of "dotted":
+                    sb.add("┇" & "•".repeat(int(stats.maxlen + 1)) & "┇")
+                of "noborder":
+                    sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+                of "doubleline":
+                    sb.add("╠" & "═".repeat(int(stats.maxlen + 1)) & "╣")
             continue
 
         if stat notin fetchinfolist_keys:
@@ -69,6 +106,15 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, fi: FetchInfo, margi
     # Color stat
     if stats.list["colors"] != NIL_STAT:
         addStat(stats.list["colors"], colorval)
-    sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
-
+    case borderstyle:
+        of "line":
+            sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
+        of "dashed":
+            sb.add("╰" & "┄".repeat(int(stats.maxlen + 1)) & "╯")
+        of "dotted":
+            sb.add("•" & "•".repeat(int(stats.maxlen + 1)) & "•")
+        of "noborder":
+            sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+        of "doubleline":
+            sb.add("╚" & "═".repeat(int(stats.maxlen + 1)) & "╝")
     return sb

@@ -29,6 +29,7 @@ colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 ##               Misc Config                ##
 ##############################################
 [misc]
+borderstyle = "line"
 layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
 stats_margin_top = 0
 
