@@ -81,7 +81,7 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 <br>
 
 ## 📒 Documentation
-You can read the full documentation [here](https://catnip-fetch.xyz/)
+You can read the full documentation [here](https://catnap-fetch.xyz/)
 <br>
 It covers installation, usage and configuration!
 
