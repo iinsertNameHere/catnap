@@ -1,6 +1,6 @@
 import "catnaplib/platform/fetch"
 import "catnaplib/drawing/render"
-from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, TMPPATH
+from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, CACHEPATH
 import "catnaplib/global/config"
 import "catnaplib/terminal/logging"
 import parsetoml
@@ -16,10 +16,6 @@ from "catnaplib/global/currentcommit" import CURRENTCOMMIT
 when not defined release:
     import times
     let t0 = epochTime()
-
-# Create tmp folder
-if not dirExists(TMPPATH):
-    createDir(TMPPATH)
 
 # Help text
 proc printHelp(cfg: Config) =
@@ -38,6 +34,7 @@ proc printHelp(cfg: Config) =
     echo "    -v  --version                             Shows info about the version"
     echo "    -d  --distroid             <DistroId>     Set which DistroId to use"
     echo "    -g  --grep                 <StatName>     Get the stats value"
+    echo "    -n  --no-cache                            Clears the cache before execution"
     echo "    -c  --config               <ConfigPath>   Uses a custom location for the config file"
     echo "    -a  --art                  <DistrosPath>  Uses a custom location for the distros file"
     echo ""
@@ -122,6 +119,10 @@ if paramCount() > 0:
                 continue
             idx += 1
             distroid = paramStr(idx).toLower()
+
+        # No Cache Argument
+        elif param == "-n" or param == "--no-cache":
+            if dirExists(CACHEPATH): removeDir(CACHEPATH)
 
         # Grep Argument
         elif param == "-g" or param == "--grep":
@@ -298,6 +299,11 @@ if paramCount() > 0:
             continue
 
         idx += 1
+
+
+# Create tmp folder
+if not dirExists(CACHEPATH):
+    createDir(CACHEPATH)
 
 # Getting config
 var cfg = LoadConfig(cfgPath, dstPath)

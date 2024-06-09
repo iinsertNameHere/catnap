@@ -135,9 +135,21 @@ const
     # Files / Dirs
     CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
     DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
-    TMPPATH*      = "/tmp/catnap"
 
+
+proc getCachePath*(): string =
+    result = getEnv("XDG_CACHE_HOME")
+    if result != "":
+        result = joinPath(result, "catnap")
+    else:
+        result = getEnv("HOME")
+        if result != "":
+            result = joinPath(result, ".cache/catnap")
+        else:
+            result = "/tmp/catnap"
+
+let CACHEPATH* = getCachePath()        
 
 proc toTmpPath*(p: string): string =
     # Converts a path [p] into a temp path 
-    return joinPath(TMPPATH, p)
+    return joinPath(CACHEPATH, p)

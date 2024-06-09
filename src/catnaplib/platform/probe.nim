@@ -213,11 +213,12 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
 proc getGpu*(): string =
     # Returns the VGA line of lspci output
     let tmpFile = "lspci.txt".toTmpPath
-    if execCmd("lspci > " & tmpFile) != 0:
-        logError("Failed to fetch GPU!")
+    
+    if not fileExists(tmpFile):
+        if execCmd("lspci > " & tmpFile) != 0:
+            logError("Failed to fetch GPU!")
 
     var vga = ""
-
     let lspci = readFile(tmpFile)
     for line in lspci.split('\n'):
         if line.split(' ')[1] == "VGA":
