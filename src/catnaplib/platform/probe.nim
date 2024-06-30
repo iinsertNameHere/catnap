@@ -145,14 +145,14 @@ proc getMounts*(): seq[string] =
 
         result.add(mount)
 
-proc getDisk*(mountingPoint: ref string): string =
+proc getDisk*(mount: string): string =
     # Returns disk space usage
     proc getTotalDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
     proc getUsedDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
 
     let
-        total = getTotalDiskSpace(mountingPoint[].cstring).round().int()
-        used = getUsedDiskSpace(mountingPoint[].cstring).round().int()
+        total = getTotalDiskSpace(mount.cstring).round().int()
+        used = getUsedDiskSpace(mount.cstring).round().int()
         percentage = ((used / total) * 100).round().int()
     result = &"{used} / {total} GB ({percentage}%)"
 

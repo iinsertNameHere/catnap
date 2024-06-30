@@ -1,6 +1,7 @@
 import osproc
 import strformat
 import strutils
+import sugar
 
 from "../global/definitions" import FetchInfo, Config, toTmpPath
 import "../terminal/logging"
@@ -24,25 +25,24 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["weather"]  = proc(): string = return probe.getWeather()
 
     # Add a disk stat for all mounts
-    let mounts = probe.getMounts()
-    if mounts.len > 0:
+    let mounts: seq[string] = probe.getMounts()
+
+    if mounts.len > 1:
         var index = 0
         for mount in mounts:
             let name = "disk_" & $index
-            
-            var refmount: ref string
-            new(refmount)
-            refmount[] = mount
 
-            result.list[name] = proc(): string = return probe.getDisk(refmount)
+            # Capture mount var to prevent value changes
+            var cap: proc(): string
+            capture mount:
+                # Create fetch proc
+                cap = proc(): string = return probe.getDisk(mount)
+
+            result.list[name] = cap
             result.disk_statnames.add(name)
             index += 1
     else:
-        var refmount: ref string
-        new(refmount)
-        refmount[] = "disk_0"
-
-        result.list["disk_0"] = proc(): string = return probe.getDisk(refmount)
+        result.list["disk_0"] = proc(): string = return probe.getDisk(mounts[0])
         result.disk_statnames.add("disk_0")
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
