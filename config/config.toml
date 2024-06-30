@@ -13,7 +13,7 @@ hostname  = {icon = " ", name = "hostname", color = "(YW)"}
 uptime    = {icon = " ", name = "uptime", color = "(BE)"}
 distro    = {icon = " ", name = "distro", color = "(GN)"}
 kernel    = {icon = " ", name = "kernel", color = "(MA)"}
-desktop   = {icon = " ", name = "desktp", color = "(CN)"}
+desktop   = {icon = " ", name = "desktop", color = "(CN)"}
 # terminal  = {icon = " ", name = "term", color = "(RD)"}
 # shell     = {icon = " ", name = "shell", color = "(MA)"}
 packages  = {icon = " ", name = "packages", color = "(GN)"}  # WARNING: Resource Intensive
