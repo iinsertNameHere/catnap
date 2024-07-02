@@ -127,6 +127,9 @@ proc getBattery*(): string =
         batteryCapacity = readFile(batteryPath & "capacity").strip()
         batteryStatus = readFile(batteryPath & "status").strip()
     
+    if not dirExists(batteryPath):
+        logError("No battery detected!")
+
     result = &"{batteryCapacity}% ({batteryStatus})"
 
 proc getMounts*(): seq[string] =
