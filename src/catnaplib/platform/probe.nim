@@ -121,6 +121,14 @@ proc getMemory*(mb: bool = true): string =
 
     result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
 
+proc getBattery*(): string =
+    let 
+        batteryPath = "/sys/class/power_supply/BAT0/"
+        batteryCapacity = readFile(batteryPath & "capacity").strip()
+        batteryStatus = readFile(batteryPath & "status").strip()
+    
+    result = &"{batteryCapacity}% ({batteryStatus})"
+
 proc getMounts*(): seq[string] =
     proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
 

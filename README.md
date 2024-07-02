@@ -38,6 +38,7 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
     <li>shell</li>
     <li>terminal</li>
     <li>memory</li>
+    <li>battery</li>
     <li>disk space</li>
     <li>cpu info</li>
     <li>packages</li>

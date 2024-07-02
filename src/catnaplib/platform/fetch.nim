@@ -19,6 +19,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["terminal"] = proc(): string = return probe.getTerminal()
     result.list["shell"]    = proc(): string = return probe.getShell()
     result.list["memory"]   = proc(): string = return probe.getMemory()
+    result.list["battery"]   = proc(): string = return probe.getBattery()
     result.list["cpu"]      = proc(): string = return probe.getCpu()
     result.list["gpu"]      = proc(): string = return probe.getGpu()
     result.list["packages"] = proc(): string = return probe.getPackages()
