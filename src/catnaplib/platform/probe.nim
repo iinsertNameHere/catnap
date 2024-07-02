@@ -122,13 +122,15 @@ proc getMemory*(mb: bool = true): string =
     result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
 
 proc getBattery*(): string =
-    let 
-        batteryPath = "/sys/class/power_supply/BAT0/"
+    let batteryPath = "/sys/class/power_supply/" & getEnv("CATNAP_BATTERY") & "/"
+    
+    # let error checking go first before setting other variables
+    if not dirExists(batteryPath):
+        logError("No battery detected! Have you set $CATNAP_BATTERY?")
+
+    let
         batteryCapacity = readFile(batteryPath & "capacity").strip()
         batteryStatus = readFile(batteryPath & "status").strip()
-    
-    if not dirExists(batteryPath):
-        logError("No battery detected!")
 
     result = &"{batteryCapacity}% ({batteryStatus})"
 

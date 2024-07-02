@@ -21,7 +21,7 @@ packages  = {icon = " ", name = "packages", color = "(GN)"}  # WARNING: Resou
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 memory    = {icon = " ", name = "memory", color = "(YW)"}
-battery    = {icon = " ", name = "battery", color = "(YW)"}
+# battery    = {icon = " ", name = "battery", color = "(YW)"} # Please set the env var CATNAP_BATTERY before enabling.
 # weather   = {icon = " ", name = "weather", color = "(BE)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
