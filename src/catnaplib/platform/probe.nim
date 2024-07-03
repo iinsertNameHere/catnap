@@ -123,6 +123,7 @@ proc getMemory*(mb: bool = true): string =
     result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
 
 proc getBattery*(): string =
+    # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
     var batteryPath = ""
     
     let 
@@ -132,9 +133,7 @@ proc getBattery*(): string =
     for dir in os.walk_dir(powerPath):
       if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
         batteryPath = dir.path & "/"
-
-    # let error checking go first before setting other variables
-    if not dirExists(batteryPath):
+      else:
         logError("No battery detected!")
 
     let
