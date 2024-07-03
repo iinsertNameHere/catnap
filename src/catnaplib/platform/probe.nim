@@ -10,6 +10,7 @@ import re
 from unicode import toLower
 from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toTmpPath
 import "../terminal/logging"
+import algorithm
 
 proc getDistro*(): string =
     # Returns the name of the running linux distro
@@ -124,21 +125,28 @@ proc getMemory*(mb: bool = true): string =
 
 proc getBattery*(): string =
     # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
-    var batteryPath = ""
     
     let 
         BATTERY_REGEX = re"^BAT\d+$"
         powerPath = "/sys/class/power_supply/"
-    
+
+    var batterys: seq[tuple[idx: int, path: string]]
+
+    # Collect all batterys
     for dir in os.walk_dir(powerPath):
       if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
-        batteryPath = dir.path & "/"
-      else:
+        batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
+
+    if batterys.len < 1:
         logError("No battery detected!")
 
+    # Sort batterys by number
+    sort(batterys)
+
+    # Get stats for battery with lowest number  
     let
-        batteryCapacity = readFile(batteryPath & "capacity").strip()
-        batteryStatus = readFile(batteryPath & "status").strip()
+        batteryCapacity = readFile(batterys[0].path & "capacity").strip()
+        batteryStatus = readFile(batterys[0].path & "status").strip()
 
     result = &"{batteryCapacity}% ({batteryStatus})"
 
