@@ -54,7 +54,7 @@ const
 
     # Stats
     STATNAMES*    = @["username", "hostname", "uptime", "distro",
-                    "kernel", "desktop", "shell", "memory", "terminal",
+                    "kernel", "desktop", "shell", "memory", "battery", "terminal",
                     "cpu", "gpu", "packages", "weather", "colors"]
     STATKEYS*     = @["icon", "name", "color"]
     

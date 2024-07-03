@@ -6,6 +6,7 @@ import parsecfg
 import posix_utils
 import tables
 import osproc
+import re
 from unicode import toLower
 from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toTmpPath
 import "../terminal/logging"
@@ -120,6 +121,26 @@ proc getMemory*(mb: bool = true): string =
         percentage = ((int(memUsedInt) / int(memTotalInt)) * 100).round().int()
 
     result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
+
+proc getBattery*(): string =
+    # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
+    var batteryPath = ""
+    
+    let 
+        BATTERY_REGEX = re"^BAT\d+$"
+        powerPath = "/sys/class/power_supply/"
+    
+    for dir in os.walk_dir(powerPath):
+      if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
+        batteryPath = dir.path & "/"
+      else:
+        logError("No battery detected!")
+
+    let
+        batteryCapacity = readFile(batteryPath & "capacity").strip()
+        batteryStatus = readFile(batteryPath & "status").strip()
+
+    result = &"{batteryCapacity}% ({batteryStatus})"
 
 proc getMounts*(): seq[string] =
     proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
@@ -242,5 +263,4 @@ proc getWeather*(): string =
         logError("Failed to fetch weather!")
 
     # Returns the weather and discards the annoying newline.
-    let weather = readFile(tmpFile)
-    result = $weather.replace("\n", "")
+    result = readFile(tmpFile).strip()

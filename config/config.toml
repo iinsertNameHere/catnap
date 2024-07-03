@@ -16,11 +16,12 @@ kernel    = {icon = " ", name = "kernel", color = "(MA)"}
 desktop   = {icon = " ", name = "desktop", color = "(CN)"}
 # terminal  = {icon = " ", name = "term", color = "(RD)"}
 # shell     = {icon = " ", name = "shell", color = "(MA)"}
-packages  = {icon = " ", name = "packages", color = "(GN)"}  # WARNING: Resource Intensive
+# packages  = {icon = " ", name = "packages", color = "(RD)"}  # WARNING: Resource Intensive
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 memory    = {icon = " ", name = "memory", color = "(YW)"}
+# battery    = {icon = " ", name = "battery", color = "(GN)"}
 # weather   = {icon = " ", name = "weather", color = "(BE)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
