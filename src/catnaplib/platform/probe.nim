@@ -231,18 +231,23 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
         return "unknown"
 
     let tmpFile = "pkgcount.txt".toTmpPath
-
-    let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
-    if execCmd(cmd) != 0:
-        logError("Failed to fetch pkg count!")
     
+    if not fileExists(tmpFile):
+        let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
+        if execCmd(cmd) != 0:
+            logError("Failed to fetch pkg count!")
+        
     let count = readFile(tmpFile).strip()
     return count & " [" & pkgManager & "]" 
 
 proc getGpu*(): string =
     # Returns the VGA line of lspci output
     let tmpFile = "lspci.txt".toTmpPath
+    let gpuFile = "gpu.txt".toTmpPath
     
+    if fileExists(gpuFile):
+        return readFile(gpuFile)
+
     if not fileExists(tmpFile):
         if execCmd("lspci > " & tmpFile) != 0:
             logError("Failed to fetch GPU!")
@@ -255,20 +260,26 @@ proc getGpu*(): string =
             break
 
     if vga == "":
+        writeFile(gpuFile, "Unknown")
         return "Unknown"
 
     let vga_parts = vga.split(":")
 
-    if vga_parts.len < 2: 
+    if vga_parts.len < 2:
+        writeFile(gpuFile, "Unknown")
         return "Unknown"
 
     let gpu = vga_parts[vga_parts.len - 1].split("(")[0]
+    writeFile(gpuFile, gpu.strip())
     return gpu.strip()
 
 proc getWeather*(): string =
     let tmpFile = "weather.txt".toTmpPath
-    if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
-        logError("Failed to fetch weather!")
-
-    # Returns the weather and discards the annoying newline.
-    result = readFile(tmpFile).strip()
+    if fileExists(tmpFile):
+        # Returns the weather and discards the annoying newline.
+        result = readFile(tmpFile).strip()
+    else:
+        if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
+            logError("Failed to fetch weather!")
+        # Returns the weather and discards the annoying newline.
+        result = readFile(tmpFile).strip()
