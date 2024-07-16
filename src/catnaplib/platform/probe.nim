@@ -13,8 +13,11 @@ import "../terminal/logging"
 import algorithm
 
 proc getDistro*(): string =
+    when defined(linux):
     # Returns the name of the running linux distro
-    result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
+        result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
+    elif defined(macos):
+        result = "MacOS X" & " " & uname().machine
 
 proc getDistroId*(): DistroId =
     # Returns the DistroId of the running linux distro
