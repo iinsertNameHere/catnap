@@ -19,7 +19,7 @@ desktop   = {icon = " ", name = "desktop", color = "(CN)"}
 # packages  = {icon = " ", name = "packages", color = "(RD)"}  # WARNING: Resource Intensive
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
-disk_0    = {icon = " ", name = "disk", color = "(GN)"}
+# disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 memory    = {icon = " ", name = "memory", color = "(YW)"}
 # battery    = {icon = " ", name = "battery", color = "(GN)"}
 # weather   = {icon = " ", name = "weather", color = "(BE)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
