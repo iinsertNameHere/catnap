@@ -20,10 +20,8 @@ Create a new [issue](https://github.com/iinsertNameHere/catnap/issues) using the
 │   │   ├── headers/   # Contains extern c++ headers (hpp)
 │   │   └── libraries/ # Contains extern libs
 │   └── catnap.nim # Entry src file
-├── scripts/
-│   ├── test-commandline-args.sh # Checks if catnap's cmd args work
-│   └── git-commit-id.sh         # Generates the currentcommit.nim file
-└── config.nims
+├── scripts/ # Test Scripts etc.
+└── config.nims # nim install, nim debug , ...
 ```
 
 # How to add a new distro
