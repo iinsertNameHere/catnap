@@ -314,4 +314,4 @@ proc getWeather*(): string =
         logError("Failed to fetch weather!")
     
     result = readFile(tmpFile).strip()
-    writeCache(cacheFile, result, initDuration(minutes=30))
+    writeCache(cacheFile, result, initDuration(minutes=20))
