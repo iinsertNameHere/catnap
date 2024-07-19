@@ -148,8 +148,13 @@ proc getCachePath*(): string =
         else:
             result = "/tmp/catnap"
 
-let CACHEPATH* = getCachePath()        
+let CACHEPATH* = getCachePath() 
+let TEMPPATH* = "/tmp/catnap"       
+
+proc toCachePath*(p: string): string =
+    # Converts a path [p] into a cahce path 
+    return joinPath(CACHEPATH, p)
 
 proc toTmpPath*(p: string): string =
     # Converts a path [p] into a temp path 
-    return joinPath(CACHEPATH, p)
+    return joinPath(TEMPPATH, p)
