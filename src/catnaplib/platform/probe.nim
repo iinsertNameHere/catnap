@@ -4,29 +4,47 @@ import math
 import strutils
 import parsecfg
 import posix_utils
+import times
 import tables
 import osproc
 import re
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toTmpPath
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath
 import "../terminal/logging"
+import "caching"
 import algorithm
 
 proc getDistro*(): string =
+    let cacheFile = "distroname".toCachePath
+    result = readCache(cacheFile)
+    if result != "": return
+
     when defined(linux):
     # Returns the name of the running linux distro
         result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
     elif defined(macos):
         result = "MacOS X" & " " & uname().machine
 
+    writeCache(cacheFile, result, INFINITEDURATION)
+
 proc getDistroId*(): DistroId =
-    # Returns the DistroId of the running linux distro
+    let cacheFile = "distroid".toCachePath
+    let raw = readCache(cacheFile)
+    if raw != "":
+        let raw_vals = raw.split(':')
+        if raw_vals.len == 2:
+            result.id = raw_vals[0]
+            result.like = raw_vals[1]
+
+
     if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
         result.id = "raspbian"
         result.like = "debian"
     else:
         result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
         result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
+
+    writeCache(cacheFile, &"{result.id}|{result.like}", INFINITEDURATION)
 
 proc getUptime*(): string =
     # Returns the system uptime as a string (DAYS, HOURS, MINUTES)
@@ -178,7 +196,7 @@ proc getMounts*(): seq[string] =
         result.add(mount)
 
 proc getDisk*(mount: string): string =
-    # Returns disk space usage
+    # Returns diskinfo for the mounting point
     proc getTotalDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
     proc getUsedDiskSpace(mountingPoint: cstring): cfloat {.importc, varargs, header: "getDisk.h".}
 
@@ -189,7 +207,12 @@ proc getDisk*(mount: string): string =
     result = &"{used} / {total} GB ({percentage}%)"
 
 proc getCpu*(): string =
-    # Returns CPU model
+    # Returns the cpu name
+    let cacheFile = "cpu".toCachePath
+    result = readCache(cacheFile)
+    if result != "":
+        return
+
     let rawLines = readFile("/proc/cpuinfo").split("\n")
     
     var key_name = "model name"
@@ -206,9 +229,10 @@ proc getCpu*(): string =
         if key == key_name: 
             result = val
             break
+    
+    writeCache(cacheFile, result, initDuration(days=1))
 
 proc getPkgManager(distroId: DistroId): string =
-    # Returns main package manager of distro
     for key in PKGMANAGERS.keys:
         if distroId.id == key:
             return PKGMANAGERS[key]
@@ -217,13 +241,19 @@ proc getPkgManager(distroId: DistroId): string =
         if distroId.like == key:
             return PKGMANAGERS[key]
     
-    return "unknown"
+    return "Unknown"
 
 proc getPackages*(distroId: DistroId = getDistroId()): string =
-    # Return install package count of the main package manager of the distro
+    # Returns the installed package count
+    let cacheFile = "packages".toCachePath
+
+    result = readCache(cacheFile)
+    if result != "":
+        return
+
     let pkgManager = getPkgManager(distroId)
-    if pkgManager == "unknown":
-        return "unknown"
+    if pkgManager == "Unknown":
+        return "Unknown"
 
     var foundPkgCmd = false
     for key in PKGCOUNTCOMMANDS.keys:
@@ -231,58 +261,57 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
             foundPkgCmd = true
             break
     if not foundPkgCmd:
-        return "unknown"
+        return "Unknown"
 
-    let tmpFile = "pkgcount.txt".toTmpPath
-    
-    if not fileExists(tmpFile):
-        let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
-        if execCmd(cmd) != 0:
-            logError("Failed to fetch pkg count!")
+    let tmpFile = "packages.txt".toTmpPath
+    let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
+    if execCmd(cmd) != 0:
+        logError("Failed to fetch pkg count!")
         
     let count = readFile(tmpFile).strip()
-    return count & " [" & pkgManager & "]" 
+    result = count & " [" & pkgManager & "]"
+    writeCache(cacheFile, result, initDuration(hours=2))
 
 proc getGpu*(): string =
-    # Returns the VGA line of lspci output
+    # Returns the gpu name
+    let cacheFile = "gpu".toCachePath
+
+    result = readCache(cacheFile)
+    if result != "":
+        return
+
     let tmpFile = "lspci.txt".toTmpPath
-    let gpuFile = "gpu.txt".toTmpPath
-    
-    if fileExists(gpuFile):
-        return readFile(gpuFile)
 
-    if not fileExists(tmpFile):
-        if execCmd("lspci > " & tmpFile) != 0:
-            logError("Failed to fetch GPU!")
+    if execCmd("lspci > " & tmpFile) != 0:
+        logError("Failed to fetch GPU!")
 
-    var vga = ""
+    var vga = "Unknown"
     let lspci = readFile(tmpFile)
     for line in lspci.split('\n'):
         if line.split(' ')[1] == "VGA":
             vga = line
             break
 
-    if vga == "":
-        writeFile(gpuFile, "Unknown")
-        return "Unknown"
-
     let vga_parts = vga.split(":")
 
-    if vga_parts.len < 2:
-        writeFile(gpuFile, "Unknown")
-        return "Unknown"
-
-    let gpu = vga_parts[vga_parts.len - 1].split("(")[0]
-    writeFile(gpuFile, gpu.strip())
-    return gpu.strip()
+    if vga_parts.len >= 2 or vga != "Unknown":
+        result = vga_parts[vga_parts.len - 1].split("(")[0].strip()
+    else:
+        result = "Unknown"
+        
+    writeCache(cacheFile, result, initDuration(days=1))
 
 proc getWeather*(): string =
+    # Returns current weather
+    let cacheFile = "weather".toCachePath
+
+    result = readCache(cacheFile)
+    if result != "":
+        return
+
     let tmpFile = "weather.txt".toTmpPath
-    if fileExists(tmpFile):
-        # Returns the weather and discards the annoying newline.
-        result = readFile(tmpFile).strip()
-    else:
-        if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
-            logError("Failed to fetch weather!")
-        # Returns the weather and discards the annoying newline.
-        result = readFile(tmpFile).strip()
+    if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
+        logError("Failed to fetch weather!")
+    
+    result = readFile(tmpFile).strip()
+    writeCache(cacheFile, result, initDuration(minutes=20))

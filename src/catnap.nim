@@ -1,6 +1,6 @@
 import "catnaplib/platform/fetch"
 import "catnaplib/drawing/render"
-from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, CACHEPATH
+from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, CACHEPATH, TEMPPATH
 import "catnaplib/global/config"
 import "catnaplib/terminal/logging"
 import parsetoml
@@ -304,6 +304,9 @@ if paramCount() > 0:
 # Create tmp folder
 if not dirExists(CACHEPATH):
     createDir(CACHEPATH)
+
+if not dirExists(TEMPPATH):
+    createDir(TEMPPATH)
 
 # Getting config
 var cfg = LoadConfig(cfgPath, dstPath)
