@@ -41,9 +41,9 @@ proc printHelp(cfg: Config) =
     echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
     echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,LogoOnTop,StatsOnTop]"
     echo ""
-    echo "    -fe --figletLogos.enable   <on/off>       Overwrite figletLogos mode"
-    echo "    -fm --figletLogos.margin   <Margin>       Overwrite figletLogos margin (Example: 1,2,3)"
-    echo "    -ff --figletLogos.font     <Font>         Overwrite figletLogos font"
+    echo "    -fe --figlet-enable   <on/off>       Overwrite figletLogos mode"
+    echo "    -fm --figlet-margin   <Margin>       Overwrite figletLogos margin (Example: 1,2,3)"
+    echo "    -ff --figlet-font     <Font>         Overwrite figletLogos font"
     echo ""
     echo "StatNames:"
     echo "    " & (STATNAMES & @["disks"] & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")
@@ -205,7 +205,7 @@ if paramCount() > 0:
             layout = paramStr(idx)
 
         # FigletLogos enabled Argument
-        elif param == "-fe" or param == "--figletLogos.enabled":
+        elif param == "-fe" or param == "--figlet-enabled":
             if paramCount() - idx < 1:
                 logError(&"'{param}' - No Value was specified!", false)
                 error = true
@@ -231,7 +231,7 @@ if paramCount() > 0:
                 continue
 
         # FigletLogos margin Argument
-        elif param == "-fm" or param == "--figletLogos.margin":
+        elif param == "-fm" or param == "--figlet-margin":
             if paramCount() - idx < 1:
                 logError(&"{param} - No Value was specified!", false)
                 error = true
@@ -271,7 +271,7 @@ if paramCount() > 0:
 
 
         # FigletLogos font Argument
-        elif param == "-ff" or param == "--figletLogos.font":
+        elif param == "-ff" or param == "--figlet-font":
             if paramCount() - idx < 1:
                 logError(&"'{param}' - No Value was specified!", false)
                 error = true
