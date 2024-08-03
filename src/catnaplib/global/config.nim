@@ -141,7 +141,7 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
     result.misc = tcfg["misc"]
 
 proc getAllDistros*(cfg: Config): seq[string] =
-    ## Function that returns all keys of distroart Table
+    # Function that returns all keys of distroart Table
     let distroart = cfg.distroart
     for k in distroart.keys:
         if not distroart[k].isAlias:

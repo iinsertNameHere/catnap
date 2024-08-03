@@ -3,7 +3,7 @@ import os
 import strformat
 import strutils
 
-const datetimeFormat = "YYYY-MM-dd HH:mm:ss"
+const datetimeFormat = static: "YYYY-MM-dd HH:mm:ss"
 let INFINITEDURATION* = initDuration(
     nanoseconds = 4294967295,
     microseconds = 4294967295,
