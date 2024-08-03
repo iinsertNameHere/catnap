@@ -103,3 +103,4 @@ proc Uncolorize*(s: string): string =
 
 proc Reset*() =
     stdout.write(Default)
+    stdout.flushFile()
