@@ -6,9 +6,15 @@ proc compile(release: bool) =
     var args: seq[string]
     args.add(&"--cincludes:{thisDir()}/src/extern/headers")
     args.add(&"--path:{thisDir()}/src/extern/libraries")
+    args.add(&"--passC:-f")
+    args.add(&"--mm:arc")
+    args.add(&"--threads:on")
+    args.add(&"--panics:on")
     if release:
+        args.add(&"--checks:off")
         args.add(&"--verbosity:0")
-        args.add(&"-d:release")
+        args.add(&"-d:danger")
+        args.add(&"--opt:speed")
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
 

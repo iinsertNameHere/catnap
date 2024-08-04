@@ -53,13 +53,13 @@ type
 const
 
     # Stats
-    STATNAMES*    = @["username", "hostname", "uptime", "distro",
+    STATNAMES*    = static: @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "battery", "terminal",
                     "cpu", "gpu", "packages", "weather", "colors"]
-    STATKEYS*     = @["icon", "name", "color"]
+    STATKEYS*     = static: @["icon", "name", "color"]
     
     # Pkg Manager
-    PKGMANAGERS*  = {
+    PKGMANAGERS*  = static: {
         "gentoo": "emerge",
         "fedora": "dnf",
         "mageria": "dnf",
@@ -113,7 +113,7 @@ const
         "vanilla": "apx",
         "venom": "scratchpkg",
     }.toOrderedTable
-    PKGCOUNTCOMMANDS* = {
+    PKGCOUNTCOMMANDS* = static: {
         "apx": "apx list -i | wc -l",
         "eopkg": "eopkg list-installed | wc -l",
         "scratchpkg": "scratch installed | wc -l",
@@ -133,8 +133,8 @@ const
     }.toOrderedTable
 
     # Files / Dirs
-    CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
-    DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
+    CONFIGPATH*   = static: joinPath(getConfigDir(), "catnap/config.toml")
+    DISTROSPATH*  = static: joinPath(getConfigDir(), "catnap/distros.toml")
 
 
 proc getCachePath*(): string =

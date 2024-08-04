@@ -44,16 +44,16 @@ proc initBackgroundBright(): ColorSet = # <..>
 
 # Global ColorSets:
 const
-    Foreground*:        ColorSet = initForeground()
-    ForegroundBright*:  ColorSet = initForegroundBright()
-    Background*:       ColorSet = initBackground()
-    BackgroundBright*: ColorSet = initBackgroundBright()
+    Foreground*:        ColorSet = static: initForeground()
+    ForegroundBright*:  ColorSet = static: initForegroundBright()
+    Background*:       ColorSet = static: initBackground()
+    BackgroundBright*: ColorSet = static: initBackgroundBright()
 
 # Reset Value
-const Default*: Color = "\e[0m" # !DT!
+const Default*: Color = static: "\e[0m" # !DT!
 
 proc Colorize*(s: string): string =
-    ## Function to replace color codes with the correct ansi color code.
+    # Function to replace color codes with the correct ansi color code.
 
     result = s # Parse normal Foreground
         .replace("(BK)", Foreground.Black)
@@ -103,3 +103,4 @@ proc Uncolorize*(s: string): string =
 
 proc Reset*() =
     stdout.write(Default)
+    stdout.flushFile()
