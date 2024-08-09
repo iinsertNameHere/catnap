@@ -31,13 +31,22 @@ proc configure() =
         configpath = XDG_CONFIG_HOME & "/catnap/"
 
     echo "Creating " & configpath
-    mkdir(configpath)
+    if dirExists(configpath):
+        echo "Configuration directory already exists, skipping..."
+    else:
+        mkdir(configpath)
 
     echo "Creating " & configpath & "config.toml"
-    cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
+    if fileExists(configpath & "config.toml"):
+        echo "Configuration file already exists, skipping..."
+    else:
+        cpFile(thisDir() & "/config/config.toml", configpath & "config.toml")
 
     echo "Creating " & configpath & "distros.toml"
-    cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
+    if fileExists(configpath & "distros.toml"):
+        echo "Distro art file already exists, skipping..."
+    else:
+        cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
 
 task release, "Builds the project in release mode":
     echo "\e[36;1mBuilding\e[0;0m in release mode"
