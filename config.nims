@@ -15,6 +15,7 @@ proc compile(release: bool) =
         args.add(&"--verbosity:0")
         args.add(&"-d:danger")
         args.add(&"--opt:speed")
+        args.add(&"-d:strip")
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
 

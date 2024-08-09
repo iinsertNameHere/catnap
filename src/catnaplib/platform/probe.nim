@@ -19,7 +19,7 @@ proc getDistro*(): string =
     result = readCache(cacheFile)
     if result != "": return
 
-    when defined(linux):
+    when defined(linux) or defined(bsd):
     # Returns the name of the running linux distro
         result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
     elif defined(macos):
@@ -75,7 +75,7 @@ proc getUser*(): string =
 
 proc getKernel*(): string =
     # Returns the active kernel version
-    result = "/proc/version".open.readLine.split(" ")[2]
+    result = uname().release
 
 proc getParentPid(pid: int): int =
     let statusFilePath = "/proc/" & $pid & "/status"
@@ -212,6 +212,9 @@ proc getCpu*(): string =
     result = readCache(cacheFile)
     if result != "":
         return
+    
+    when defined(macos):
+        return execCmd("sysctl -n machdep.cpu.brand_string")
 
     let rawLines = readFile("/proc/cpuinfo").split("\n")
     
