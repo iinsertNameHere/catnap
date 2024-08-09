@@ -112,6 +112,10 @@ const
         "sourcemage": "sorcery",
         "vanilla": "apx",
         "venom": "scratchpkg",
+        "freebsd": "pkg",
+        "dragonfly": "pkg",
+        "netbsd": "pkgsrc",
+        "openbsd": "pkgsrc",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = static: {
         "apx": "apx list -i | wc -l",
@@ -130,6 +134,8 @@ const
         "zypper": "rpm -qa --last | wc --l",
         "pacman": "pacman -Q | wc -l",
         "apk": "apk list --installed | wc -l",
+        "pkg": "pkg info",
+        "pkgsrc": "pkg_info",
     }.toOrderedTable
 
     # Files / Dirs
