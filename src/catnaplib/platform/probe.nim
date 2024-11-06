@@ -22,7 +22,7 @@ proc getDistro*(): string =
     when defined(linux) or defined(bsd):
     # Returns the name of the running linux distro
         result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
-    elif defined(macos):
+    elif defined(macosx):
         result = "MacOS X" & " " & uname().machine
 
     writeCache(cacheFile, result, INFINITEDURATION)
@@ -40,9 +40,12 @@ proc getDistroId*(): DistroId =
     if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
         result.id = "raspbian"
         result.like = "debian"
-    else:
+    elif fileExists("/etc/os-release"):
         result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
         result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
+    else:
+        result.id = "macos"
+        result.like = "macos"
 
     writeCache(cacheFile, &"{result.id}|{result.like}", INFINITEDURATION)
 
@@ -213,8 +216,8 @@ proc getCpu*(): string =
     if result != "":
         return
     
-    when defined(macos):
-        return execCmd("sysctl -n machdep.cpu.brand_string")
+    when defined(macosx):
+        return execProcess("sysctl -n machdep.cpu.brand_string")
 
     let rawLines = readFile("/proc/cpuinfo").split("\n")
     
