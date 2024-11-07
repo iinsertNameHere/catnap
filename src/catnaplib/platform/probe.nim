@@ -24,6 +24,8 @@ proc getDistro*(): string =
         result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
     elif defined(macosx):
         result = "MacOS X" & " " & uname().machine
+    else:
+        result = "Unknown"
 
     writeCache(cacheFile, result, INFINITEDURATION)
 
@@ -36,27 +38,35 @@ proc getDistroId*(): DistroId =
             result.id = raw_vals[0]
             result.like = raw_vals[1]
 
-
-    if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
-        result.id = "raspbian"
-        result.like = "debian"
-    elif fileExists("/etc/os-release"):
-        result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
-        result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
-    else:
+    if defined(linux):
+        if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
+            result.id = "raspbian"
+            result.like = "debian"
+        else:
+            result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
+            result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
+    elif defined(macosx):
         result.id = "macos"
         result.like = "macos"
-
+    else:
+        result.id = "Unknown"
+        result.like = "Unknown"
     writeCache(cacheFile, &"{result.id}|{result.like}", INFINITEDURATION)
 
 proc getUptime*(): string =
     # Returns the system uptime as a string (DAYS, HOURS, MINUTES)
 
     # Uptime in sec
-    let uptime = "/proc/uptime".open.readLine.split(".")[0]
+    var utu: int
+    if defined(linux):
+      let uptime = "/proc/uptime".open.readLine.split(".")[0]
+      utu = uptime.parseInt
+    else:
+      let boottime = execProcess("sysctl -n kern.boottime").split(" ")[3].split(",")[0]
+      let now = epochTime()
+      utu = toInt(now) - parseInt(boottime)
 
     let
-        utu = uptime.parseUInt
         uth = utu div 3600 mod 24 # hours
         utm = utu mod 3600 div 60 # minutes
         utd = utu div 3600 div 24 # days
@@ -99,13 +109,22 @@ proc getProcessName(pid: int): string =
 
 proc getTerminal*(): string =
     # Returns the currently running terminal emulator
-    result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
-    if result == "login" or result == "sshd":
-        result = "tty"
+    if defined(linux):
+      result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
+      if result == "login" or result == "sshd":
+          result = "tty"
+    elif defined(macosx):
+        result = getEnv("TERM_PROGRAM")
+    else:
+        result = "Unknown"
 
 proc getShell*(): string =
     # Returns the system shell
-    result = getCurrentProcessID().getParentPid().getProcessName()
+    if defined(linux):
+        result = getCurrentProcessID().getParentPid().getProcessName()
+    else:
+        #TODO: add macos support
+        result = ""
 
 proc getDesktop*(): string =
     # Returns the running desktop env
@@ -130,49 +149,61 @@ proc getDesktop*(): string =
 
 proc getMemory*(mb: bool = true): string =
     # Returns statistics about the memory
-    let 
-        fileSeq: seq[string] = "/proc/meminfo".readLines(3)
+    if defined(linux):
+        let 
+            fileSeq: seq[string] = "/proc/meminfo".readLines(3)
 
-        dividend: uint = if mb: 1000 else: 1024
-        suffix: string = if mb: "MB" else: "MiB"
+            dividend: uint = if mb: 1000 else: 1024
+            suffix: string = if mb: "MB" else: "MiB"
 
-        memTotalString = fileSeq[0].split(" ")[^2]
-        memAvailableString = fileSeq[2].split(" ")[^2]
+            memTotalString = fileSeq[0].split(" ")[^2]
+            memAvailableString = fileSeq[2].split(" ")[^2]
 
-        memTotalInt = memTotalString.parseUInt div dividend
-        memAvailableInt = memAvailableString.parseUInt div dividend
+            memTotalInt = memTotalString.parseUInt div dividend
+            memAvailableInt = memAvailableString.parseUInt div dividend
 
-        memUsedInt = memTotalInt - memAvailableInt
-        percentage = ((int(memUsedInt) / int(memTotalInt)) * 100).round().int()
+            memUsedInt = memTotalInt - memAvailableInt
+            percentage = ((int(memUsedInt) / int(memTotalInt)) * 100).round().int()
 
-    result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
+        result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
+    else:
+        #TODO: add macos support
+        result = ""
 
 proc getBattery*(): string =
-    # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
-    
-    let 
-        BATTERY_REGEX = re"^BAT\d+$"
-        powerPath = "/sys/class/power_supply/"
+    if defined(linux):
+      # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
+      let 
+          BATTERY_REGEX = re"^BAT\d+$"
+          powerPath = "/sys/class/power_supply/"
 
-    var batterys: seq[tuple[idx: int, path: string]]
+      var batterys: seq[tuple[idx: int, path: string]]
 
-    # Collect all batterys
-    for dir in os.walk_dir(powerPath):
-      if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
-        batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
+      # Collect all batterys
+      for dir in os.walk_dir(powerPath):
+        if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
+          batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
 
-    if batterys.len < 1:
-        logError("No battery detected!")
+      if batterys.len < 1:
+          logError("No battery detected!")
 
-    # Sort batterys by number
-    sort(batterys)
+      # Sort batterys by number
+      sort(batterys)
 
-    # Get stats for battery with lowest number  
-    let
-        batteryCapacity = readFile(batterys[0].path & "capacity").strip()
-        batteryStatus = readFile(batterys[0].path & "status").strip()
+      # Get stats for battery with lowest number  
+      let
+          batteryCapacity = readFile(batterys[0].path & "capacity").strip()
+          batteryStatus = readFile(batterys[0].path & "status").strip()
 
-    result = &"{batteryCapacity}% ({batteryStatus})"
+      result = &"{batteryCapacity}% ({batteryStatus})"
+    elif defined(macosx):
+        let
+            pmset = execProcess("pmset -g batt | tail -n 1").split("\t")[1].split("; ")
+            batteryCapacity = pmset[0]
+            batteryStatus = pmset[1]
+        result = &"{batteryCapacity} ({batteryStatus})"
+    else:
+        result = "Unknown"
 
 proc getMounts*(): seq[string] =
     proc getMountPoints(): cstring {.importc, varargs, header: "getDisk.h".}
@@ -216,26 +247,28 @@ proc getCpu*(): string =
     if result != "":
         return
     
-    when defined(macosx):
-        return execProcess("sysctl -n machdep.cpu.brand_string")
+    if defined(linux):
+        let rawLines = readFile("/proc/cpuinfo").split("\n")
+        
+        var key_name = "model name"
+        if getDistroId().id == "raspbian": key_name = "Model"
 
-    let rawLines = readFile("/proc/cpuinfo").split("\n")
-    
-    var key_name = "model name"
-    if getDistroId().id == "raspbian": key_name = "Model"
+        for rawLine in rawLines:
+            let line = rawLine.split(":")
 
-    for rawLine in rawLines:
-        let line = rawLine.split(":")
+            if line.len < 2: continue
 
-        if line.len < 2: continue
+            let
+                key  = line[0].strip()
+                val  = line[1].strip()
+            if key == key_name: 
+                result = val
+                break
+    elif defined(macosx):
+        result = execProcess("sysctl -n machdep.cpu.brand_string").split("\n")[0]
+    else:
+        result = "Unknown"
 
-        let
-            key  = line[0].strip()
-            val  = line[1].strip()
-        if key == key_name: 
-            result = val
-            break
-    
     writeCache(cacheFile, result, initDuration(days=1))
 
 proc getPkgManager(distroId: DistroId): string =
@@ -246,7 +279,7 @@ proc getPkgManager(distroId: DistroId): string =
     for key in PKGMANAGERS.keys:
         if distroId.like == key:
             return PKGMANAGERS[key]
-    
+
     return "Unknown"
 
 proc getPackages*(distroId: DistroId = getDistroId()): string =
@@ -286,22 +319,25 @@ proc getGpu*(): string =
     if result != "":
         return
 
-    let tmpFile = "lspci.txt".toTmpPath
+    if defined(linux):
+        let tmpFile = "lspci.txt".toTmpPath
 
-    if execCmd("lspci > " & tmpFile) != 0:
-        logError("Failed to fetch GPU!")
+        if execCmd("lspci > " & tmpFile) != 0:
+            logError("Failed to fetch GPU!")
 
-    var vga = "Unknown"
-    let lspci = readFile(tmpFile)
-    for line in lspci.split('\n'):
-        if line.split(' ')[1] == "VGA":
-            vga = line
-            break
+        var vga = "Unknown"
+        let lspci = readFile(tmpFile)
+        for line in lspci.split('\n'):
+            if line.split(' ')[1] == "VGA":
+                vga = line
+                break
 
-    let vga_parts = vga.split(":")
+        let vga_parts = vga.split(":")
 
-    if vga_parts.len >= 2 or vga != "Unknown":
-        result = vga_parts[vga_parts.len - 1].split("(")[0].strip()
+        if vga_parts.len >= 2 or vga != "Unknown":
+            result = vga_parts[vga_parts.len - 1].split("(")[0].strip()
+    elif defined(macosx):
+        result = execProcess("system_profiler SPDisplaysDataType | grep 'Chipset Model'").split(": ")[1].split("\n")[0]
     else:
         result = "Unknown"
         
