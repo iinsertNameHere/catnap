@@ -116,6 +116,7 @@ const
         "dragonfly": "pkg",
         "netbsd": "pkgsrc",
         "openbsd": "pkgsrc",
+        "macos": "homebrew",
     }.toOrderedTable
     PKGCOUNTCOMMANDS* = static: {
         "apx": "apx list -i | wc -l",
@@ -136,6 +137,7 @@ const
         "apk": "apk list --installed | wc -l",
         "pkg": "pkg info",
         "pkgsrc": "pkg_info",
+        "homebrew": "brew list | wc -l",
     }.toOrderedTable
 
     # Files / Dirs
