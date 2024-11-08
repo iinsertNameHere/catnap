@@ -26,6 +26,7 @@ colors    = {icon = "> ", name = "colors", color = "!DT!", symbol = "#"}
 borderstyle = "doubleline"
 layout = "Inline"
 stats_margin_top = 0
+location = "San Francisco"
 
 [misc.figletLogos]
 enable = false

@@ -351,7 +351,7 @@ proc getGpu*(): string =
 
     writeCache(cacheFile, result, initDuration(days=1))
 
-proc getWeather*(): string =
+proc getWeather*(location: string): string =
     # Returns current weather
     let cacheFile = "weather".toCachePath
 
@@ -360,7 +360,7 @@ proc getWeather*(): string =
         return
 
     let tmpFile = "weather.txt".toTmpPath
-    if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
+    if execCmd("curl -s wttr.in/" & location & "?format=3 > " & tmpFile) != 0:
         logError("Failed to fetch weather!")
 
     result = readFile(tmpFile).strip()
