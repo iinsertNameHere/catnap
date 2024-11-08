@@ -38,7 +38,7 @@ proc getDistroId*(): DistroId =
             result.id = raw_vals[0]
             result.like = raw_vals[1]
 
-    if defined(linux):
+    if defined(linux) or defined(bsd):
         if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
             result.id = "raspbian"
             result.like = "debian"
@@ -58,12 +58,13 @@ proc getUptime*(): string =
 
     # Uptime in sec
     var utu: int
-    if defined(linux):
-      let uptime = "/proc/uptime".open.readLine.split(".")[0]
-      utu = uptime.parseInt
+    if defined(linux) or defined(bsd):
+        let uptime = "/proc/uptime".open.readLine.split(".")[0]
+        utu = uptime.parseInt
     else:
-      let boottime = execProcess("sysctl -n kern.boottime").split(" ")[3].split(",")[0]
-      let now = epochTime()
+      let
+          boottime = execProcess("sysctl -n kern.boottime").split(" ")[3].split(",")[0]
+          now = epochTime()
       utu = toInt(now) - parseInt(boottime)
 
     let
@@ -72,11 +73,11 @@ proc getUptime*(): string =
         utd = utu div 3600 div 24 # days
 
     if utd == 0 and uth != 0:
-      result = &"{uth}h {utm}m" # return hours and mins
+        result = &"{uth}h {utm}m" # return hours and mins
     elif uth == 0 and utd == 0:
-      result = &"{utm}m" # return only mins
+        result = &"{utm}m" # return only mins
     else:
-      result = &"{utd}d {uth}h {utm}m" # return days, hours and mins
+        result = &"{utd}d {uth}h {utm}m" # return days, hours and mins
 
 proc getHostname*(): string =
     # Returns the system hostname
@@ -91,28 +92,39 @@ proc getKernel*(): string =
     result = uname().release
 
 proc getParentPid(pid: int): int =
-    let statusFilePath = "/proc/" & $pid & "/status"
-    let statusLines = readFile(statusFilePath).split("\n")
-    for rawline in statusLines:
-        let stat = rawline.split(":")
-        if stat[0] == "PPid": # Filter CurrentProcessInfo for Parent pid
-            let pPid = parseInt(stat[1].strip())
-            return pPid
-    return -1
+    if defined(linux) or defined(bsd):
+        let statusFilePath = "/proc/" & $pid & "/status"
+        let statusLines = readFile(statusFilePath).split("\n")
+        for rawline in statusLines:
+            let stat = rawline.split(":")
+            if stat[0] == "PPid": # Filter CurrentProcessInfo for Parent pid
+                let pPid = parseInt(stat[1].strip())
+                return pPid
+    elif defined(macosx):
+        let pPid = execProcess("ps -o ppid -p " & $pid).split("\n")[1]
+        return parseInt(pPid)
+    else:
+        return -1
 
 proc getProcessName(pid: int): string =
-    let statusLines = readFile("/proc/" & $pid & "/status").split("\n")
-    for rawLine in statusLines:
-        let stat = rawLine.split(":")
-        if stat[0] == "Name": # Filter ParentProcessInfo for Parent Name
-            return stat[1].strip()
+    if defined(linux) or defined(bsd):
+        let statusLines = readFile("/proc/" & $pid & "/status").split("\n")
+        for rawLine in statusLines:
+            let stat = rawLine.split(":")
+            if stat[0] == "Name": # Filter ParentProcessInfo for Parent Name
+                return stat[1].strip()
+    elif defined(macosx):
+        let cmd = execProcess("ps -o comm -p " & $pid).split("\n")[1]
+        return cmd.split("/")[^1] # Strip away command path
+    else:
+        return "Unknown"
 
 proc getTerminal*(): string =
     # Returns the currently running terminal emulator
-    if defined(linux):
-      result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
-      if result == "login" or result == "sshd":
-          result = "tty"
+    if defined(linux) or defined(bsd):
+        result = getCurrentProcessID().getParentPid().getParentPid().getProcessName()
+        if result == "login" or result == "sshd":
+            result = "tty"
     elif defined(macosx):
         result = getEnv("TERM_PROGRAM")
     else:
@@ -120,11 +132,7 @@ proc getTerminal*(): string =
 
 proc getShell*(): string =
     # Returns the system shell
-    if defined(linux):
-        result = getCurrentProcessID().getParentPid().getProcessName()
-    else:
-        #TODO: add macos support
-        result = ""
+    result = getCurrentProcessID().getParentPid().getProcessName()
 
 proc getDesktop*(): string =
     # Returns the running desktop env
@@ -149,8 +157,8 @@ proc getDesktop*(): string =
 
 proc getMemory*(mb: bool = true): string =
     # Returns statistics about the memory
-    if defined(linux):
-        let 
+    if defined(linux) or defined(bsd):
+        let
             fileSeq: seq[string] = "/proc/meminfo".readLines(3)
 
             dividend: uint = if mb: 1000 else: 1024
@@ -171,31 +179,31 @@ proc getMemory*(mb: bool = true): string =
         result = ""
 
 proc getBattery*(): string =
-    if defined(linux):
-      # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
-      let 
-          BATTERY_REGEX = re"^BAT\d+$"
-          powerPath = "/sys/class/power_supply/"
+    if defined(linux) or defined(bsd):
+        # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
+        let
+            BATTERY_REGEX = re"^BAT\d+$"
+            powerPath = "/sys/class/power_supply/"
 
-      var batterys: seq[tuple[idx: int, path: string]]
+        var batterys: seq[tuple[idx: int, path: string]]
 
-      # Collect all batterys
-      for dir in os.walk_dir(powerPath):
-        if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
-          batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
+        # Collect all batterys
+        for dir in os.walk_dir(powerPath):
+            if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
+                batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
 
-      if batterys.len < 1:
-          logError("No battery detected!")
+        if batterys.len < 1:
+            logError("No battery detected!")
 
-      # Sort batterys by number
-      sort(batterys)
+        # Sort batterys by number
+        sort(batterys)
 
-      # Get stats for battery with lowest number  
-      let
-          batteryCapacity = readFile(batterys[0].path & "capacity").strip()
-          batteryStatus = readFile(batterys[0].path & "status").strip()
+        # Get stats for battery with lowest number  
+        let
+            batteryCapacity = readFile(batterys[0].path & "capacity").strip()
+            batteryStatus = readFile(batterys[0].path & "status").strip()
 
-      result = &"{batteryCapacity}% ({batteryStatus})"
+        result = &"{batteryCapacity}% ({batteryStatus})"
     elif defined(macosx):
         let
             pmset = execProcess("pmset -g batt | tail -n 1").split("\t")[1].split("; ")
@@ -217,7 +225,7 @@ proc getMounts*(): seq[string] =
     for mount in mounts:
         if mount == "":
             continue
-        
+
         if not mount.startsWith("/run/media"):
             if mount.startsWith("/proc") or
             mount.startsWith("/run")     or
@@ -246,10 +254,10 @@ proc getCpu*(): string =
     result = readCache(cacheFile)
     if result != "":
         return
-    
-    if defined(linux):
+
+    if defined(linux) or defined(bsd):
         let rawLines = readFile("/proc/cpuinfo").split("\n")
-        
+
         var key_name = "model name"
         if getDistroId().id == "raspbian": key_name = "Model"
 
@@ -306,7 +314,7 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
     let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
     if execCmd(cmd) != 0:
         logError("Failed to fetch pkg count!")
-        
+
     let count = readFile(tmpFile).strip()
     result = count & " [" & pkgManager & "]"
     writeCache(cacheFile, result, initDuration(hours=2))
@@ -319,7 +327,7 @@ proc getGpu*(): string =
     if result != "":
         return
 
-    if defined(linux):
+    if defined(linux) or defined(bsd):
         let tmpFile = "lspci.txt".toTmpPath
 
         if execCmd("lspci > " & tmpFile) != 0:
@@ -340,7 +348,7 @@ proc getGpu*(): string =
         result = execProcess("system_profiler SPDisplaysDataType | grep 'Chipset Model'").split(": ")[1].split("\n")[0]
     else:
         result = "Unknown"
-        
+
     writeCache(cacheFile, result, initDuration(days=1))
 
 proc getWeather*(): string =
@@ -354,6 +362,6 @@ proc getWeather*(): string =
     let tmpFile = "weather.txt".toTmpPath
     if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
         logError("Failed to fetch weather!")
-    
+
     result = readFile(tmpFile).strip()
     writeCache(cacheFile, result, initDuration(minutes=20))
