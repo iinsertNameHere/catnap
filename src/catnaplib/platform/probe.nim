@@ -2,15 +2,16 @@ import os
 import strformat
 import math
 import strutils
-import parsecfg
+from parsecfg import loadConfig, getSectionValue
 import posix_utils
 import times
 import tables
 import osproc
 import re
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath, Config
 import "../terminal/logging"
+import parsetoml
 import "caching"
 import algorithm
 
@@ -351,9 +352,12 @@ proc getGpu*(): string =
 
     writeCache(cacheFile, result, initDuration(days=1))
 
-proc getWeather*(location: string): string =
+proc getWeather*(config: Config): string =
     # Returns current weather
     let cacheFile = "weather".toCachePath
+    var location = "";
+    if config.misc.contains("location"):
+        location = config.misc["location"].getStr()
 
     result = readCache(cacheFile)
     if result != "":
