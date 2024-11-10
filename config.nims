@@ -49,12 +49,18 @@ proc configure() =
     else:
         cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
 
+task clean, "Cleans existing build":
+    echo "\e[36;1mCleaning\e[0;0m existing build"
+    rmFile("{thisDir()}/bin/catnap")
+
 task release, "Builds the project in release mode":
+    cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in release mode"
     exec &"./scripts/git-commit-id.sh"
     compile(true)
 
 task debug, "Builds the project in debug mode":
+    cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in debug mode"
     exec &"./scripts/git-commit-id.sh"
     compile(false)
