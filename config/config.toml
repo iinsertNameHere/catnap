@@ -18,12 +18,12 @@ terminal  = {icon = " ", name = "term", color = "(RD)"}
 shell     = {icon = " ", name = "shell", color = "(MA)"}
 # packages  = {icon = " ", name = "packages", color = "(RD)"}  # WARNING: Resource Intensive
 # weather   = {icon = " ", name = "weather", color = "(BE)"} # Requires curl and an emoji font. | WARNING: Resource Intensive
-# The following stats do not work on MacOS and the BSDs.
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
+# battery   = {icon = " ", name = "battery", color = "(GN)"}
+# The following stats do not work on MacOS and the BSDs.
 # disk_0    = {icon = " ", name = "disk", color = "(GN)"}
 # memory    = {icon = " ", name = "memory", color = "(YW)"}
-# battery    = {icon = " ", name = "battery", color = "(GN)"}
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
@@ -34,6 +34,7 @@ colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 borderstyle = "line"
 layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
 stats_margin_top = 0
+location = "" # Used for fetching weather; leave empty to use the location of your IP; check https://wttr.in/:help for supported location types
 
 [misc.figletLogos] # Requires Figlet.
 enable = false

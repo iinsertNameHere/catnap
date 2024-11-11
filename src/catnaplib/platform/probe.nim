@@ -2,15 +2,16 @@ import os
 import strformat
 import math
 import strutils
-import parsecfg
+from parsecfg import loadConfig, getSectionValue
 import posix_utils
 import times
 import tables
 import osproc
 import re
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath
+from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath, Config
 import "../terminal/logging"
+import parsetoml
 import "caching"
 import algorithm
 
@@ -351,16 +352,19 @@ proc getGpu*(): string =
 
     writeCache(cacheFile, result, initDuration(days=1))
 
-proc getWeather*(): string =
+proc getWeather*(config: Config): string =
     # Returns current weather
     let cacheFile = "weather".toCachePath
+    var location = "";
+    if config.misc.contains("location"):
+        location = config.misc["location"].getStr().replace(" ", "+")
 
     result = readCache(cacheFile)
     if result != "":
         return
 
     let tmpFile = "weather.txt".toTmpPath
-    if execCmd("curl -s wttr.in/?format=3 > " & tmpFile) != 0:
+    if execCmd("curl -s wttr.in/" & location & "?format=3 > " & tmpFile) != 0:
         logError("Failed to fetch weather!")
 
     result = readFile(tmpFile).strip()
