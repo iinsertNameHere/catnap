@@ -357,7 +357,7 @@ proc getWeather*(config: Config): string =
     let cacheFile = "weather".toCachePath
     var location = "";
     if config.misc.contains("location"):
-        location = config.misc["location"].getStr()
+        location = config.misc["location"].getStr().replace(" ", "+")
 
     result = readCache(cacheFile)
     if result != "":
