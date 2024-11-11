@@ -158,12 +158,12 @@ proc getDesktop*(): string =
 
 proc getMemory*(mb: bool = true): string =
     # Returns statistics about the memory
+    let 
+        dividend: uint = if mb: 1000 else: 1024
+        suffix: string = if mb: "MB" else: "MiB"
     if defined(linux) or defined(bsd):
         let
             fileSeq: seq[string] = "/proc/meminfo".readLines(3)
-
-            dividend: uint = if mb: 1000 else: 1024
-            suffix: string = if mb: "MB" else: "MiB"
 
             memTotalString = fileSeq[0].split(" ")[^2]
             memAvailableString = fileSeq[2].split(" ")[^2]
@@ -175,9 +175,22 @@ proc getMemory*(mb: bool = true): string =
             percentage = ((int(memUsedInt) / int(memTotalInt)) * 100).round().int()
 
         result = &"{memUsedInt} / {memTotalInt} {suffix} ({percentage}%)"
+    elif defined(macosx):
+        # The computation of free memory is very subjective on MacOS; multiple system utilites, ie vm_stat, top, memory_pressure, sysctl, all give different results
+        # Here memory_pressure is used since it shows the most resemblance to the graph in the Activity Monitor
+        let
+            memPressureRaw = execProcess("memory_pressure").split("\n")
+
+            memTotalString = memPressureRaw[0].split(" ")[3]
+            freePercenString = memPressureRaw[^2].split(" ")[^1]
+
+            memTotalInt = memTotalString.parseUInt div 1024 div dividend
+            freePercentInt = parseUInt(freePercenString[0..^2]) # This string comes with a % sign at the end
+            memUsedInt = memTotalInt * (100 - freePercentInt) div 100
+
+        result = &"{memUsedInt} / {memTotalInt} {suffix} ({100 - freePercentInt}%)"
     else:
-        #TODO: add macos support
-        result = ""
+        result = "Unknown"
 
 proc getBattery*(): string =
     if defined(linux) or defined(bsd):
