@@ -21,9 +21,9 @@ shell     = {icon = " ", name = "shell", color = "(MA)"}
 # gpu       = {icon = "󱔐 ", name = "gpu", color = "(MA)"}      # WARNING: Resource Intensive
 # cpu       = {icon = " ", name = "cpu", color = "(RD)"}
 # battery   = {icon = " ", name = "battery", color = "(GN)"}
+# memory    = {icon = " ", name = "memory", color = "(YW)"}
 # The following stats do not work on MacOS and the BSDs.
 # disk_0    = {icon = " ", name = "disk", color = "(GN)"}
-# memory    = {icon = " ", name = "memory", color = "(YW)"}
 sep_color = "SEPARATOR"
 colors    = {icon = " ", name = "colors", color = "!DT!", symbol = ""}
 
