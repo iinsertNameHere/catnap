@@ -8,7 +8,7 @@ function VerifyTest() {
 
 # Test Normal run
 echo "[!] Testing: Normal Run"
-./../bin/catnap -c ./test_config.toml -a ../config/{ERROR}istros.toml -n
+./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -n
 VerifyTest
 
 # Test help
