@@ -8,7 +8,7 @@ echo "[!] Testing: Help"
 
 # Test version
 echo "[!] Testing: Version"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -v -n
+./../bin/catnap -c ./test_config.toml -a ../config/distros.tml -v -n # ERROR HERE
 
 # Test distroid
 echo "[!] Testing: DistroId"
