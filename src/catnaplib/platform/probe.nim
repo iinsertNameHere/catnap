@@ -204,7 +204,10 @@ proc getBattery*(): string =
         # Collect all batterys
         for dir in os.walk_dir(powerPath):
             if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
-                batterys.add((parseInt($dir.path[^1]), dir.path & "/"))
+                let batteryPath = dir.path & "/"
+                # Only check if battery has capacity and status
+                if fileExists(batteryPath & "capacity") and fileExists(batteryPath & "status"):
+                    batterys.add((parseInt($dir.path[^1]), batteryPath))
 
         if batterys.len < 1:
             logError("No battery detected!")
