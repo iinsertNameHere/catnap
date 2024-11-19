@@ -1,6 +1,6 @@
 # Test Normal run
 echo "[!] Testing: Normal Run"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -n
+./../bin/catnap -c ./test_config.toml -a ../config/{ERROR}istros.toml -n
 
 # Test help
 echo "[!] Testing: Help"
@@ -8,7 +8,7 @@ echo "[!] Testing: Help"
 
 # Test version
 echo "[!] Testing: Version"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.tml -v -n # ERROR HERE
+./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -v -n
 
 # Test distroid
 echo "[!] Testing: DistroId"
