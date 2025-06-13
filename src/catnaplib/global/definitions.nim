@@ -141,8 +141,8 @@ const
     }.toOrderedTable
 
     # Files / Dirs
-    CONFIGPATH*   = static: joinPath(getConfigDir(), "catnap/config.toml")
-    DISTROSPATH*  = static: joinPath(getConfigDir(), "catnap/distros.toml")
+let CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
+let DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
 
 
 proc getCachePath*(): string =
