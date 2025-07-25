@@ -36,15 +36,3 @@ layout = "Inline" # [Inline, ArtOnTop, StatsOnTop]
 stats_margin_top = 0
 location = "" # Used for fetching weather; leave empty to use the location of your IP; check https://wttr.in/:help for supported location types
 
-[misc.figletLogos] # Requires Figlet.
-enable = false
-color  = "(YW)"
-font   = "slant"
-margin = [0, 0, 0,]
-
-[misc.imageMode] # Requires Viu.
-enable = false
-path   = "/path/to/some/image.png" # Please only use absolute paths.
-scale  = 18
-margin = [2, 2, 3,]
-

@@ -17,7 +17,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: 'Build Catnap'
       run: nim debug
-    - name: 'Install Figlet & sudo apt-get libpcre3'
-      run: sudo apt-get install figlet libpcre3 libpcre3-dev
+    - name: 'Install libpcre3'
+      run: sudo apt-get install libpcre3 libpcre3-dev
     - name: 'Run Tests'
       run: cd scripts && ./test-commandline-args.sh

@@ -27,15 +27,3 @@ borderstyle = "doubleline"
 layout = "Inline"
 stats_margin_top = 0
 location = "San Francisco"
-
-[misc.figletLogos]
-enable = false
-color  = ""
-font   = "slant"
-margin = [0, 0, 0,]
-
-[misc.imageMode]
-enable = false
-path   = ""
-scale  = 0
-margin = [0, 0, 0,]

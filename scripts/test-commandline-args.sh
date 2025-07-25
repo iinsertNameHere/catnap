@@ -41,21 +41,6 @@ echo "[!] Testing: Layout"
 ./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -l ArtOnTop -n
 VerifyTest
 
-# Test figletlogos mode
-echo "[!] Testing: FigletLogos"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -fe on -n
-VerifyTest
-
-# Test figletlogos margin
-echo "[!] Testing: FigletLogos Margin"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -fe on -fm 1,2,3 -n
-VerifyTest
-
-# Test figletlogos font with example figlet font file
-echo "[!] Testing: FigletLogos Font"
-./../bin/catnap -c ./test_config.toml -a ../config/distros.toml -fe on -ff basic.flf -n
-VerifyTest
-
 # Test default Config
 echo "[!] Testing: Default config"
 ./../bin/catnap -c ../config/config.toml -a ../config/distros.toml -n

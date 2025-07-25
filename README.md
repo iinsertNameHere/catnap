@@ -64,14 +64,6 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 <br>
 <img src="image/demo1.png">
 <br>
-<i>FigletLogos (<a href="https://github.com/ssleert/nitch">Nitch</a> mode):</i>
-<br>
-<img src="image/demo2.png">
-<br>
-<i>Image Mode:</i>
-<br>
-<img src="image/demo3.png">
-<br>
 <i>Distro Showcase:</i>
 <br>
 <img src="image/distros.png">

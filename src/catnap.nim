@@ -41,10 +41,6 @@ proc printHelp(cfg: Config) =
     echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
     echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,ArtOnTop,StatsOnTop]"
     echo ""
-    echo "    -fe --figlet-enable   <on/off>       Overwrite figletLogos mode"
-    echo "    -fm --figlet-margin   <Margin>       Overwrite figletLogos margin (Example: 1,2,3)"
-    echo "    -ff --figlet-font     <Font>         Overwrite figletLogos font"
-    echo ""
     echo "StatNames:"
     echo "    " & (STATNAMES & @["disks"] & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")
     echo ""
@@ -56,9 +52,6 @@ proc printHelp(cfg: Config) =
 # Handle commandline args
 var distroid = "nil"
 var statname = "nil"
-var figletLogos_enabled = "nil"
-var figletLogos_margin: seq[int]
-var figletLogos_font = "nil"
 var layout = "nil"
 var margin: seq[int]
 var cfgPath = CONFIGPATH
@@ -156,11 +149,6 @@ if paramCount() > 0:
                 error = true
                 idx += 1
                 continue
-            elif figletLogos_margin.len > 0:
-                logError(&"'{param}' - Can only be used once!", false)
-                error = true
-                idx += 1
-                continue
 
             idx += 1
             let margin_list = paramStr(idx).split(",")
@@ -204,93 +192,6 @@ if paramCount() > 0:
             idx += 1
             layout = paramStr(idx)
 
-        # FigletLogos enabled Argument
-        elif param == "-fe" or param == "--figlet-enabled":
-            if paramCount() - idx < 1:
-                logError(&"'{param}' - No Value was specified!", false)
-                error = true
-                idx += 1
-                continue
-            elif statname != "nil":
-                logError(&"{param} - Can't be used together with: -g/--grep", false)
-                error = true
-                idx += 1
-                continue
-            elif figletLogos_enabled != "nil":
-                logError(&"{param} - Can only be used once!", false)
-                error = true
-                idx += 1
-                continue
-
-            idx += 1
-            figletLogos_enabled = paramStr(idx).toLower()
-            if figletLogos_enabled != "on" and figletLogos_enabled != "off":
-                logError(&"{param} - Value is not 'on' or 'off'!", false)
-                error = true
-                idx += 1
-                continue
-
-        # FigletLogos margin Argument
-        elif param == "-fm" or param == "--figlet-margin":
-            if paramCount() - idx < 1:
-                logError(&"{param} - No Value was specified!", false)
-                error = true
-                idx += 1
-                continue
-            elif statname != "nil":
-                logError(&"'{param}' - Can't be used together with: -g/--grep", false)
-                error = true
-                idx += 1
-                continue
-            elif figletLogos_margin.len > 0:
-                logError(&"'{param}' - Can only be used once!", false)
-                error = true
-                idx += 1
-                continue
-
-            idx += 1
-            let margin_list = paramStr(idx).split(",")
-            if margin_list.len < 3:
-                logError(&"'{param}' - Value dose not match format!", false)
-                error = true
-                idx += 1
-                continue
-
-            for idx in countup(0, 2):
-                let num = margin_list[idx].strip()
-                var parsed_num: int
-
-                try:
-                    parsed_num = parseInt(num)
-                except:
-                    logError(&"'{param}' - Value[{idx}] is not a number!", false)
-                    error = true
-                    break
-
-                figletLogos_margin.add(parsed_num)
-
-
-        # FigletLogos font Argument
-        elif param == "-ff" or param == "--figlet-font":
-            if paramCount() - idx < 1:
-                logError(&"'{param}' - No Value was specified!", false)
-                error = true
-                idx += 1
-                continue
-            elif statname != "nil":
-                logError(&"'{param}' - Can't be used together with: -g/--grep", false)
-                error = true
-                idx += 1
-                continue
-            elif figletLogos_font != "nil":
-                logError(&"'{param}' - Can only be used once!", false)
-                error = true
-                idx += 1
-                continue
-
-            idx += 1
-            figletLogos_font = paramStr(idx)
-
         # Unknown Argument
         else:
             logError(&"Unknown option '{param}'!", false)
@@ -325,16 +226,6 @@ if statname == "nil":
     # Handle layout overwrite
     if layout != "nil":
         cfg.misc["layout"] = parseString(&"val = '{layout}'")["val"]
-
-    # Handle figletLogos overwrites
-    if figletLogos_enabled != "nil":
-        let onoff = if figletLogos_enabled == "on": "true" else: "false"
-        cfg.misc["figletLogos"]["enable"] = parseString(&"val = {onoff}")["val"]
-    if figletLogos_margin.len == 3:
-        let fmargin = &"[{figletLogos_margin[0]},{figletLogos_margin[1]},{figletLogos_margin[2]},]"
-        cfg.misc["figletLogos"]["margin"] = parseString(&"val = {fmargin}")["val"]
-    if figletLogos_font != "nil":
-        cfg.misc["figletLogos"]["font"] = parseString(&"val = '{figletLogos_font}'")["val"]
 
     # Get system info
     let fetchinfo = fetchSystemInfo(cfg, distroid)

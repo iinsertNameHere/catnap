@@ -51,25 +51,10 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
         result.disk_statnames.add("disk_0")
 
     var distroId = (if distroId != "nil": distroId else: result.distroId.id)
-    let figletLogos = config.misc["figletLogos"]
 
-    if not figletLogos["enable"].getBool(): # Get logo from config file
+    if not config.distroart.contains(distroId):
+        distroId = result.distroId.like
         if not config.distroart.contains(distroId):
-            distroId = result.distroId.like
-            if not config.distroart.contains(distroId):
-                distroId = "default"
+            distroId = "default"
 
-        result.logo = config.distroart[distroId]
-
-    else: # Generate logo using figlet
-        let figletFont = figletLogos["font"]
-        let tmpFile = "figlet_art.txt".toTmpPath 
-
-        if execCmd(&"figlet -f {figletFont} '{distroId}' > {tmpFile}") != 0:
-            logError("Failed to execute 'figlet'!")
-        let artLines = readFile(tmpFile).split('\n')
-        let tmargin = figletLogos["margin"]
-        result.logo.margin = [tmargin[0].getInt(), tmargin[1].getInt(), tmargin[2].getInt()]
-        for line in artLines:
-            if line != "":
-                result.logo.art.add(figletLogos["color"].getStr() & line)
+    result.logo = config.distroart[distroId]

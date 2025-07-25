@@ -7,16 +7,6 @@ import parsetoml
 
 # Chars that a alias can contain
 const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
-const VALID_TERMS = @["mlterm","yaft-256color","foot","foot-extra","st-256color","xterm","xterm-256color", "alacritty"]
-
-proc isImageTerm(): bool =
-    # Returns true if terminal supports image mode
-    var term = ""
-    if getEnv("TERM_PROGRAM") != "":
-        term = getEnv("TERM_PROGRAM")
-    else: 
-        term = getEnv("TERM")
-    return (term in VALID_TERMS or "iTerm" in term or "WezTerm" in term or "mintty" in term or "kitty" in term)
 
 proc LoadConfig*(cfgPath: string, dstPath: string): Config =
     # Lads a config file and validates it
@@ -50,33 +40,6 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
         logError(&"{cfgPath} - missing 'stats'!")
     if not tcfg["misc"].contains("layout"):
         logError(&"{cfgPath}:misc - missing 'layout'!")
-    if not tcfg["misc"].contains("figletLogos"):
-        logError(&"{cfgPath}:misc - missing 'figletLogos'!")
-    if not tcfg["misc"]["figletLogos"].contains("enable"):
-        logError(&"{cfgPath}:misc:figletLogos - missing 'enable'!")
-    if not tcfg["misc"]["figletLogos"].contains("color"):
-        logError(&"{cfgPath}:misc:figletLogos - missing 'color'!")
-    if not tcfg["misc"]["figletLogos"].contains("font"):
-        logError(&"{cfgPath}:misc:figletLogos - missing 'font'!")
-    if not tcfg["misc"]["figletLogos"].contains("margin"):
-        logError(&"{cfgPath}:misc:figletLogos - missing 'margin'!")
-    if not tcfg["misc"].contains("imageMode"):
-        logError(&"{cfgPath}:misc - missing 'imageMode'!")
-    if not tcfg["misc"]["imageMode"].contains("enable"):
-        logError(&"{cfgPath}:misc:imageMode - missing 'enable'!")
-    if not tcfg["misc"]["imageMode"].contains("path"):
-        logError(&"{cfgPath}:misc:imageMode - missing 'path'!")
-    if not tcfg["misc"]["imageMode"].contains("scale"):
-        logError(&"{cfgPath}:misc:imageMode - missing 'scale'!")
-    if not tcfg["misc"]["imageMode"].contains("margin"):
-        logError(&"{cfgPath}:misc:imageMode - missing 'font'!")
-
-    if tcfg["misc"]["figletLogos"]["enable"].getBool() and tcfg["misc"]["imageMode"]["enable"].getBool():
-        logError(&"{cfgPath}:misc - 'figletLogos' and 'imageMode' can't be used together!")
-
-    # Check if terminal supports image mode
-    if tcfg["misc"]["imageMode"]["enable"].getBool() and not isImageTerm():
-        tcfg["misc"]["imageMode"]["enable"] = parsetoml.parseString(&"val = false")["val"]
         
     # Fill out the result object
     result.configFile = cfgPath
