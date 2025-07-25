@@ -1,10 +1,6 @@
-import osproc
-import strformat
-import strutils
 import sugar
 
 from "../global/definitions" import FetchInfo, Config, toTmpPath
-import "../terminal/logging"
 import parsetoml
 import "probe"
 

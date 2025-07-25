@@ -1,0 +1,1 @@
+const VERSION* = static: "1.0.0"

@@ -3,3 +3,4 @@ catnap
 *.exe
 *.gz
 src/catnaplib/global/currentcommit.nim
+versionctl

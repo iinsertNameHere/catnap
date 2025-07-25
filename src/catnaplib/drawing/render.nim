@@ -1,7 +1,5 @@
 import strformat
 import parsetoml
-import osproc
-import terminal
 import math
 
 import "../terminal/logging"

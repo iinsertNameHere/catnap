@@ -28,7 +28,6 @@ const char* getMountPoints() {
     return resultPtr;
 }
 
-// Get 
 double getTotalDiskSpace(const char* mountingPoint) {
     struct statvfs buffer;
     if (statvfs(mountingPoint, &buffer) != 0) return -1.f;

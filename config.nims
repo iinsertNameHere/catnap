@@ -2,6 +2,7 @@ import strformat
 import strutils
 import os
 
+## Compilation
 proc compile(release: bool) =
     var args: seq[string]
     args.add(&"--cincludes:{thisDir()}/src/extern/headers")
@@ -13,6 +14,7 @@ proc compile(release: bool) =
     if release:
         args.add(&"--checks:off")
         args.add(&"--verbosity:0")
+        args.add(&"--hints:off")
         args.add(&"-d:danger")
         args.add(&"--opt:speed")
         args.add(&"-d:strip")
@@ -49,20 +51,22 @@ proc configure() =
     else:
         cpFile(thisDir() & "/config/distros.toml", configpath & "distros.toml")
 
+task generate_versionctl, "Bumps the major version of catnap. Example: (1).2.3 -> 2.0.0":
+    exec &"nim c -d:release --hints:off --verbosity:0 versionctl.nim"
+
 task clean, "Cleans existing build":
     echo "\e[36;1mCleaning\e[0;0m existing build"
-    rmFile("{thisDir()}/bin/catnap")
+    rmFile(&"{thisDir()}/bin/catnap")
+    rmFile(&"{thisDir()}/versionctl")
 
 task release, "Builds the project in release mode":
     cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in release mode"
-    exec &"./scripts/git-commit-id.sh"
     compile(true)
 
 task debug, "Builds the project in debug mode":
     cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in debug mode"
-    exec &"./scripts/git-commit-id.sh"
     compile(false)
 
 task install_cfg, "Installs the config files":
