@@ -17,7 +17,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
     - name: 'Build Catnap'
       run: nim debug
-    - name: 'Install libpcre3'
-      run: sudo apt-get install libpcre3 libpcre3-dev
+    - name: 'Install libpcre3 and mesa-utils'
+      run: sudo apt-get install libpcre3 libpcre3-dev mesa-utils
     - name: 'Run Tests'
       run: cd scripts && ./test-commandline-args.sh
