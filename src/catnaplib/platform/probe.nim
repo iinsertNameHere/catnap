@@ -345,22 +345,34 @@ proc getGpu*(): string =
         return
 
     if defined(linux) or defined(bsd):
-        let tmpFile = "lspci.txt".toTmpPath
+        let tmpFile = "glxinfo.txt".toTmpPath
 
-        if execCmd("lspci > " & tmpFile) != 0:
-            logError("Failed to fetch GPU!")
+        if execCmd("glxinfo -B &> " & tmpFile) != 0:
+            if readFile(tmpFile).strip() == "Error: unable to open display":
+                result = "Unknown"
+            else: logError("Failed to fetch GPU!")
+        else:
+            var device = "Unknown"
+            var unifiedMemory = ""
+            let glxinfo = readFile(tmpFile)
+            for line in glxinfo.split('\n'):
+                var split_line = line.strip().split(": ")
+                if split_line[0] == "OpenGL renderer string":
+                    device = split_line[1]
+                elif split_line[0] == "Unified memory":
+                    unifiedMemory = split_line[1]
+                
+                if device != "Unknown" and unifiedMemory != "":
+                    break
 
-        var vga = "Unknown"
-        let lspci = readFile(tmpFile)
-        for line in lspci.split('\n'):
-            if line.split(' ')[1] == "VGA":
-                vga = line
-                break
+            var gputype = ""
+            if unifiedMemory == "yes":
+                gputype = "[integrated]"
+            elif unifiedMemory == "no":
+                gputype = "[dedicated]"
 
-        let vga_parts = vga.split(":")
+            result = device & " " & gputype
 
-        if vga_parts.len >= 2 or vga != "Unknown":
-            result = vga_parts[vga_parts.len - 1].split("(")[0].strip()
     elif defined(macosx):
         result = execProcess("system_profiler SPDisplaysDataType | grep 'Chipset Model'").split(": ")[1].split("\n")[0]
     else:
