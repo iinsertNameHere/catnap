@@ -347,29 +347,31 @@ proc getGpu*(): string =
     if defined(linux) or defined(bsd):
         let tmpFile = "glxinfo.txt".toTmpPath
 
-        if execCmd("glxinfo -B > " & tmpFile) != 0:
-            logError("Failed to fetch GPU!")
+        if execCmd("glxinfo -B &> " & tmpFile) != 0:
+            if readFile(tmpFile).strip() == "Error: unable to open display":
+                result = "Unknown"
+            else: logError("Failed to fetch GPU!")
+        else:
+            var device = "Unknown"
+            var unifiedMemory = ""
+            let glxinfo = readFile(tmpFile)
+            for line in glxinfo.split('\n'):
+                var split_line = line.strip().split(": ")
+                if split_line[0] == "OpenGL renderer string":
+                    device = split_line[1]
+                elif split_line[0] == "Unified memory":
+                    unifiedMemory = split_line[1]
+                
+                if device != "Unknown" and unifiedMemory != "":
+                    break
 
-        var device = "Unknown"
-        var unifiedMemory = ""
-        let glxinfo = readFile(tmpFile)
-        for line in glxinfo.split('\n'):
-            var split_line = line.strip().split(": ")
-            if split_line[0] == "OpenGL renderer string":
-                device = split_line[1]
-            elif split_line[0] == "Unified memory":
-                unifiedMemory = split_line[1]
-            
-            if device != "Unknown" and unifiedMemory != "":
-                break
+            var gputype = ""
+            if unifiedMemory == "yes":
+                gputype = "[integrated]"
+            elif unifiedMemory == "no":
+                gputype = "[dedicated]"
 
-        var gputype = ""
-        if unifiedMemory == "yes":
-            gputype = "[integrated]"
-        elif unifiedMemory == "no":
-            gputype = "[dedicated]"
-
-        result = device & " " & gputype
+            result = device & " " & gputype
 
     elif defined(macosx):
         result = execProcess("system_profiler SPDisplaysDataType | grep 'Chipset Model'").split(": ")[1].split("\n")[0]
