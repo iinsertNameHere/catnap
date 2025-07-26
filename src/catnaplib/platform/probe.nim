@@ -347,7 +347,7 @@ proc getGpu*(): string =
     if defined(linux) or defined(bsd):
         let tmpFile = "glxinfo.txt".toTmpPath
 
-        if execCmd("glxinfo -B &> " & tmpFile) != 0:
+        if execCmd("glxinfo -B > " & tmpFile & " 2>&1") != 0:
             if readFile(tmpFile).strip() == "Error: unable to open display":
                 result = "Unknown"
             else: logError("Failed to fetch GPU!")
