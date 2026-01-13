@@ -1,5 +1,5 @@
 import "../terminal/logging"
-from "definitions" import Config, STATNAMES, STATKEYS, Logo, DISTROSPATH
+from "definitions" import Config, STATNAMES, STATKEYS, Logo, DISTROSPATH, GLOBALCONFIGPATH, GLOBALDISTROSPATH
 from os import fileExists, getEnv, existsEnv
 import strformat
 import strutils
@@ -11,16 +11,29 @@ const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
 proc LoadConfig*(cfgPath: string, dstPath: string): Config =
     # Lads a config file and validates it
 
-    # Validate the config file
+    # Validate the config file and handle global config
+    var configPath: string
     if not fileExists(cfgPath):
-        logError(&"{cfgPath} - file not found!")
+        if fileExists(GLOBALCONFIGPATH):
+            configPath = GLOBALCONFIGPATH
+        else:
+            logError(&"{cfgPath} - file not found!")
+    else:
+        configPath = cfgPath
+        
     
-    # Validate the art file
+    # Validate the art file and handle global art file
+    var distrosPath: string
     if not fileExists(dstPath):
-        logError(&"{dstPath} - file not found!")
+        if fileExists(GLOBALDISTROSPATH):
+            distrosPath = GLOBALDISTROSPATH
+        else:
+            logError(&"{dstPath} - file not found!")
+    else:
+        distrosPath = dstPath
 
-    let tcfg = parsetoml.parseFile(cfgPath)
-    let tdistros = parsetoml.parseFile(dstPath)
+    let tcfg = parsetoml.parseFile(configPath)
+    let tdistros = parsetoml.parseFile(distrosPath)
     
     # Error out if stats missing
     if not tcfg.contains("stats"):

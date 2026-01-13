@@ -4,3 +4,6 @@
 
 ## v1.1.1
 + Fixed glxinfo output being displayed when fetching GPU
+
+## v1.2.0
++ Added functionality for global configs in /etc/catnap
