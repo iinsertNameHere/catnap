@@ -144,6 +144,9 @@ const
 let CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
 let DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
 
+const GLOBALCONFIGPATH*   = "/etc/catnap/config.toml"
+const GLOBALDISTROSPATH*  = "/etc/catnap/distros.toml"
+
 
 proc getCachePath*(): string =
     result = getEnv("XDG_CACHE_HOME")
