@@ -88,7 +88,7 @@ task install_bin, "Installs the bin file and man page:":
         man_5_path = "/usr/share/man/man5/catnap.5.gz"
         local_5_path = &"{thisDir()}/docs/catnap.5"
 
-    # Install man page only if it 
+    # Install man page only if it
     echo &"\e[36;1mInstalling\e[0;0m man page"
     # Create .gz file
     exec &"gzip -kf {local_1_path}"

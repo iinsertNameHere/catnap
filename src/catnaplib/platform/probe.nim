@@ -7,7 +7,7 @@ import posix_utils
 import times
 import tables
 import osproc
-import re
+import nre
 from unicode import toLower
 from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath, Config
 import "../terminal/logging"
@@ -158,7 +158,7 @@ proc getDesktop*(): string =
 
 proc getMemory*(mb: bool = true): string =
     # Returns statistics about the memory
-    let 
+    let
         dividend: uint = if mb: 1000 else: 1024
         suffix: string = if mb: "MB" else: "MiB"
     if defined(linux) or defined(bsd):
@@ -195,15 +195,13 @@ proc getMemory*(mb: bool = true): string =
 proc getBattery*(): string =
     if defined(linux) or defined(bsd):
         # Credits to https://gitlab.com/prashere/battinfo for regex implementation.
-        let
-            BATTERY_REGEX = re"^BAT\d+$"
-            powerPath = "/sys/class/power_supply/"
+        let powerPath = "/sys/class/power_supply/"
 
         var batterys: seq[tuple[idx: int, path: string]]
 
         # Collect all batterys
         for dir in os.walk_dir(powerPath):
-            if re.match(os.last_path_part(dir.path), BATTERY_REGEX):
+            if os.last_path_part(dir.path).contains(nre.re"^BAT\d+$"):
                 let batteryPath = dir.path & "/"
                 # Only check if battery has capacity and status
                 if fileExists(batteryPath & "capacity") and fileExists(batteryPath & "status"):
@@ -215,7 +213,7 @@ proc getBattery*(): string =
         # Sort batterys by number
         sort(batterys)
 
-        # Get stats for battery with lowest number  
+        # Get stats for battery with lowest number
         let
             batteryCapacity = readFile(batterys[0].path & "capacity").strip()
             batteryStatus = readFile(batterys[0].path & "status").strip()
@@ -286,7 +284,7 @@ proc getCpu*(): string =
             let
                 key  = line[0].strip()
                 val  = line[1].strip()
-            if key == key_name: 
+            if key == key_name:
                 result = val
                 break
     elif defined(macosx):
@@ -361,7 +359,7 @@ proc getGpu*(): string =
                     device = split_line[1]
                 elif split_line[0] == "Unified memory":
                     unifiedMemory = split_line[1]
-                
+
                 if device != "Unknown" and unifiedMemory != "":
                     break
 
