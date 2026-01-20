@@ -10,3 +10,4 @@
 
 ## v1.2.1
 + Migrated to PCRE2
++ Fixed CachyOS packages not being displayed
