@@ -57,7 +57,7 @@ const
                     "kernel", "desktop", "shell", "memory", "battery", "terminal",
                     "cpu", "gpu", "packages", "weather", "colors"]
     STATKEYS*     = static: @["icon", "name", "color"]
-    
+
     # Pkg Manager
     PKGMANAGERS*  = static: {
         "gentoo": "emerge",
@@ -91,7 +91,7 @@ const
         "archcraft": "pacman",
         "arco": "pacman",
         "artix": "pacman",
-        "cachy": "pacman",
+        "cachyos": "pacman",
         "crystal": "pacman",
         "instant": "pacman",
         "manjaro": "pacman",
@@ -159,13 +159,13 @@ proc getCachePath*(): string =
         else:
             result = "/tmp/catnap"
 
-let CACHEPATH* = getCachePath() 
-let TEMPPATH* = "/tmp/catnap"       
+let CACHEPATH* = getCachePath()
+let TEMPPATH* = "/tmp/catnap"
 
 proc toCachePath*(p: string): string =
-    # Converts a path [p] into a cahce path 
+    # Converts a path [p] into a cahce path
     return joinPath(CACHEPATH, p)
 
 proc toTmpPath*(p: string): string =
-    # Converts a path [p] into a temp path 
+    # Converts a path [p] into a temp path
     return joinPath(TEMPPATH, p)
