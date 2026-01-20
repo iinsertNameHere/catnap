@@ -6,18 +6,18 @@ jobs:
   test-catnap:
     runs-on: ubuntu-latest
     steps:
-    - name: 'Checkout Repository'
-      uses: actions/checkout@v4
-    - name: 'Install Nim'
-      uses: iffy/install-nim@v5
-    - name: 'Setup Nim'
-      uses: jiro4989/setup-nim-action@v1
-      with:
-        nim-version: 'stable'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-    - name: 'Build Catnap'
-      run: nim debug
-    - name: 'Install libpcre3 and mesa-utils'
-      run: sudo apt-get install libpcre3 libpcre3-dev mesa-utils
-    - name: 'Run Tests'
-      run: cd scripts && ./test-commandline-args.sh
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - name: "Install Nim"
+        uses: iffy/install-nim@v5
+      - name: "Setup Nim"
+        uses: jiro4989/setup-nim-action@v1
+        with:
+          nim-version: "stable"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Build Catnap"
+        run: nim debug
+      - name: "Install mesa-utils"
+        run: sudo apt-get install mesa-utils
+      - name: "Run Tests"
+        run: cd scripts && ./test-commandline-args.sh
