@@ -7,3 +7,6 @@
 
 ## v1.2.0
 + Added functionality for global configs in /etc/catnap
+
+## v1.2.1
++ Migrated to PCRE2
