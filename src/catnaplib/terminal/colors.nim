@@ -1,6 +1,6 @@
 from "../global/definitions" import Color, ColorSet
 import strutils
-import re
+import nre
 
 proc initForeground(): ColorSet = # (..)
     result.Black   = "\e[30m"   # BK
@@ -98,8 +98,8 @@ proc Colorize*(s: string): string =
     result = result.replace("!DT!", Default) # Parse Default
 
 proc Uncolorize*(s: string): string =
-    ## Removes ansi color codes from string
-    result = re.replace(s, re"\e(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "")
+    ## Removes ANSI color codes from string
+    result = s.replace(nre.re"\e(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "")
 
 proc Reset*() =
     stdout.write(Default)
