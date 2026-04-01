@@ -36,8 +36,8 @@ proc getDistroId*(): DistroId =
     if raw != "":
         let raw_vals = raw.split(':')
         if raw_vals.len == 2:
-            result.id = raw_vals[0]
-            result.like = raw_vals[1]
+            result.id = raw_vals[0].replace(" ", "_")
+            result.like = raw_vals[1].replace(" ", "_")
 
     if defined(linux) or defined(bsd):
         if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release

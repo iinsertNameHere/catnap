@@ -6,7 +6,7 @@ import strutils
 import parsetoml
 
 # Chars that a alias can contain
-const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_'}
+const ALLOWED_NAME_CHARS = {'A' .. 'Z', 'a' .. 'z', '0' .. '9', '_', '-'}
 
 proc LoadConfig*(cfgPath: string, dstPath: string): Config =
     # Lads a config file and validates it
@@ -20,8 +20,8 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
             logError(&"{cfgPath} - file not found!")
     else:
         configPath = cfgPath
-        
-    
+
+
     # Validate the art file and handle global art file
     var distrosPath: string
     if not fileExists(dstPath):
@@ -34,7 +34,7 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
 
     let tcfg = parsetoml.parseFile(configPath)
     let tdistros = parsetoml.parseFile(distrosPath)
-    
+
     # Error out if stats missing
     if not tcfg.contains("stats"):
         logError(&"{cfgPath} - missing 'stats'!")
@@ -53,7 +53,7 @@ proc LoadConfig*(cfgPath: string, dstPath: string): Config =
         logError(&"{cfgPath} - missing 'stats'!")
     if not tcfg["misc"].contains("layout"):
         logError(&"{cfgPath}:misc - missing 'layout'!")
-        
+
     # Fill out the result object
     result.configFile = cfgPath
     result.distrosFile = dstPath
