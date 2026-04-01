@@ -1,5 +1,5 @@
 # This is the distro logos file for catnap.
-# Here you can configure all distro logos 
+# Here you can configure all distro logos
 # or add a new one.
 #
 # https://github.com/iinsertNameHere/catnap
@@ -60,7 +60,7 @@ art    = [
 [arch_old]
 margin = [1, 2, 3,]
 art    = [
-"(BE)     -+*##*+-        ",  
+"(BE)     -+*##*+-        ",
 "(BE)   -+#######*={BK}:      ",
 "(BE)  -+*******+++={BK}+*+   ",
 "(BE) -++++++++=====- {BK}**+-",
@@ -438,7 +438,7 @@ art    = [
     "{GN}    ---     ",
 ]
 
-### L ###  
+### L ###
 [lite]
 alias  = "linuxlite"
 margin = [3, 3, 4,]
@@ -575,6 +575,7 @@ art    = [
 ]
 
 [opensuse]
+alias  = "opensuse_suse,opensuse-tumbleweed"
 margin = [0, 0, 2,]
 art    = [
     "!DT!           .;ldkO0000Okdl;.           ",
