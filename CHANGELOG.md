@@ -11,3 +11,9 @@
 ## v1.2.1
 + Migrated to PCRE2
 + Fixed CachyOS packages not being displayed
+
+## v1.2.2
+> #### Manual action required:
+> *If you're using openSUSE, please update your distro.toml to the latest version from the repository.*
++ Fixed distroid Fetching and alias handling
++ Added alias to opensuse art
