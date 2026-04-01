@@ -14,6 +14,6 @@
 
 ## v1.2.2
 > #### Manual action required:
-> *If you're using openSUSE, please update your distro.toml to the latest version from the repository.*
+> *If you're using openSUSE, please update your distros.toml to the latest version from the repository.*
 + Fixed distroid Fetching and alias handling
 + Added alias to opensuse art
