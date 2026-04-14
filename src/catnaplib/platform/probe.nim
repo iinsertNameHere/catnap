@@ -334,6 +334,79 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
     result = count & " [" & pkgManager & "]"
     writeCache(cacheFile, result, initDuration(hours=2))
 
+proc cleanGpuName(raw: string): string =
+    # Strip parenthesised technical details
+    let parenIdx = raw.find('(')
+    result = if parenIdx > 0: raw[0 ..< parenIdx].strip() else: raw.strip()
+
+    # Normalise vendor prefixes so the name is consistent
+    const prefixMap = [
+        ("AMD Radeon",   "AMD Radeon"),
+        ("NVIDIA",       "NVIDIA"),
+        ("Intel",        "Intel"),
+        # Mesa software renderers – collapse to a readable label
+        ("llvmpipe",     "Software (llvmpipe)"),
+        ("softpipe",     "Software (softpipe)"),
+        ("D3D12",        "Software (D3D12)"),
+    ]
+    for (prefix, canon) in prefixMap:
+        if result.toLowerAscii().startsWith(prefix.toLowerAscii()):
+            # Re-attach the canonical prefix while preserving the model suffix
+            if result.len > prefix.len:
+                result = canon & result[prefix.len .. ^1]
+            else:
+                result = canon
+            break
+
+proc getVramMb(): int =
+    # AMD / amdgpu – most reliable
+    let drmBase = "/sys/class/drm"
+    if dirExists(drmBase):
+        for kind in ["card0", "card1", "card2"]:
+            let p = drmBase / kind / "device" / "mem_info_vram_total"
+            if fileExists(p):
+                try:
+                    let bytes = parseBiggestInt(readFile(p).strip())
+                    if bytes > 0:
+                        return int(bytes div (1024 * 1024))
+                except: discard
+
+    # NVIDIA – parse nvidia-smi
+    try:
+        let raw = execProcess("nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null").strip()
+        if raw != "":
+            return parseInt(raw.splitLines()[0].strip())
+    except: discard
+
+    # Intel / generic – drm resource file
+    if dirExists(drmBase):
+        for kind in ["card0", "card1", "card2"]:
+            let p = drmBase / kind / "device" / "resource"
+            if fileExists(p):
+                try:
+                    var best = 0
+                    for line in readFile(p).splitLines():
+                        let parts = line.splitWhitespace()
+                        if parts.len >= 3:
+                            let start = parseHexInt(parts[0])
+                            let stop  = parseHexInt(parts[1])
+                            let size  = int((stop - start + 1) div (1024 * 1024))
+                            if size > best: best = size
+                    if best > 0: return best
+                except: discard
+
+    return 0
+
+proc formatVram(mb: int): string =
+    # Round to the nearest sensible marketing size (e.g. 16376 MB → "16GB").
+    if mb <= 0: return ""
+    let gb = mb div 1024
+    # Snap to the nearest power-of-two GB tier (2, 4, 6, 8, 12, 16, 24, 32 …)
+    const tiers = [2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 48, 64, 80]
+    for t in tiers:
+        if gb <= t: return $t & "GB"
+    return $gb & "GB"
+
 proc getGpu*(): string =
     # Returns the gpu name
     let cacheFile = "gpu".toCachePath
@@ -350,26 +423,34 @@ proc getGpu*(): string =
                 result = "Unknown"
             else: logError("Failed to fetch GPU!")
         else:
-            var device = "Unknown"
+            var rawDevice    = "Unknown"
             var unifiedMemory = ""
             let glxinfo = readFile(tmpFile)
             for line in glxinfo.split('\n'):
-                var split_line = line.strip().split(": ")
+                let split_line = line.strip().split(": ")
                 if split_line[0] == "OpenGL renderer string":
-                    device = split_line[1]
+                    rawDevice = split_line[1]
                 elif split_line[0] == "Unified memory":
                     unifiedMemory = split_line[1]
 
-                if device != "Unknown" and unifiedMemory != "":
+                if rawDevice != "Unknown" and unifiedMemory != "":
                     break
+
+            let device = cleanGpuName(rawDevice)
 
             var gputype = ""
             if unifiedMemory == "yes":
                 gputype = "[integrated]"
             elif unifiedMemory == "no":
                 gputype = "[dedicated]"
+                # Fetch VRAM for discrete GPUs
+                let vram = formatVram(getVramMb())
+                if vram != "":
+                    result = device & " " & vram & " " & gputype
+                    writeCache(cacheFile, result, initDuration(days=1))
+                    return
 
-            result = device & " " & gputype
+            result = device & (if gputype != "": " " & gputype else: "")
 
     elif defined(macosx):
         result = execProcess("system_profiler SPDisplaysDataType | grep 'Chipset Model'").split(": ")[1].split("\n")[0]
