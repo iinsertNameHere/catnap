@@ -118,5 +118,5 @@ For more info on how to contribute and how to add a new distro, see [CONTRIBUTIN
 
 
 <p align="center">
-    <img src="https://api.lucabubi.me/chart?username=iinsertNameHere&repository=catnap">
+    <img src="https://app.repohistory.com/api/svg?repo=iinsertnamehere/catnap&type=Date&background=0D1117&color=b562f8">
 </p>
