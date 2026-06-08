@@ -17,3 +17,7 @@
 > *If you're using openSUSE, please update your distros.toml to the latest version from the repository.*
 + Fixed distroid Fetching and alias handling
 + Added alias to opensuse art
+
+## v1.2.3
++ Improved GPU name formatting
++ Added VRAM detection for dedicated GPUs
