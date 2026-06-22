@@ -2,8 +2,13 @@ name: Scheduled Release
 
 on:
   schedule:
-    - cron: "0 3 * * *" # daily at 03:00 UTC
+    - cron: "0 3 * * *"
   workflow_dispatch:
+    inputs:
+      force:
+        description: "Force release (ignore time + PR checks)"
+        required: false
+        default: "false"
 
 jobs:
   release:
@@ -72,9 +77,16 @@ jobs:
         run: |
           DAYS=${{ steps.last_release.outputs.days }}
           PR_COUNT=${{ steps.prs.outputs.count }}
+          FORCE="${{ github.event.inputs.force }}"
 
           echo "Days since release: $DAYS"
           echo "Ship PRs: $PR_COUNT"
+          echo "Force mode: $FORCE"
+
+          if [ "$FORCE" = "true" ]; then
+            echo "release=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
 
           if [ "$DAYS" -ge 14 ] && [ "$PR_COUNT" -gt 0 ]; then
             echo "release=true" >> $GITHUB_OUTPUT
