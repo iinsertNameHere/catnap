@@ -12,8 +12,6 @@ $ nim generate_versionctl
 $ versionctl
 ```
 
-Remember to update the CHANGELOG.md file with any changes that impact end users.
-
 # Project structure
 ```graphql
 .
