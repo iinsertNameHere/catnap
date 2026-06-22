@@ -1,23 +1,55 @@
-## v1.1.0
-+ Changed gpu stat to use glxinfo instead of lspci
-+ Added integrated and dedicated GPU detection
+# How to contribute
+Create a new [issue](https://github.com/iinsertNameHere/catnap/issues) using the correct issue template or introduce a new feature/fix a bug and submit a pull request.
 
-## v1.1.1
-+ Fixed glxinfo output being displayed when fetching GPU
+Catnap uses [Semantic Versioning](https://semver.org/), make sure to bump the version respectively.
 
-## v1.2.0
-+ Added functionality for global configs in /etc/catnap
+To bump the version, use the `versionctl` tool which can be generated using:
+```shell
+# Generate versionctl tool
+$ nim generate_versionctl
 
-## v1.2.1
-+ Migrated to PCRE2
-+ Fixed CachyOS packages not being displayed
+# List usage of versionctl tool
+$ versionctl
+```
 
-## v1.2.2
-> #### Manual action required:
-> *If you're using openSUSE, please update your distros.toml to the latest version from the repository.*
-+ Fixed distroid Fetching and alias handling
-+ Added alias to opensuse art
+Remember to update the CHANGELOG.md file with any changes that impact end users.
 
-## v1.2.3
-+ Improved GPU name formatting
-+ Added VRAM detection for dedicated GPUs
+# Project structure
+```graphql
+.
+├── config/
+│   ├── config.toml  # Main config
+│   └── distros.toml # Distro art config
+├── docs/  # Contains man docs
+├── image/ # Contains all images for README.md
+├── src/
+│   ├── catnaplib/
+│   │   ├── drawing/    # Files for rendering output
+│   │   ├── generation/ # Files for generating output objects
+│   │   ├── global/     # Files used globally
+│   │   ├── platform/   # Files related to fetching system info
+│   │   └── terminal/   # Files related to terminal stuff (Colors, Logging)
+│   ├── extern/
+│   │   ├── headers/   # Contains extern c++ headers (hpp)
+│   │   └── libraries/ # Contains extern libs
+│   └── catnap.nim # Entry src file
+├── scripts/     # Test Scripts etc.
+├── config.nims  # nim install, nim debug, ...
+└── CHANGELOG.md # Changelog for current development version (versionctl print)
+
+```
+
+# How to add a new distro
+
+1. Add the distro's logo in the default `distros.toml` in the `config/` folder. Please arrange the distro in alphabetical order.
+2. In `src/catnaplib/global/definitions.nim`, go to the `PKGMANAGERS` section.
+3. According to the name of the distro in `config/distros.toml`, put a new line like this:
+```nim
+"name of distro": "name of package manager",
+```
+4. If your distro's package manager is already in the `PKGCOUNTCOMMANDS` section, skip the next step.
+5. Put your distro's package manager in the `PKGCOUNTCOMMANDS` section like this:
+```nim
+"name of package manager": "command to get number of packages",
+```
+6. Submit a pull request to the Catnap repo.
