@@ -119,11 +119,11 @@ jobs:
       - name: Generate changelog
         if: steps.decide.outputs.release == 'true'
         run: |
-          echo "# Catnap Release Notes (${{ steps.version.outputs.version }})" > CHANGELOG.md
+          echo "## What has Changed (${{ steps.version.outputs.version }})" > CHANGELOG.md
           echo "" >> CHANGELOG.md
 
           if [ -z "${{ steps.prs.outputs.titles }}" ]; then
-            echo "- No ship PRs found" >> CHANGELOG.md
+            echo "- No changes found" >> CHANGELOG.md
           else
             echo "${{ steps.prs.outputs.titles }}" | while read line; do
               echo "- $line" >> CHANGELOG.md

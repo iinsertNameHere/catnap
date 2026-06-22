@@ -17,7 +17,6 @@ proc usage() =
   echo "  major     Bump major version"
   echo "  minor     Bump minor version"
   echo "  patch     Bump patch version"
-  echo "  validate  Validate for release "
   echo "  print     Print the current development version"
   echo ""
 
@@ -34,7 +33,7 @@ proc bumpVersion(part: string): string =
   if parts.len != 3:
     echo "Version must be in MAJOR.MINOR.PATCH format"
     return ""
-  
+
   var major = parts[0].parseInt()
   var minor = parts[1].parseInt()
   var patch = parts[2].parseInt()
@@ -43,7 +42,7 @@ proc bumpVersion(part: string): string =
     of "major": major += 1; minor = 0; patch = 0
     of "minor": minor += 1; patch = 0
     of "patch": patch += 1
-    else: 
+    else:
       echo "Invalid part. Use: major|minor|patch"
       return ""
 
@@ -51,11 +50,6 @@ proc bumpVersion(part: string): string =
   writeFile(versionFile, content.replace(oldVersion, newVersion))
   echo &"Bumped from v{oldVersion} to v{newVersion}"
   return newVersion
-
-proc checkChangelogUpdated(version: string) =
-  let changelog = readFile(changelogFile)
-  if not changelog.contains(&"## v{version}"):
-    echo fmt"WARNING: {changelogFile} dose not contain an entry for v{version}!"
 
 proc getVersion() =
   let content = readFile(versionFile)
@@ -66,7 +60,6 @@ proc validate() =
   let content = readFile(versionFile)
   let version = content.split('"')[1]
   validateVersion(version)
-  checkChangelogUpdated(version)
 
 when isMainModule:
   if paramCount() != 1:
@@ -74,7 +67,7 @@ when isMainModule:
     quit(1)
 
   let part = paramStr(1)
-  
+
   if part == "validate":
     validate()
     quit()
@@ -84,4 +77,3 @@ when isMainModule:
   else:
     let newVersion = bumpVersion(part)
     if newVersion == "": quit(1)
-    checkChangelogUpdated(newVersion)
