@@ -106,7 +106,7 @@ jobs:
         id: version
         if: steps.decide.outputs.release == 'true'
         run: |
-          VERSION=$(versionctl print 2>/dev/null)
+          VERSION=$(./versionctl print 2>/dev/null)
 
           if [ -z "$VERSION" ]; then
             echo "ERROR: versionctl failed"
