@@ -26,6 +26,12 @@ jobs:
       - name: Install Nim
         uses: iffy/install-nim@v5
 
+      - name: "Setup Nim"
+        uses: jiro4989/setup-nim-action@v1
+        with:
+          nim-version: "stable"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install musl cross compiler
         run: |
           sudo apt-get update
