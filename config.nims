@@ -23,6 +23,7 @@ let
   pcreArchiveFile  = pcreSourceDir & ".tar.bz2"
   pcreDownloadLink = "https://sourceforge.net/projects/pcre/files/pcre/" & pcreVersion & "/" & pcreArchiveFile
   pcreConfigureCmd = ["./configure",
+                      "--host=" & getEnv("MUSL_TARGET", "x86_64-linux-musl"),
                       "--prefix=" & muslDir,
                       "--disable-shared",
                       "--enable-static",
@@ -54,6 +55,7 @@ let
   pcre2ArchiveFile  = pcre2SourceDir & ".tar.bz2"
   pcre2DownloadLink = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-" & pcre2Version & "/" & pcre2ArchiveFile
   pcre2ConfigureCmd = ["./configure",
+                        "--host=" & getEnv("MUSL_TARGET", "x86_64-linux-musl"),
                         "--prefix=" & muslDir,
                         "--disable-shared",
                         "--enable-static",

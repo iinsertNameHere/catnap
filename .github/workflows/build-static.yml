@@ -14,18 +14,22 @@ jobs:
             muslcc: musl-gcc
             nim_cpu: amd64
             artifact: catnap-linux-amd64
+            host: x86_64-linux-musl
           - target: i686-unknown-linux-musl
             muslcc: i686-unknown-linux-musl-gcc
             nim_cpu: i386
             artifact: catnap-linux-amd32
+            host: i686-linux-musl
           - target: aarch64-unknown-linux-musl
             muslcc: aarch64-unknown-linux-musl-gcc
             nim_cpu: arm64
             artifact: catnap-linux-arm64
+            host: aarch64-linux-musl
           - target: armv7-unknown-linux-musleabihf
             muslcc: armv7-unknown-linux-musleabihf-gcc
             nim_cpu: arm
             artifact: catnap-linux-arm32
+            host: armv7-linux-musleabihf
 
     steps:
       - name: Checkout
@@ -61,13 +65,13 @@ jobs:
         run: ${{ matrix.muslcc }} --version
 
       - name: Build PCRE1 static
-        run: MUSLCC=${{ matrix.muslcc }} nim installPcre
+        run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} nim installPcre
 
       - name: Build PCRE2 static
-        run: MUSLCC=${{ matrix.muslcc }} nim installPcre2
+        run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} nim installPcre2
 
       - name: Build static binary
-        run: MUSLCC=${{ matrix.muslcc }} nim static_release --cpu:${{ matrix.nim_cpu }}
+        run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} nim static_release --cpu:${{ matrix.nim_cpu }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
