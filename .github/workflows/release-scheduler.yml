@@ -160,9 +160,9 @@ jobs:
 
     build-binaries:
         needs: release
-        # Skip if: release job decided not to release, OR skip_binaries was set to true
         if: |
             needs.release.result == 'success' &&
+            needs.release.outputs.version != '' &&
             github.event.inputs.skip_binaries != 'true'
         uses: ./.github/workflows/build-static.yml
         with:
@@ -170,9 +170,11 @@ jobs:
 
     attach-binaries:
         needs: [release, build-binaries]
-        if: needs.build-binaries.result == 'success'
-        runs-on: ubuntu-latest
+        if: |
+            needs.release.outputs.version != '' &&
+            needs.build-binaries.result == 'success'
 
+        runs-on: ubuntu-latest
         steps:
             - name: Download all artifacts
               uses: actions/download-artifact@v4
