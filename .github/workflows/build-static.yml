@@ -2,6 +2,11 @@ name: Build Static Binary
 
 on:
     workflow_dispatch:
+    workflow_call:
+        outputs:
+            artifacts_ready:
+                description: "Whether static binaries were built"
+                value: ${{ jobs.build.outputs.artifacts_ready }}
 
 jobs:
     build:
@@ -90,6 +95,10 @@ jobs:
 
             - name: Build static binary
               run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} CPU=${{ matrix.nim_cpu }} nim static_release
+
+            - name: Mark artifacts ready
+              id: mark
+              run: echo "artifacts_ready=true" >> $GITHUB_OUTPU
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
