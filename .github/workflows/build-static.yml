@@ -83,9 +83,9 @@ jobs:
               if: startsWith(matrix.target, 'armv7')
               run: |
                   mkdir -p $HOME/.local/bin
-                  echo '#!/bin/sh' > $HOME/.local/bin/arm-linux-gnu-gcc
-                  echo 'exec ${{ matrix.muslcc }} "$@"' >> $HOME/.local/bin/arm-linux-gnu-gcc
-                  chmod +x $HOME/.local/bin/arm-linux-gnu-gcc
+                  echo '#!/bin/sh' > $HOME/.local/bin/arm-linux-gnueabihf-gcc
+                  echo 'exec ${{ matrix.muslcc }} "$@"' >> $HOME/.local/bin/arm-linux-gnueabihf-gcc
+                  chmod +x $HOME/.local/bin/arm-linux-gnueabihf-gcc
                   echo "$HOME/.local/bin" >> $GITHUB_PATH
 
             - name: Build static binary
