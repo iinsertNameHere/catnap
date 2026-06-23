@@ -24,27 +24,30 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Nim
-        uses: iffy/install-nim@v5
-
-      - name: "Setup Nim"
-        uses: jiro4989/setup-nim-action@v1
+        uses: nickel-lang/setup-nim-action@v2
         with:
-          nim-version: "stable"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          nim-version: stable
 
       - name: Install musl cross compiler
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget
+          sudo apt-get install -y musl-tools
 
-          # Download musl cross toolchain for this target
           TOOLCHAIN="${{ matrix.target }}-cross"
-          wget -q "https://musl.cc/${TOOLCHAIN}.tgz"
-          tar xf "${TOOLCHAIN}.tgz"
-          echo "$PWD/${TOOLCHAIN}/bin" >> $GITHUB_PATH
 
-          # Verify compiler is available
-          ${{ matrix.target }}-gcc --version
+          if [ "${{ matrix.target }}" = "x86_64-linux-musl" ]; then
+            # Native musl, musl-tools provides musl-gcc
+            sudo ln -sf /usr/bin/musl-gcc /usr/local/bin/x86_64-linux-musl-gcc
+          else
+            # Cross toolchains from musl-cross-make GitHub releases
+            wget --timeout=60 -q \
+              "https://github.com/richfelker/musl-cross-make/releases/download/v0.9.9/${TOOLCHAIN}.tgz"
+            tar xf "${TOOLCHAIN}.tgz"
+            echo "$PWD/${TOOLCHAIN}/bin" >> $GITHUB_PATH
+          fi
+
+      - name: Verify compiler
+        run: ${{ matrix.target }}-gcc --version
 
       - name: Set MUSLCC env
         run: echo "MUSLCC=${{ matrix.target }}-gcc" >> $GITHUB_ENV
@@ -52,10 +55,10 @@ jobs:
       - name: Set CPU for Nim
         run: |
           case "${{ matrix.target }}" in
-            x86_64*)   echo "NIM_CPU=amd64"   >> $GITHUB_ENV ;;
-            i686*)     echo "NIM_CPU=i386"    >> $GITHUB_ENV ;;
-            aarch64*)  echo "NIM_CPU=arm64"   >> $GITHUB_ENV ;;
-            armv7l*)   echo "NIM_CPU=arm"     >> $GITHUB_ENV ;;
+            x86_64*)  echo "NIM_CPU=amd64" >> $GITHUB_ENV ;;
+            i686*)    echo "NIM_CPU=i386"  >> $GITHUB_ENV ;;
+            aarch64*) echo "NIM_CPU=arm64" >> $GITHUB_ENV ;;
+            armv7l*)  echo "NIM_CPU=arm"   >> $GITHUB_ENV ;;
           esac
 
       - name: Build PCRE1 static
