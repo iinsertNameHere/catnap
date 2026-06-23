@@ -11,12 +11,20 @@ jobs:
       matrix:
         include:
           - target: x86_64-linux-musl
+            muslcc: musl-gcc
+            nim_cpu: amd64
             artifact: catnap-linux-amd64
           - target: i686-linux-musl
+            muslcc: i686-linux-musl-gcc
+            nim_cpu: i386
             artifact: catnap-linux-amd32
           - target: aarch64-linux-musl
+            muslcc: aarch64-linux-musl-gcc
+            nim_cpu: arm64
             artifact: catnap-linux-arm64
           - target: armv7l-linux-musleabihf
+            muslcc: armv7l-linux-musleabihf-gcc
+            nim_cpu: arm
             artifact: catnap-linux-arm32
 
     steps:
@@ -32,47 +40,32 @@ jobs:
           nim-version: "stable"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install musl cross compiler
+      - name: Install musl toolchain
         run: |
-          sudo apt-get update
+          sudo apt-get update -q
           sudo apt-get install -y musl-tools
 
-          TOOLCHAIN="${{ matrix.target }}-cross"
-
           if [ "${{ matrix.target }}" = "x86_64-linux-musl" ]; then
-            # Native musl, musl-tools provides musl-gcc
-            sudo ln -sf /usr/bin/musl-gcc /usr/local/bin/x86_64-linux-musl-gcc
+            echo "Native x86_64, musl-gcc already available via musl-tools"
           else
-            # Cross toolchains from musl-cross-make GitHub releases
-            wget --timeout=60 -q \
-              "https://github.com/richfelker/musl-cross-make/releases/download/v0.9.9/${TOOLCHAIN}.tgz"
+            TOOLCHAIN="${{ matrix.target }}-cross"
+            echo "Downloading ${TOOLCHAIN} from musl.cc ..."
+            wget --timeout=120 --tries=3 -q "https://musl.cc/${TOOLCHAIN}.tgz"
             tar xf "${TOOLCHAIN}.tgz"
             echo "$PWD/${TOOLCHAIN}/bin" >> $GITHUB_PATH
           fi
 
       - name: Verify compiler
-        run: ${{ matrix.target }}-gcc --version
-
-      - name: Set MUSLCC env
-        run: echo "MUSLCC=${{ matrix.target }}-gcc" >> $GITHUB_ENV
-
-      - name: Set CPU for Nim
-        run: |
-          case "${{ matrix.target }}" in
-            x86_64*)  echo "NIM_CPU=amd64" >> $GITHUB_ENV ;;
-            i686*)    echo "NIM_CPU=i386"  >> $GITHUB_ENV ;;
-            aarch64*) echo "NIM_CPU=arm64" >> $GITHUB_ENV ;;
-            armv7l*)  echo "NIM_CPU=arm"   >> $GITHUB_ENV ;;
-          esac
+        run: ${{ matrix.muslcc }} --version
 
       - name: Build PCRE1 static
-        run: MUSLCC=${{ matrix.target }}-gcc nim installPcre
+        run: MUSLCC=${{ matrix.muslcc }} nim installPcre
 
       - name: Build PCRE2 static
-        run: MUSLCC=${{ matrix.target }}-gcc nim installPcre2
+        run: MUSLCC=${{ matrix.muslcc }} nim installPcre2
 
       - name: Build static binary
-        run: nim static_release --cpu:${{ env.NIM_CPU }}
+        run: MUSLCC=${{ matrix.muslcc }} nim static_release --cpu:${{ matrix.nim_cpu }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
