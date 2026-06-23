@@ -10,21 +10,21 @@ jobs:
         strategy:
             matrix:
                 include:
-                    - target: x86_64-linux-musl
-                      muslcc: musl-gcc
-                      nim_cpu: amd64
-                      artifact: catnap-linux-amd64
-                      host: x86_64-linux-musl
-                    - target: i686-unknown-linux-musl
-                      muslcc: i686-unknown-linux-musl-gcc
-                      nim_cpu: i386
-                      artifact: catnap-linux-amd32
-                      host: i686-linux-musl
-                    # - target: aarch64-unknown-linux-musl
-                    #   muslcc: aarch64-unknown-linux-musl-gcc
-                    #   nim_cpu: arm64
-                    #   artifact: catnap-linux-arm64
-                    #   host: aarch64-linux-musl
+                    # - target: x86_64-linux-musl
+                    #   muslcc: musl-gcc
+                    #   nim_cpu: amd64
+                    #   artifact: catnap-linux-amd64
+                    #   host: x86_64-linux-musl
+                    # - target: i686-unknown-linux-musl
+                    #   muslcc: i686-unknown-linux-musl-gcc
+                    #   nim_cpu: i386
+                    #   artifact: catnap-linux-amd32
+                    #   host: i686-linux-musl
+                    - target: aarch64-unknown-linux-musl
+                      muslcc: aarch64-unknown-linux-musl-gcc
+                      nim_cpu: arm64
+                      artifact: catnap-linux-arm64
+                      host: aarch64-linux-musl
                     # - target: armv7-unknown-linux-musleabihf
                     #   muslcc: armv7-unknown-linux-musleabihf-gcc
                     #   nim_cpu: arm
@@ -69,6 +69,24 @@ jobs:
 
             - name: Build PCRE2 static
               run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} nim installPcre2
+
+            - name: Create gcc wrapper for aarch64
+              if: startsWith(matrix.target, 'aarch64')
+              run: |
+                  mkdir -p $HOME/.local/bin
+                  echo '#!/bin/sh' > $HOME/.local/bin/aarch64-linux-gnu-gcc
+                  echo 'exec ${{ matrix.muslcc }} "$@"' >> $HOME/.local/bin/aarch64-linux-gnu-gcc
+                  chmod +x $HOME/.local/bin/aarch64-linux-gnu-gcc
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+            - name: Create gcc wrapper for armv7
+              if: startsWith(matrix.target, 'armv7') || startsWith(matrix.target, 'aarch64')
+              run: |
+                  mkdir -p $HOME/.local/bin
+                  echo '#!/bin/sh' > $HOME/.local/bin/arm-linux-gnu-gcc
+                  echo 'exec ${{ matrix.muslcc }} "$@"' >> $HOME/.local/bin/arm-linux-gnu-gcc
+                  chmod +x $HOME/.local/bin/arm-linux-gnu-gcc
+                  echo "$HOME/.local/bin" >> $GITHUB_PATH
 
             - name: Build static binary
               run: MUSLCC=${{ matrix.muslcc }} MUSL_TARGET=${{ matrix.host }} CPU=${{ matrix.nim_cpu }} nim static_release
