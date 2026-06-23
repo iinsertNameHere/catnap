@@ -23,10 +23,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Nim
-        uses: nickel-lang/setup-nim-action@v2
+      - name: "Install Nim"
+        uses: iffy/install-nim@v5
+
+      - name: "Setup Nim"
+        uses: jiro4989/setup-nim-action@v1
         with:
-          nim-version: stable
+          nim-version: "stable"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install musl cross compiler
         run: |
