@@ -1,4 +1,5 @@
-/bin
+bin/
+build/
 catnap
 *.exe
 *.gz
