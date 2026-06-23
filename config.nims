@@ -10,6 +10,7 @@ proc mapconcat[T](s: openArray[T]; sep = " "; op: proc(x: T): string = dollar): 
       result.add(sep)
 
 let
+  muslCC       = getEnv("MUSLCC", "musl-gcc")
   muslDir      = &"{thisDir()}/build/musl"
   muslLib      = muslDir / "lib"
   muslInclude  = muslDir / "include"
@@ -38,7 +39,7 @@ task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
           exec("curl -LO " & pcreDownloadLink)
         exec("tar xf " & pcreArchiveFile)
       withDir pcreSourceDir:
-        putEnv("CC", "x86_64-linux-musl-gcc")
+        putEnv("CC", muslCC)
         putEnv("LDFLAGS", "-static")
         exec(pcreConfigureCmd.mapconcat())
         exec("make -j8")
@@ -68,7 +69,7 @@ task installPcre2, "Builds static libpcre2-8.a using musl-gcc into /usr/local/mu
           exec("curl -LO " & pcre2DownloadLink)
         exec("tar xf " & pcre2ArchiveFile)
       withDir pcre2SourceDir:
-        putEnv("CC", "x86_64-linux-musl-gcc")
+        putEnv("CC", muslCC)
         putEnv("LDFLAGS", "-static")
         exec(pcre2ConfigureCmd.mapconcat())
         exec("make -j8")
@@ -87,7 +88,6 @@ proc compile(release: bool, build_static: bool) =
     args.add(&"--panics:on")
 
     if build_static:
-      let muslcc = getEnv("MUSLCC", "musl-gcc")
       if not fileExists(pcreLibFile):
         echo "ERROR: libpcre.a not found. Run: nim installPcre"
         quit(1)
