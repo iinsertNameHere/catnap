@@ -9,7 +9,8 @@ proc mapconcat[T](s: openArray[T]; sep = " "; op: proc(x: T): string = dollar): 
         if i < s.len-1:
             result.add(sep)
 
-let nimcpu       = getEnv("CPU", nil)
+let
+    nimcpu       = getEnv("CPU", "")
     muslCC       = getEnv("MUSLCC", "musl-gcc")
     muslDir      = &"{thisDir()}/build/musl"
     muslLib      = muslDir / "lib"
@@ -17,7 +18,8 @@ let nimcpu       = getEnv("CPU", nil)
     pcreLibFile  = muslLib / "libpcre.a"
     pcre2LibFile = muslLib / "libpcre2-8.a"
 
-    # PCRE1 build config
+# PCRE1 build config
+let
     pcreVersion      = getEnv("PCREVER", "8.45")
     pcreSourceDir    = "pcre-" & pcreVersion
     pcreArchiveFile  = pcreSourceDir & ".tar.bz2"
@@ -50,7 +52,9 @@ task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
         echo pcreLibFile & " already exists"
         setCommand("nop")
 
-let pcre2Version      = getEnv("PCRE2VER", "10.42")
+# PCRE2 build config
+let
+    pcre2Version      = getEnv("PCRE2VER", "10.42")
     pcre2SourceDir    = "pcre2-" & pcre2Version
     pcre2ArchiveFile  = pcre2SourceDir & ".tar.bz2"
     pcre2DownloadLink = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-" & pcre2Version & "/" & pcre2ArchiveFile
@@ -96,7 +100,7 @@ proc compile(release: bool, build_static: bool) =
             echo "ERROR: libpcre.a not found. Run: nim installPcre"
             quit(1)
         if not fileExists(pcre2LibFile):
-           	echo "ERROR: libpcre2-8.a not found."
+            echo "ERROR: libpcre2-8.a not found."
             quit(1)
         args.add(&"--passC:-I{muslInclude}")
         args.add(&"--passL:{pcreLibFile}")
@@ -115,7 +119,7 @@ proc compile(release: bool, build_static: bool) =
         args.add(&"--opt:speed")
         args.add(&"-d:strip")
 
-    if nimcpu != nil:
+    if nimcpu != "":
         args.add(&"--cpu:{nimcpu}")
 
     args.add(&"--outdir:{thisDir()}/bin")
