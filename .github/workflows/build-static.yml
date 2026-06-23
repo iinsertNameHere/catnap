@@ -29,22 +29,22 @@ jobs:
                     - target: x86_64-linux-musl
                       muslcc: musl-gcc
                       nim_cpu: amd64
-                      artifact: catnap-linux-amd64
+                      artifact: catnap-linux-x86_64
                       host: x86_64-linux-musl
                     - target: i686-unknown-linux-musl
                       muslcc: i686-unknown-linux-musl-gcc
                       nim_cpu: i386
-                      artifact: catnap-linux-amd32
+                      artifact: catnap-linux-i686
                       host: i686-linux-musl
                     - target: aarch64-unknown-linux-musl
                       muslcc: aarch64-unknown-linux-musl-gcc
                       nim_cpu: arm64
-                      artifact: catnap-linux-arm64
+                      artifact: catnap-linux-aarch64
                       host: aarch64-linux-musl
                     - target: armv7-unknown-linux-musleabihf
                       muslcc: armv7-unknown-linux-musleabihf-gcc
                       nim_cpu: arm
-                      artifact: catnap-linux-arm32
+                      artifact: catnap-linux-armv7
                       host: armv7-linux-musleabihf
 
         steps:
