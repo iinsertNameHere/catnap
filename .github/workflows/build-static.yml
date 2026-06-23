@@ -2,11 +2,18 @@ name: Build Static Binary
 
 on:
     workflow_dispatch:
+        inputs:
+            force:
+                description: "Force release (ignore time + PR checks)"
+                required: false
+                default: "false"
     workflow_call:
-        force:
-            description: "Force release (ignore time + PR checks)"
-            required: false
-            default: "false"
+        inputs:
+            force:
+                description: "Force release (ignore time + PR checks)"
+                required: false
+                default: "false"
+                type: string
         outputs:
             artifacts_ready:
                 description: "Whether static binaries were built"
