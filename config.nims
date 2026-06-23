@@ -28,6 +28,7 @@ let
                       "--disable-shared",
                       "--enable-static",
                       "--enable-pcre8",
+                      "--disable-cpp",
                       "--enable-unicode-properties"]
 
 task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
@@ -43,8 +44,8 @@ task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
         putEnv("CC", muslCC)
         putEnv("LDFLAGS", "-static")
         exec(pcreConfigureCmd.mapconcat())
-        exec("make -j8")
-        exec("make install")
+        exec("make -j8 libpcre.la libpcreposix.la")
+        exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
   else:
     echo pcreLibFile & " already exists"
   setCommand("nop")
@@ -59,6 +60,8 @@ let
                         "--prefix=" & muslDir,
                         "--disable-shared",
                         "--enable-static",
+                        "--disable-pcre2grep",
+                        "--disable-pcre2test",
                         "--enable-pcre2-8"]
 
 task installPcre2, "Builds static libpcre2-8.a using musl-gcc into /usr/local/musl":
@@ -74,8 +77,8 @@ task installPcre2, "Builds static libpcre2-8.a using musl-gcc into /usr/local/mu
         putEnv("CC", muslCC)
         putEnv("LDFLAGS", "-static")
         exec(pcre2ConfigureCmd.mapconcat())
-        exec("make -j8")
-        exec("make install")
+        exec("make -j8 libpcre2-8.la libpcre2-posix.la")
+        exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
   else:
     echo pcre2LibFile & " already exists"
   setCommand("nop")
