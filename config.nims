@@ -4,58 +4,57 @@ import os
 
 proc dollar[T](s: T): string = $s
 proc mapconcat[T](s: openArray[T]; sep = " "; op: proc(x: T): string = dollar): string =
-  for i, x in s:
-    result.add(op(x))
-    if i < s.len-1:
-      result.add(sep)
+    for i, x in s:
+        result.add(op(x))
+        if i < s.len-1:
+            result.add(sep)
 
-let
-  muslCC       = getEnv("MUSLCC", "musl-gcc")
-  muslDir      = &"{thisDir()}/build/musl"
-  muslLib      = muslDir / "lib"
-  muslInclude  = muslDir / "include"
-  pcreLibFile  = muslLib / "libpcre.a"
-  pcre2LibFile = muslLib / "libpcre2-8.a"
+let nimcpu       = getEnv("CPU", nil)
+    muslCC       = getEnv("MUSLCC", "musl-gcc")
+    muslDir      = &"{thisDir()}/build/musl"
+    muslLib      = muslDir / "lib"
+    muslInclude  = muslDir / "include"
+    pcreLibFile  = muslLib / "libpcre.a"
+    pcre2LibFile = muslLib / "libpcre2-8.a"
 
-  # PCRE1 build config
-  pcreVersion      = getEnv("PCREVER", "8.45")
-  pcreSourceDir    = "pcre-" & pcreVersion
-  pcreArchiveFile  = pcreSourceDir & ".tar.bz2"
-  pcreDownloadLink = "https://sourceforge.net/projects/pcre/files/pcre/" & pcreVersion & "/" & pcreArchiveFile
-  pcreConfigureCmd = ["./configure",
-                      "--host=" & getEnv("MUSL_TARGET", "x86_64-linux-musl"),
-                      "--prefix=" & muslDir,
-                      "--disable-shared",
-                      "--enable-static",
-                      "--enable-pcre8",
-                      "--disable-cpp",
-                      "--enable-unicode-properties"]
+    # PCRE1 build config
+    pcreVersion      = getEnv("PCREVER", "8.45")
+    pcreSourceDir    = "pcre-" & pcreVersion
+    pcreArchiveFile  = pcreSourceDir & ".tar.bz2"
+    pcreDownloadLink = "https://sourceforge.net/projects/pcre/files/pcre/" & pcreVersion & "/" & pcreArchiveFile
+    pcreConfigureCmd = ["./configure",
+                        "--host=" & getEnv("MUSL_TARGET", "x86_64-linux-musl"),
+                        "--prefix=" & muslDir,
+                        "--disable-shared",
+                        "--enable-static",
+                        "--enable-pcre8",
+                        "--disable-cpp",
+                        "--enable-unicode-properties"]
 
 task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
-  if not fileExists(pcreLibFile):
-    if not dirExists(&"{thisDir()}/build"):
-        mkDir(&"{thisDir()}/build")
-    withDir &"{thisDir()}/build":
-      if not dirExists(pcreSourceDir):
-        if not fileExists(pcreArchiveFile):
-          exec("curl -LO " & pcreDownloadLink)
-        exec("tar xf " & pcreArchiveFile)
-      withDir pcreSourceDir:
-        putEnv("CC", muslCC)
-        putEnv("LDFLAGS", "-static")
-        exec(pcreConfigureCmd.mapconcat())
-        exec("make -j8 libpcre.la libpcreposix.la")
-        exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
-  else:
-    echo pcreLibFile & " already exists"
-  setCommand("nop")
+    if not fileExists(pcreLibFile):
+        if not dirExists(&"{thisDir()}/build"):
+            mkDir(&"{thisDir()}/build")
+        withDir &"{thisDir()}/build":
+            if not dirExists(pcreSourceDir):
+                if not fileExists(pcreArchiveFile):
+                    exec("curl -LO " & pcreDownloadLink)
+                exec("tar xf " & pcreArchiveFile)
+            withDir pcreSourceDir:
+                putEnv("CC", muslCC)
+                putEnv("LDFLAGS", "-static")
+                exec(pcreConfigureCmd.mapconcat())
+                exec("make -j8 libpcre.la libpcreposix.la")
+                exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
+    else:
+        echo pcreLibFile & " already exists"
+        setCommand("nop")
 
-let
-  pcre2Version      = getEnv("PCRE2VER", "10.42")
-  pcre2SourceDir    = "pcre2-" & pcre2Version
-  pcre2ArchiveFile  = pcre2SourceDir & ".tar.bz2"
-  pcre2DownloadLink = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-" & pcre2Version & "/" & pcre2ArchiveFile
-  pcre2ConfigureCmd = ["./configure",
+let pcre2Version      = getEnv("PCRE2VER", "10.42")
+    pcre2SourceDir    = "pcre2-" & pcre2Version
+    pcre2ArchiveFile  = pcre2SourceDir & ".tar.bz2"
+    pcre2DownloadLink = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-" & pcre2Version & "/" & pcre2ArchiveFile
+    pcre2ConfigureCmd = ["./configure",
                         "--host=" & getEnv("MUSL_TARGET", "x86_64-linux-musl"),
                         "--prefix=" & muslDir,
                         "--disable-shared",
@@ -65,23 +64,23 @@ let
                         "--enable-pcre2-8"]
 
 task installPcre2, "Builds static libpcre2-8.a using musl-gcc into /usr/local/musl":
-  if not fileExists(pcre2LibFile):
-    if not dirExists(&"{thisDir()}/build"):
-        mkDir(&"{thisDir()}/build")
-    withDir &"{thisDir()}/build":
-      if not dirExists(pcre2SourceDir):
-        if not fileExists(pcre2ArchiveFile):
-          exec("curl -LO " & pcre2DownloadLink)
-        exec("tar xf " & pcre2ArchiveFile)
-      withDir pcre2SourceDir:
-        putEnv("CC", muslCC)
-        putEnv("LDFLAGS", "-static")
-        exec(pcre2ConfigureCmd.mapconcat())
-        exec("make -j8 libpcre2-8.la libpcre2-posix.la")
-        exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
-  else:
-    echo pcre2LibFile & " already exists"
-  setCommand("nop")
+    if not fileExists(pcre2LibFile):
+        if not dirExists(&"{thisDir()}/build"):
+            mkDir(&"{thisDir()}/build")
+        withDir &"{thisDir()}/build":
+            if not dirExists(pcre2SourceDir):
+                if not fileExists(pcre2ArchiveFile):
+                    exec("curl -LO " & pcre2DownloadLink)
+                exec("tar xf " & pcre2ArchiveFile)
+            withDir pcre2SourceDir:
+                putEnv("CC", muslCC)
+                putEnv("LDFLAGS", "-static")
+                exec(pcre2ConfigureCmd.mapconcat())
+                exec("make -j8 libpcre2-8.la libpcre2-posix.la")
+                exec("make install-libLTLIBRARIES install-includeHEADERS install-pkgconfigDATA")
+    else:
+        echo pcre2LibFile & " already exists"
+        setCommand("nop")
 
 proc compile(release: bool, build_static: bool) =
     var args: seq[string]
@@ -93,20 +92,20 @@ proc compile(release: bool, build_static: bool) =
     args.add(&"--panics:on")
 
     if build_static:
-      if not fileExists(pcreLibFile):
-        echo "ERROR: libpcre.a not found. Run: nim installPcre"
-        quit(1)
-      if not fileExists(pcre2LibFile):
-        echo "ERROR: libpcre2-8.a not found."
-        quit(1)
-      args.add(&"--passC:-I{muslInclude}")
-      args.add(&"--passL:{pcreLibFile}")
-      args.add("--dynlibOverride:libpcre")
-      args.add(&"--passL:{pcre2LibFile}")
-      args.add("--dynlibOverride:libpcre2-8")
-      args.add("--passL:-static")
-      args.add(&"--gcc.exe:{muslcc}")
-      args.add(&"--gcc.linkerexe:{muslcc}")
+        if not fileExists(pcreLibFile):
+            echo "ERROR: libpcre.a not found. Run: nim installPcre"
+            quit(1)
+        if not fileExists(pcre2LibFile):
+           	echo "ERROR: libpcre2-8.a not found."
+            quit(1)
+        args.add(&"--passC:-I{muslInclude}")
+        args.add(&"--passL:{pcreLibFile}")
+        args.add("--dynlibOverride:libpcre")
+        args.add(&"--passL:{pcre2LibFile}")
+        args.add("--dynlibOverride:libpcre2-8")
+        args.add("--passL:-static")
+        args.add(&"--gcc.exe:{muslcc}")
+        args.add(&"--gcc.linkerexe:{muslcc}")
 
     if release:
         args.add(&"--checks:off")
@@ -115,6 +114,9 @@ proc compile(release: bool, build_static: bool) =
         args.add(&"-d:danger")
         args.add(&"--opt:speed")
         args.add(&"-d:strip")
+
+    if nimcpu != nil:
+        args.add(&"--cpu:{nimcpu}")
 
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
