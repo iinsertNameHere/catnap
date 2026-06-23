@@ -5,3 +5,4 @@ catnap
 *.gz
 src/catnaplib/global/currentcommit.nim
 versionctl
+nim.cfg

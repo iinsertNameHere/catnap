@@ -122,6 +122,12 @@ proc compile(release: bool, build_static: bool) =
 
     if nimcpu != "":
         args.add(&"--cpu:{nimcpu}")
+        if build_static:
+            # Write a nim.cfg to force the cross compiler
+            # This is the only reliable way to override Nim's cpu-based toolchain detection
+            let cfg = &"gcc.exe = \"{muslcc}\"\ngcc.linkerexe = \"{muslcc}\""
+            writeFile(thisDir() / "nim.cfg", cfg)
+
 
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
