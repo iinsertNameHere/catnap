@@ -110,6 +110,7 @@ proc compile(release: bool, build_static: bool) =
         args.add("--passL:-static")
         args.add(&"--gcc.exe:{muslcc}")
         args.add(&"--gcc.linkerexe:{muslcc}")
+        args.add("--gcc.options.always:-w")
 
     if release:
         args.add(&"--checks:off")
