@@ -108,8 +108,8 @@ proc compile(release: bool, build_static: bool) =
         args.add(&"--passL:{pcre2LibFile}")
         args.add("--dynlibOverride:libpcre2-8")
         args.add("--passL:-static")
-        args.add(&"--gcc.exe:{muslcc}")
-        args.add(&"--gcc.linkerexe:{muslcc}")
+        args.add("--gcc.exe:" & muslCC)
+        args.add("--gcc.linkerexe:" & muslCC)
         args.add("--gcc.options.always:-w")
 
     if release:
@@ -126,7 +126,7 @@ proc compile(release: bool, build_static: bool) =
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
 
-    exec("nim c " & args.join(" "))
+    exec("CC=" & muslCC & " nim c " & args.join(" "))
 
 proc configure() =
     var configpath = ""
