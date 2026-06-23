@@ -20,11 +20,11 @@ jobs:
                       nim_cpu: i386
                       artifact: catnap-linux-amd32
                       host: i686-linux-musl
-                    - target: aarch64-unknown-linux-musl
-                      muslcc: aarch64-unknown-linux-musl-gcc
-                      nim_cpu: arm64
-                      artifact: catnap-linux-arm64
-                      host: aarch64-linux-musl
+                    # - target: aarch64-unknown-linux-musl
+                    #   muslcc: aarch64-unknown-linux-musl-gcc
+                    #   nim_cpu: arm64
+                    #   artifact: catnap-linux-arm64
+                    #   host: aarch64-linux-musl
                     # - target: armv7-unknown-linux-musleabihf
                     #   muslcc: armv7-unknown-linux-musleabihf-gcc
                     #   nim_cpu: arm
