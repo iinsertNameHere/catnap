@@ -25,11 +25,11 @@ jobs:
                       nim_cpu: arm64
                       artifact: catnap-linux-arm64
                       host: aarch64-linux-musl
-                    - target: armv7-unknown-linux-musleabihf
-                      muslcc: armv7-unknown-linux-musleabihf-gcc
-                      nim_cpu: arm
-                      artifact: catnap-linux-arm32
-                      host: armv7-linux-musleabihf
+                    # - target: armv7-unknown-linux-musleabihf
+                    #   muslcc: armv7-unknown-linux-musleabihf-gcc
+                    #   nim_cpu: arm
+                    #   artifact: catnap-linux-arm32
+                    #   host: armv7-linux-musleabihf
 
         steps:
             - name: Checkout
