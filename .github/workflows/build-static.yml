@@ -1,0 +1,71 @@
+name: Build Static Binary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-linux-musl
+            artifact: catnap-linux-amd64
+          - target: i686-linux-musl
+            artifact: catnap-linux-amd32
+          - target: aarch64-linux-musl
+            artifact: catnap-linux-arm64
+          - target: armv7l-linux-musleabihf
+            artifact: catnap-linux-arm32
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nim
+        uses: nickel-lang/setup-nim-action@v2
+        with:
+          nim-version: stable
+
+      - name: Install musl cross compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+
+          # Download musl cross toolchain for this target
+          TOOLCHAIN="${{ matrix.target }}-cross"
+          wget -q "https://musl.cc/${TOOLCHAIN}.tgz"
+          tar xf "${TOOLCHAIN}.tgz"
+          echo "$PWD/${TOOLCHAIN}/bin" >> $GITHUB_PATH
+
+          # Verify compiler is available
+          ${{ matrix.target }}-gcc --version
+
+      - name: Set MUSLCC env
+        run: echo "MUSLCC=${{ matrix.target }}-gcc" >> $GITHUB_ENV
+
+      - name: Set CPU for Nim
+        run: |
+          case "${{ matrix.target }}" in
+            x86_64*)   echo "NIM_CPU=amd64"   >> $GITHUB_ENV ;;
+            i686*)     echo "NIM_CPU=i386"    >> $GITHUB_ENV ;;
+            aarch64*)  echo "NIM_CPU=arm64"   >> $GITHUB_ENV ;;
+            armv7l*)   echo "NIM_CPU=arm"     >> $GITHUB_ENV ;;
+          esac
+
+      - name: Build PCRE1 static
+        run: MUSLCC=${{ matrix.target }}-gcc nim installPcre
+
+      - name: Build PCRE2 static
+        run: MUSLCC=${{ matrix.target }}-gcc nim installPcre2
+
+      - name: Build static binary
+        run: nim static_release --cpu:${{ env.NIM_CPU }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: bin/catnap
+          retention-days: 30

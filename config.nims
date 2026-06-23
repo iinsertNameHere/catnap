@@ -2,8 +2,83 @@ import strformat
 import strutils
 import os
 
-## Compilation
-proc compile(release: bool) =
+proc dollar[T](s: T): string = $s
+proc mapconcat[T](s: openArray[T]; sep = " "; op: proc(x: T): string = dollar): string =
+  for i, x in s:
+    result.add(op(x))
+    if i < s.len-1:
+      result.add(sep)
+
+let
+  muslCC       = getEnv("MUSLCC", "musl-gcc")
+  muslDir      = &"{thisDir()}/build/musl"
+  muslLib      = muslDir / "lib"
+  muslInclude  = muslDir / "include"
+  pcreLibFile  = muslLib / "libpcre.a"
+  pcre2LibFile = muslLib / "libpcre2-8.a"
+
+  # PCRE1 build config
+  pcreVersion      = getEnv("PCREVER", "8.45")
+  pcreSourceDir    = "pcre-" & pcreVersion
+  pcreArchiveFile  = pcreSourceDir & ".tar.bz2"
+  pcreDownloadLink = "https://sourceforge.net/projects/pcre/files/pcre/" & pcreVersion & "/" & pcreArchiveFile
+  pcreConfigureCmd = ["./configure",
+                      "--prefix=" & muslDir,
+                      "--disable-shared",
+                      "--enable-static",
+                      "--enable-pcre8",
+                      "--enable-unicode-properties"]
+
+task installPcre, "Builds static libpcre.a using musl-gcc into /usr/local/musl":
+  if not fileExists(pcreLibFile):
+    if not dirExists(&"{thisDir()}/build"):
+        mkDir(&"{thisDir()}/build")
+    withDir &"{thisDir()}/build":
+      if not dirExists(pcreSourceDir):
+        if not fileExists(pcreArchiveFile):
+          exec("curl -LO " & pcreDownloadLink)
+        exec("tar xf " & pcreArchiveFile)
+      withDir pcreSourceDir:
+        putEnv("CC", muslCC)
+        putEnv("LDFLAGS", "-static")
+        exec(pcreConfigureCmd.mapconcat())
+        exec("make -j8")
+        exec("make install")
+  else:
+    echo pcreLibFile & " already exists"
+  setCommand("nop")
+
+let
+  pcre2Version      = getEnv("PCRE2VER", "10.42")
+  pcre2SourceDir    = "pcre2-" & pcre2Version
+  pcre2ArchiveFile  = pcre2SourceDir & ".tar.bz2"
+  pcre2DownloadLink = "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-" & pcre2Version & "/" & pcre2ArchiveFile
+  pcre2ConfigureCmd = ["./configure",
+                        "--prefix=" & muslDir,
+                        "--disable-shared",
+                        "--enable-static",
+                        "--enable-pcre2-8"]
+
+task installPcre2, "Builds static libpcre2-8.a using musl-gcc into /usr/local/musl":
+  if not fileExists(pcre2LibFile):
+    if not dirExists(&"{thisDir()}/build"):
+        mkDir(&"{thisDir()}/build")
+    withDir &"{thisDir()}/build":
+      if not dirExists(pcre2SourceDir):
+        if not fileExists(pcre2ArchiveFile):
+          exec("curl -LO " & pcre2DownloadLink)
+        exec("tar xf " & pcre2ArchiveFile)
+      withDir pcre2SourceDir:
+        putEnv("CC", muslCC)
+        putEnv("LDFLAGS", "-static")
+        exec(pcre2ConfigureCmd.mapconcat())
+        exec("make -j8")
+        exec("make install")
+  else:
+    echo pcre2LibFile & " already exists"
+  setCommand("nop")
+
+proc compile(release: bool, build_static: bool) =
     var args: seq[string]
     args.add(&"--cincludes:{thisDir()}/src/extern/headers")
     args.add(&"--path:{thisDir()}/src/extern/libraries")
@@ -11,6 +86,23 @@ proc compile(release: bool) =
     args.add(&"--mm:arc")
     args.add(&"--threads:on")
     args.add(&"--panics:on")
+
+    if build_static:
+      if not fileExists(pcreLibFile):
+        echo "ERROR: libpcre.a not found. Run: nim installPcre"
+        quit(1)
+      if not fileExists(pcre2LibFile):
+        echo "ERROR: libpcre2-8.a not found."
+        quit(1)
+      args.add(&"--passC:-I{muslInclude}")
+      args.add(&"--passL:{pcreLibFile}")
+      args.add("--dynlibOverride:libpcre")
+      args.add(&"--passL:{pcre2LibFile}")
+      args.add("--dynlibOverride:libpcre2-8")
+      args.add("--passL:-static")
+      args.add(&"--gcc.exe:{muslcc}")
+      args.add(&"--gcc.linkerexe:{muslcc}")
+
     if release:
         args.add(&"--checks:off")
         args.add(&"--verbosity:0")
@@ -18,10 +110,11 @@ proc compile(release: bool) =
         args.add(&"-d:danger")
         args.add(&"--opt:speed")
         args.add(&"-d:strip")
+
     args.add(&"--outdir:{thisDir()}/bin")
     args.add(&"{thisDir()}/src/catnap.nim")
 
-    exec("nim c  " & args.join(" "))
+    exec("nim c " & args.join(" "))
 
 proc configure() =
     var configpath = ""
@@ -62,12 +155,22 @@ task clean, "Cleans existing build":
 task release, "Builds the project in release mode":
     cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in release mode"
-    compile(true)
+    compile(true, false)
+
+task static_release, "Builds the project statically linked in release mode":
+    cleanTask()
+    echo "\e[36;1mBuilding\e[0;0m statically in release mode"
+    compile(true, true)
 
 task debug, "Builds the project in debug mode":
     cleanTask()
     echo "\e[36;1mBuilding\e[0;0m in debug mode"
-    compile(false)
+    compile(false, false)
+
+task static_debug, "Builds the project statically linked in debug mode":
+    cleanTask()
+    echo "\e[36;1mBuilding\e[0;0m statically in debug mode"
+    compile(false, true)
 
 task install_cfg, "Installs the config files":
     echo "\e[36;1mInstalling\e[0;0m config files"

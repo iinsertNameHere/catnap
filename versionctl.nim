@@ -1,7 +1,7 @@
 import strutils
 import os
 import strformat
-import re
+import nre
 
 const versionFile = "src/catnaplib/global/version.nim"
 const changelogFile = "CHANGELOG.md"
