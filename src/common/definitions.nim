@@ -1,0 +1,115 @@
+import parsetoml
+import os
+import tables
+
+const
+
+    # Stats
+    STATNAMES*    = static: @["username", "hostname", "uptime", "distro",
+                    "kernel", "desktop", "shell", "memory", "battery", "terminal",
+                    "cpu", "gpu", "packages", "weather", "colors"]
+    STATKEYS*     = static: @["icon", "name", "color"]
+
+    # Pkg Manager
+    PKGMANAGERS*  = static: {
+        "gentoo": "emerge",
+        "fedora": "dnf",
+        "mageria": "dnf",
+        "nobara": "dnf",
+        "redhat": "yum",
+        "centos": "yum",
+        "amogos": "apt",
+        "ubuntu": "apt",
+        "debian": "apt",
+        "deepin": "apt",
+        "devuan": "apt",
+        "neon": "apt",
+        "voyager": "apt",
+        "elementary": "apt",
+        "kali": "apt",
+        "lite": "apt",
+        "mint": "apt",
+        "mx": "apt",
+        "pop": "apt",
+        "pureos": "apt",
+        "android": "apt",
+        "raspbian": "apt",
+        "zorin": "apt",
+        "opensuse": "zypper",
+        "opensuse-tumbleweed": "zypper",
+        "rocky": "zypper",
+        "arch": "pacman",
+        "archbang": "pacman",
+        "archcraft": "pacman",
+        "arco": "pacman",
+        "artix": "pacman",
+        "cachyos": "pacman",
+        "crystal": "pacman",
+        "instant": "pacman",
+        "manjaro": "pacman",
+        "endavour": "pacman",
+        "hyperbola": "pacman",
+        "parabola": "pacman",
+        "reborn": "pacman",
+        "xero": "pacman",
+        "alpine": "apk",
+        "postmarketos": "apk",
+        "evolution": "xbps",
+        "void": "xbps",
+        "nixos": "nix",
+        "crux": "pkgutils",
+        "guix": "guix",
+        "slackware": "slpkg",
+        "solus": "eopkg",
+        "sourcemage": "sorcery",
+        "vanilla": "apx",
+        "venom": "scratchpkg",
+        "freebsd": "pkg",
+        "dragonfly": "pkg",
+        "netbsd": "pkgsrc",
+        "openbsd": "pkgsrc",
+        "macos": "homebrew",
+    }.toOrderedTable
+    PKGCOUNTCOMMANDS* = static: {
+        "apx": "apx list -i | wc -l",
+        "eopkg": "eopkg list-installed | wc -l",
+        "scratchpkg": "scratch installed | wc -l",
+        "sorcery": "gaze installed | wc -l",
+        "slpkg": "ls /var/log/packages | wc -l",
+        "guix": "guix package --list-installed | wc -l",
+        "pkgutils": "pkginfo -i | wc -l",
+        "nix": "nix-env --query --installed | wc -l",
+        "xbps": "xbps-query -l | wc -l",
+        "emerge": "equery list '*' | wc -l",
+        "dnf": "dnf list installed | wc -l",
+        "yum": "yum list installed | wc -l",
+        "apt": "dpkg-query -l | grep '^ii' | wc -l",
+        "zypper": "rpm -qa --last | wc --l",
+        "pacman": "pacman -Q | wc -l",
+        "apk": "apk list --installed | wc -l",
+        "pkg": "pkg info",
+        "pkgsrc": "pkg_info",
+        "homebrew": "brew list | wc -l",
+    }.toOrderedTable
+
+    # Files / Dirs
+let CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
+let DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
+
+const GLOBALCONFIGPATH*   = "/etc/catnap/config.toml"
+const GLOBALDISTROSPATH*  = "/etc/catnap/distros.toml"
+
+
+proc getCachePath(): string =
+    result = getEnv("XDG_CACHE_HOME")
+    if result != "":
+        result = joinPath(result, "catnap")
+    else:
+        result = getEnv("HOME")
+        if result != "":
+            result = joinPath(result, ".cache/catnap")
+        else:
+            result = "/tmp/catnap"
+
+let CACHEPATH* = getCachePath()
+let TEMPPATH* = "/tmp/catnap"
