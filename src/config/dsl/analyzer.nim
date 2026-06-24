@@ -65,10 +65,15 @@ proc buildSchema*(): Schema =
     }.toTable
 
     let defaultFields = {
-        "enabled": StatFieldSpec(kinds: {cvBool},                        required: false),
-        "color":   StatFieldSpec(kinds: {cvHex, cvAnsi, cvRgb},          required: true),
-        "icon":    StatFieldSpec(kinds: {cvChar},                        required: true),
-        "name":    StatFieldSpec(kinds: {cvString, cvChar},              required: true),
+        "enabled":        StatFieldSpec(kinds: {cvBool},               required: false),
+        "color":          StatFieldSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: true),
+        "icon":           StatFieldSpec(kinds: {cvChar},               required: true),
+        "name":           StatFieldSpec(kinds: {cvString, cvChar},     required: true),
+        "graph":          StatFieldSpec(kinds: {cvBool},               required: false),
+        "graph_style":    StatFieldSpec(kinds: {cvString},             required: false),
+        "graph_width":    StatFieldSpec(kinds: {cvNumber},             required: false),
+        "graph_color_fg": StatFieldSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
+        "graph_color_bg": StatFieldSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
     }.toTable
 
     var colorsFields = defaultFields
@@ -79,14 +84,15 @@ proc buildSchema*(): Schema =
     result.statTypes["*"]         = StatSpec(fields: defaultFields)
 
     result.vars = {
-        "stats":             VarSpec(kinds: {cvList},              required: true),
-        "distros":           VarSpec(kinds: {cvList},              required: true),
-        "layout":            VarSpec(kinds: {cvString},            required: true),
-        "borderstyle":       VarSpec(kinds: {cvString},            required: false),
-        "border_color":      VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
-        "stats_margin_top":  VarSpec(kinds: {cvNumber},            required: false),
-        "text_color":        VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
-        "location":          VarSpec(kinds: {cvString},            required: false),
+        "stats":             VarSpec(kinds: {cvList},               required: true),
+        "distros":           VarSpec(kinds: {cvList},               required: true),
+        "layout":            VarSpec(kinds: {cvString},             required: true),
+        "border_style":      VarSpec(kinds: {cvString},             required: false),
+        "border_color":      VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: true),
+        "text_color":        VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: true),
+        "stats_margin_top":  VarSpec(kinds: {cvNumber},             required: false),
+        "location":          VarSpec(kinds: {cvString},             required: false),
+        "graph_width":       VarSpec(kinds: {cvNumber},             required: false),
     }.toTable
 
 #### Errors ####
@@ -185,7 +191,8 @@ proc injectDefaultColors*(vars: var Table[string, ConfigValue]) =
         ("bright_green",  "!92"), ("bright_yellow",  "!93"),
         ("bright_blue",   "!94"), ("bright_magenta", "!95"),
         ("bright_cyan",   "!96"), ("bright_white",   "!97"),
-        ("reset",         "!0"),
+        ("reset",         "!0"),  ("text_color", "!0"),
+        ("border_color", "!0")
     ]
     for (name, code) in defaults:
         if not vars.hasKey(name):
@@ -414,16 +421,16 @@ proc validateWithSchema*(output: DslOutput, schema: Schema) =
 
     # Validate enum-constrained string vars
     if output.vars.hasKey("layout"):
-        const validLayouts = ["Inline", "ArtOnTop", "StatsOnTop"]
+        const validLayouts = ["inline", "art_on_top", "stats_on_top"]
         if output.vars["layout"].strVal notin validLayouts:
-            resolveError("$layout must be one of: Inline, ArtOnTop, StatsOnTop (got: \"" &
+            resolveError("$layout must be one of: inline, art_on_top, stats_on_top (got: \"" &
                          output.vars["layout"].strVal & "\")")
 
-    if output.vars.hasKey("borderstyle"):
-        const validStyles = ["line", "dashed", "dotted", "noborder", "doubleline"]
-        if output.vars["borderstyle"].strVal notin validStyles:
-            resolveError("$borderstyle must be one of: line, dashed, dotted, noborder, doubleline (got: \"" &
-                         output.vars["borderstyle"].strVal & "\")")
+    if output.vars.hasKey("border_style"):
+        const validStyles = ["single", "dashed", "dotted", "none", "double"]
+        if output.vars["border_style"].strVal notin validStyles:
+            resolveError("$border_style must be one of: single, dashed, dotted, none, double (got: \"" &
+                         output.vars["border_style"].strVal & "\")")
 
     # Validate $stats
     if output.vars.hasKey("stats"):

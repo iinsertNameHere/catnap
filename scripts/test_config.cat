@@ -2,8 +2,8 @@
 
 import "../config/distros.cat"
 
-$layout           = "Inline"
-$borderstyle      = "doubleline"
+$layout           = "inline"
+$border_style     = "double"
 $border_color     = $white
 $stats_margin_top = 0
 $location         = "San Francisco"

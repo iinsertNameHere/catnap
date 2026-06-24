@@ -6,7 +6,7 @@ const
     # Stats
     STATNAMES*    = static: @["username", "hostname", "uptime", "distro",
                     "kernel", "desktop", "shell", "memory", "battery", "terminal",
-                    "cpu", "gpu", "packages", "weather", "colors"]
+                    "cpu", "cpu_usage", "gpu", "packages", "weather", "colors"]
     STATKEYS*     = static: @["icon", "name", "color"]
 
     # Pkg Manager

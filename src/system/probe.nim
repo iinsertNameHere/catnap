@@ -298,6 +298,40 @@ proc getCpu*(): string =
 
     writeCache(cacheFile, result, initDuration(days=1))
 
+proc getCpuUsage*(): string =
+    when defined(linux):
+        let tmpFile = "cpu_usage".toTmpPath
+        let statLine = readFile("/proc/stat").split("\n")[0]
+        let parts = statLine.splitWhitespace()
+        if parts.len < 5: return "N/A"
+        try:
+            let user    = parseInt(parts[1])
+            let nice    = parseInt(parts[2])
+            let system  = parseInt(parts[3])
+            let idle    = parseInt(parts[4])
+            let iowait  = if parts.len > 5: parseInt(parts[5]) else: 0
+            let irq     = if parts.len > 6: parseInt(parts[6]) else: 0
+            let softirq = if parts.len > 7: parseInt(parts[7]) else: 0
+            let total     = user + nice + system + idle + iowait + irq + softirq
+            let idleTotal = idle + iowait
+            var usage = "N/A"
+            if fileExists(tmpFile):
+                let prev = readFile(tmpFile).strip().split(":")
+                if prev.len == 2:
+                    let prevTotal = parseInt(prev[0])
+                    let prevIdle  = parseInt(prev[1])
+                    let deltaTotal = total - prevTotal
+                    let deltaIdle  = idleTotal - prevIdle
+                    if deltaTotal > 0:
+                        let pct = int(round((1.0 - float(deltaIdle) / float(deltaTotal)) * 100.0))
+                        usage = $pct & "%"
+            writeFile(tmpFile, $total & ":" & $idleTotal)
+            return usage
+        except ValueError:
+            return "N/A"
+    else:
+        return "N/A"
+
 proc getPkgManager(distroId: DistroId): string =
     for key in PKGMANAGERS.keys:
         if distroId.id == key:

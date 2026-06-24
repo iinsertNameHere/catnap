@@ -35,7 +35,7 @@ proc printHelp(cfg: Config) =
     echo "    -c  --config               <ConfigPath>   Uses a custom location for the config file"
     echo ""
     echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
-    echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,ArtOnTop,StatsOnTop]"
+    echo "    -l  --layout               <Layout>       Overwrite layout config value [inline,art_on_top,stats_on_top]"
     echo ""
     echo "StatNames:"
     echo "    " & (STATNAMES & @["disks"] & disk_statnames).join(", ").wrapWords(80).replace("\n", "\n    ")

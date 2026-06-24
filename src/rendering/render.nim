@@ -26,7 +26,7 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     var stats_block = buildStatBlock(config.stats, config, fetchinfo, config.misc.stats_margin_top)
 
     case layout:
-        of "Inline":
+        of "inline":
             if distro_art.len == 0:
                 for line in stats_block:
                     echo line
@@ -41,13 +41,13 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
                 for idx in countup(0, distro_art.len - 1):
                     echo distro_art[idx] & stats_block[idx]
 
-        of "ArtOnTop":
+        of "art_on_top":
             for idx in countup(0, distro_art.len - 1):
                 echo distro_art[idx]
             for idx in countup(0, stats_block.len - 1):
                 echo stats_block[idx]
 
-        of "StatsOnTop":
+        of "stats_on_top":
             for idx in countup(0, stats_block.len - 1):
                 echo stats_block[idx]
             for idx in countup(0, distro_art.len - 1):
