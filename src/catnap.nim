@@ -1,16 +1,18 @@
-import "catnaplib/platform/fetch"
-import "catnaplib/drawing/render"
-from "catnaplib/global/definitions" import CONFIGPATH, DISTROSPATH, Config, STATNAMES, CACHEPATH, TEMPPATH
-import "catnaplib/global/config"
-import "catnaplib/terminal/logging"
-import parsetoml
-import os
 from unicode import toLower
-import strutils
-import strformat
 import std/wordwrap
-import "catnaplib/platform/probe"
-from "catnaplib/global/version" import VERSION
+import parsetoml
+import strformat
+import strutils
+import os
+
+from "common/definitions" import CONFIGPATH, DISTROSPATH, STATNAMES, CACHEPATH, TEMPPATH
+from "common/version" import VERSION
+import "common/logging"
+from "config/types" import Config
+import "config/config"
+import "system/fetch"
+import "system/probe"
+import "rendering/render"
 
 # Debug code for execution time
 when not defined release:
@@ -244,10 +246,10 @@ else:
         quit()
     else:
         let fetchinfo = fetchSystemInfo(cfg)
-        
+
         if not fetchinfo.list.contains(statname):
             logError(&"Unknown StatName '{statname}'!")
-        
+
         echo fetchinfo.list[statname]()
 
 # Debug code for execution time

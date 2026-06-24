@@ -3,6 +3,6 @@ build/
 catnap
 *.exe
 *.gz
-src/catnaplib/global/currentcommit.nim
+src/catnaplib/common/currentcommit.nim
 versionctl
 nim.cfg
