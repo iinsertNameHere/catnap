@@ -166,8 +166,8 @@ proc configure() =
         mkdir(configpath & "themes")
     cpFile(thisDir() & "/config/themes/catppuccin-mocha.cat", configpath & "themes/catppuccin-mocha.cat")
 
-task generate_versionctl, "Bumps the major version of catnap. Example: (1).2.3 -> 2.0.0":
-    exec &"nim c -d:release --hints:off --verbosity:0 versionctl.nim"
+task generate_versionctl, "Compiles the versionctl binary":
+    exec &"nim c -d:release --hints:off --verbosity:0 {thisDir()}/versionctl.nim"
 
 task clean, "Cleans existing build":
     echo "\e[36;1mCleaning\e[0;0m existing build"

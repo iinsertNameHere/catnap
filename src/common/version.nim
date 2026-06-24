@@ -1,1 +1,1 @@
-const VERSION* = static: "1.2.3"
+const VERSION* = static: "2.0.0"
