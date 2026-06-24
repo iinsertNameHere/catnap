@@ -210,7 +210,8 @@ proc getBattery*(): string =
                     batterys.add((parseInt($dir.path[^1]), batteryPath))
 
         if batterys.len < 1:
-            logError("No battery detected!")
+            logError("No battery detected!", fatal=false)
+            return "N/A"
 
         # Sort batterys by number
         sort(batterys)
@@ -235,7 +236,8 @@ proc getMounts*(): seq[string] =
 
     let mounts_raw = $getMountPoints()
     if mounts_raw == "":
-        logError("Failed to get disk mounting Points")
+        logError("Failed to get disk mounting Points", fatal=false)
+        return @[]
 
     let mounts = mounts_raw.split(',')
 
@@ -330,7 +332,8 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
     let tmpFile = "packages.txt".toTmpPath
     let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
     if execCmd(cmd) != 0:
-        logError("Failed to fetch pkg count!")
+        logError("Failed to fetch pkg count!", fatal=false)
+        return "N/A"
 
     let count = readFile(tmpFile).strip()
     result = count & " [" & pkgManager & "]"
@@ -423,7 +426,9 @@ proc getGpu*(): string =
         if execCmd("glxinfo -B > " & tmpFile & " 2>&1") != 0:
             if readFile(tmpFile).strip() == "Error: unable to open display":
                 result = "Unknown"
-            else: logError("Failed to fetch GPU!")
+            else:
+                logError("Failed to fetch GPU!", fatal=false)
+                result = "N/A"
         else:
             var rawDevice    = "Unknown"
             var unifiedMemory = ""
@@ -474,7 +479,8 @@ proc getWeather*(config: Config): string =
 
     let tmpFile = "weather.txt".toTmpPath
     if execCmd("curl -s wttr.in/" & location & "?format=3 > " & tmpFile) != 0:
-        logError("Failed to fetch weather!")
+        logError("Failed to fetch weather!", fatal=false)
+        return "N/A"
 
     result = readFile(tmpFile).strip()
     writeCache(cacheFile, result, initDuration(minutes=20))

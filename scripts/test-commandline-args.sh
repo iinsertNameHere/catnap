@@ -11,12 +11,15 @@ FAIL=0
 
 run() {
     local desc="$1"; shift
-    if "$@" > /dev/null 2>&1; then
+    local output exit_code
+    output=$("$@" 2>&1) && exit_code=0 || exit_code=$?
+    if [ "$exit_code" -eq 0 ]; then
         echo "OK    $desc"
         PASS=$((PASS + 1))
     else
         echo "FAIL  $desc"
         echo "      command: $*"
+        [ -n "$output" ] && echo "$output" | sed 's/^/      | /'
         FAIL=$((FAIL + 1))
     fi
 }

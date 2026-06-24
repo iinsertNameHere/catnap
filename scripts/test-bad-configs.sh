@@ -19,20 +19,20 @@ run_bad() {
     printf '%s' "$cfg" > "$TMPDIR/test.cat"
 
     local output exit_code
-    output=$("$CATNAP" -c "$TMPDIR/test.cat" 2>&1) && exit_code=$? || exit_code=$?
+    output=$("$CATNAP" -c "$TMPDIR/test.cat" 2>&1) && exit_code=0 || exit_code=$?
 
     if [ "$exit_code" -eq 0 ]; then
         echo "FAIL  $desc"
         echo "      expected non-zero exit, got 0"
-        echo "      output: $output"
+        [ -n "$output" ] && echo "$output" | sed 's/^/      | /'
         FAIL=$((FAIL + 1))
         return
     fi
 
     if [ -n "$expect_msg" ] && ! echo "$output" | grep -qF "$expect_msg"; then
         echo "FAIL  $desc"
-        echo "      expected message containing: $expect_msg"
-        echo "      got: $output"
+        echo "      expected: $expect_msg"
+        [ -n "$output" ] && echo "$output" | sed 's/^/      | /'
         FAIL=$((FAIL + 1))
         return
     fi
