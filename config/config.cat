@@ -1,0 +1,27 @@
+import "distros.cat"
+
+$layout           = "Inline"
+$borderstyle      = "line"
+$stats_margin_top = 0
+$location         = ""
+
+$stats = [
+    {@username  icon=''   name="user"      color=$red}
+    {@hostname  icon=''   name="hostname"  color=$yellow}
+    {@uptime    icon=''   name="uptime"    color=$blue}
+    {@distro    icon=''   name="distro"    color=$green}
+    {@kernel    icon=''   name="kernel"    color=$magenta}
+    {@desktop   icon=''   name="desktop"   color=$cyan}
+    {@terminal  icon=''   name="term"      color=$red}
+    {@shell     icon=''   name="shell"     color=$magenta}
+    {@separator color=$white}
+    {@packages  icon=''  name="packages"  color=$red}    ; WARNING: Resource Intensive
+    {@weather   icon=''  name="weather"   color=$blue}   ; Requires curl and an emoji font. WARNING: Resource Intensive
+    {@gpu       icon='󱔐'  name="gpu"      color=$magenta}  ; WARNING: Resource Intensive
+    {@cpu       icon=''  name="cpu"       color=$red}
+    {@battery   icon=''  name="battery"   color=$green}
+    {@memory    icon=''  name="memory"    color=$yellow}
+    ; The following stats do not work on MacOS and the BSDs.
+    {@disk_0    icon=''  name="disk"      color=$green}
+    {@colors    icon=''   name="colors"    color=$reset  symbol=''}
+]

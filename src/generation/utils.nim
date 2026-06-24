@@ -1,13 +1,9 @@
 import unicode
-import tables
-import strutils
 import strformat
-import parsetoml
+import tables
 
-from "../config/types" import Config
+from "../config/types" import Config, StatEntry
 from "../system/types" import FetchInfo
-from "types" import Stats, Stat
-from "stats" import newStat
 import "../common/colors"
 import "../common/logging"
 
@@ -16,106 +12,84 @@ proc fill*(s: string, i: int): string =
         result &= s
 
 proc reallen*(s: string): int =
-    # Get the length of a string without ansi color codes
     result = Uncolorize(s).runeLen
 
-proc buildStatBlock*(stat_names: seq[string], stats: Stats, config: Config, fi: FetchInfo, margin_top: int): seq[string] =
-    # Build output lines from Stats object and FetchInfo object
-
+proc buildStatBlock*(statEntries: seq[StatEntry], config: Config, fi: FetchInfo, margin_top: int): seq[string] =
     var sb: seq[string]
 
-    for idx in countup(1, margin_top):
+    for _ in countup(1, margin_top):
         sb.add("")
 
-    var borderstyle = ""
-    if config.misc.contains("borderstyle"):
-        borderstyle = config.misc["borderstyle"].getStr()
+    let borderstyle = config.misc.borderstyle
 
-    proc addStat(stat: Stat, value: string) =
-        # Function to add a stat/value pair to the result
-        var line = stat.icon & " " & stat.name
-        while uint(line.runeLen) < stats.maxlen:
+    var maxlen: uint = 0
+    for entry in statEntries:
+        if entry.id == "separator" or entry.id == "colors": continue
+        let l = uint(unicode.runeLen(entry.icon & " " & entry.name) + 1)
+        if l > maxlen: maxlen = l
+
+    let text_color = config.misc.text_color
+
+    proc addStat(entry: StatEntry, value: string) =
+        var line = entry.icon & " " & entry.name
+        while uint(line.runeLen) < maxlen:
             line &= " "
         case borderstyle:
-            of "line":
-                sb.add("│ " & stat.color.Colorize() & line & colors.Default & " │ " & value)
-            of "dashed":
-                sb.add("┊ " & stat.color.Colorize() & line & colors.Default & " ┊ " & value)
-            of "dotted":
-                sb.add("┇ " & stat.color.Colorize() & line & colors.Default & " ┇ " & value)
-            of "noborder":
-                sb.add("  " & stat.color.Colorize() & line & colors.Default & "   " & value)
-            of "doubleline":
-                sb.add("║ " & stat.color.Colorize() & line & colors.Default & " ║ " & value)
-            else: # Invalid borderstyle
-                logError(&"{config.configFile}:misc:borderstyle - Invalid style")
+            of "line":       sb.add("│ " & entry.color & line & colors.Default & " │ " & text_color & value & colors.Default)
+            of "dashed":     sb.add("┊ " & entry.color & line & colors.Default & " ┊ " & text_color & value & colors.Default)
+            of "dotted":     sb.add("┇ " & entry.color & line & colors.Default & " ┇ " & text_color & value & colors.Default)
+            of "noborder":   sb.add("  " & entry.color & line & colors.Default & "   " & text_color & value & colors.Default)
+            of "doubleline": sb.add("║ " & entry.color & line & colors.Default & " ║ " & text_color & value & colors.Default)
+            else:
+                logError(&"{config.configFile}:borderstyle - Invalid style")
                 quit(1)
 
-    let colorval = Colorize( # Construct color showcase
-        " (WE)"&stats.color_symbol&
-        " (RD)"&stats.color_symbol&
-        " (YW)"&stats.color_symbol&
-        " (GN)"&stats.color_symbol&
-        " (CN)"&stats.color_symbol&
-        " (BE)"&stats.color_symbol&
-        " (MA)"&stats.color_symbol&
-        " (BK)"&stats.color_symbol&
-        "!DT!"
-    )
-
-    let NIL_STAT = newStat("", "", "") # Define empty Stat object
-
-    # Construct the stats section with all stats that are not NIL
-    case borderstyle:
-        of "line":
-            sb.add("╭" & "─".fill(int(stats.maxlen + 1)) & "╮")
-        of "dashed":
-            sb.add("╭" & "┄".fill(int(stats.maxlen + 1)) & "╮")
-        of "dotted":
-            sb.add("•" & "•".fill(int(stats.maxlen + 1)) & "•")
-        of "noborder":
-            sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
-        of "doubleline":
-            sb.add("╔" & "═".fill(int(stats.maxlen + 1)) & "╗")
     var fetchinfolist_keys: seq[string]
     for k in fi.list.keys:
         fetchinfolist_keys.add(k)
 
-    for stat in stat_names:
-        if stat == "colors": continue
+    case borderstyle:
+        of "line":       sb.add("╭" & "─".fill(int(maxlen + 1)) & "╮")
+        of "dashed":     sb.add("╭" & "┄".fill(int(maxlen + 1)) & "╮")
+        of "dotted":     sb.add("•" & "•".fill(int(maxlen + 1)) & "•")
+        of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
+        of "doubleline": sb.add("╔" & "═".fill(int(maxlen + 1)) & "╗")
+        else:
+            logError(&"{config.configFile}:borderstyle - Invalid style")
+            quit(1)
 
-        if stat.split('_')[0] == "sep":
+    for entry in statEntries:
+        if entry.id == "colors": continue
+
+        if entry.id == "separator":
             case borderstyle:
-                of "line":
-                    sb.add("├" & "─".fill(int(stats.maxlen + 1)) & "┤")
-                of "dashed":
-                    sb.add("┊" & "┄".fill(int(stats.maxlen + 1)) & "┊")
-                of "dotted":
-                    sb.add("┇" & "•".fill(int(stats.maxlen + 1)) & "┇")
-                of "noborder":
-                    sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
-                of "doubleline":
-                    sb.add("╠" & "═".fill(int(stats.maxlen + 1)) & "╣")
+                of "line":       sb.add("├" & entry.color & "─".fill(int(maxlen + 1)) & colors.Default & "┤")
+                of "dashed":     sb.add("┊" & entry.color & "┄".fill(int(maxlen + 1)) & colors.Default & "┊")
+                of "dotted":     sb.add("┇" & entry.color & "•".fill(int(maxlen + 1)) & colors.Default & "┇")
+                of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
+                of "doubleline": sb.add("╠" & entry.color & "═".fill(int(maxlen + 1)) & colors.Default & "╣")
             continue
 
-        if stat notin fetchinfolist_keys:
-            logError(&"Unknown StatName '{stat}'!")
+        if entry.id notin fetchinfolist_keys:
+            logError(&"Unknown StatName '{entry.id}'!")
 
-        if stats.list[stat] != NIL_STAT:
-            addStat(stats.list[stat], fi.list[stat]())
+        addStat(entry, fi.list[entry.id]())
 
-    # Color stat
-    if stats.list["colors"] != NIL_STAT:
-        addStat(stats.list["colors"], colorval)
+    for entry in statEntries:
+        if entry.id == "colors":
+            let sym = entry.symbol
+            let colorval =
+                "\e[37m" & sym & " \e[31m" & sym & " \e[33m" & sym & " \e[32m" & sym &
+                " \e[36m" & sym & " \e[34m" & sym & " \e[35m" & sym & " \e[30m" & sym & " \e[0m"
+            addStat(entry, colorval)
+            break
+
     case borderstyle:
-        of "line":
-            sb.add("╰" & "─".fill(int(stats.maxlen + 1)) & "╯")
-        of "dashed":
-            sb.add("╰" & "┄".fill(int(stats.maxlen + 1)) & "╯")
-        of "dotted":
-            sb.add("•" & "•".fill(int(stats.maxlen + 1)) & "•")
-        of "noborder":
-            sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
-        of "doubleline":
-            sb.add("╚" & "═".fill(int(stats.maxlen + 1)) & "╝")
+        of "line":       sb.add("╰" & "─".fill(int(maxlen + 1)) & "╯")
+        of "dashed":     sb.add("╰" & "┄".fill(int(maxlen + 1)) & "╯")
+        of "dotted":     sb.add("•" & "•".fill(int(maxlen + 1)) & "•")
+        of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
+        of "doubleline": sb.add("╚" & "═".fill(int(maxlen + 1)) & "╝")
+        else: discard
+
     return sb

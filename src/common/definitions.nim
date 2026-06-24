@@ -91,12 +91,10 @@ const
         "homebrew": "brew list | wc -l",
     }.toOrderedTable
 
-    # Files / Dirs
-let CONFIGPATH*   = joinPath(getConfigDir(), "catnap/config.toml")
-let DISTROSPATH*  = joinPath(getConfigDir(), "catnap/distros.toml")
+# Files / Dirs
+let CONFIGPATH*       = joinPath(getConfigDir(), "catnap/config.cat")
 
-const GLOBALCONFIGPATH*   = "/etc/catnap/config.toml"
-const GLOBALDISTROSPATH*  = "/etc/catnap/distros.toml"
+const GLOBALCONFIGPATH* = "/etc/catnap/config.cat"
 
 
 proc getCachePath(): string =

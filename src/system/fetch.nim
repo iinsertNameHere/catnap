@@ -1,5 +1,5 @@
 import sugar
-import parsetoml
+import tables
 
 from "../config/types" import Config, Logo
 from "types" import FetchInfo
@@ -43,7 +43,6 @@ proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
             result.list["disk_0"] = proc(): string = return probe.getDisk(mounts[0])
             result.disk_statnames.add("disk_0")
     else:
-        #TODO: add macos support
         result.list["disk_0"] = proc(): string = ""
         result.disk_statnames.add("disk_0")
 
@@ -54,4 +53,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
         if not config.distroart.contains(distroId):
             distroId = "default"
 
-    result.logo = config.distroart[distroId]
+    if config.distroart.contains(distroId):
+        result.logo = config.distroart[distroId]
+    else:
+        result.logo = Logo(margin: [0, 1, 1], art: @[])

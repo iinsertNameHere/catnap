@@ -12,6 +12,7 @@ type TokenKind* = enum
     # Identifiers
     tkVariable    # $name
     tkStatId      # @username, @cpu, @memory
+    tkArtId       # %artname
     tkKey         # bar, color, enabled... (bare word before =)
 
     # Structure
@@ -49,12 +50,17 @@ proc skipWhitespaceAndComments(l: var Lexer) =
         case l.peek():
             of ' ', '\t', '\r':
                 discard l.advance()
-            of '/':
-                if l.pos + 1 < l.src.len and l.src[l.pos + 1] == '/':
-                    while l.pos < l.src.len and l.peek() != '\n':
+            of ';':
+                if l.pos + 1 < l.src.len and l.src[l.pos + 1] == '*':
+                    discard l.advance(); discard l.advance()  # consume ;*
+                    while l.pos + 1 < l.src.len:
+                        if l.peek() == '*' and l.src[l.pos + 1] == ';':
+                            discard l.advance(); discard l.advance()  # consume *;
+                            break
                         discard l.advance()
                 else:
-                    break  # lone '/' is not a comment, stop
+                    while l.pos < l.src.len and l.peek() != '\n':
+                        discard l.advance()
             else: break
 
 proc lexString(l: var Lexer): Token =
@@ -110,6 +116,13 @@ proc lexStatId(l: var Lexer): Token =
         buf.add l.advance()
     Token(kind: tkStatId, value: buf)
 
+proc lexArtId(l: var Lexer): Token =
+    discard l.advance()  # consume %
+    var buf = "%"
+    while l.pos < l.src.len and (l.peek().isAlphaAscii() or l.peek() in {'_', '-', '0'..'9'}):
+        buf.add l.advance()
+    Token(kind: tkArtId, value: buf)
+
 proc lexNumber(l: var Lexer): Token =
     var buf = ""
     while l.pos < l.src.len and l.peek().isDigit():
@@ -140,6 +153,7 @@ proc nextToken*(l: var Lexer): Token =
         of '!':  result = l.lexAnsi()     # !31
         of '$':  result = l.lexVariable() # $name
         of '@':  result = l.lexStatId()   # @cpu
+        of '%':  result = l.lexArtId()    # %artname
         of '=':  discard l.advance(); result = Token(kind: tkEquals,   value: "=")
         of '[':  discard l.advance(); result = Token(kind: tkLBracket, value: "[")
         of ']':  discard l.advance(); result = Token(kind: tkRBracket, value: "]")

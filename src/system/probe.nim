@@ -14,7 +14,6 @@ from "../common/utils" import toCachePath, toTmpPath
 from "../config/types" import Config
 from "types" import DistroId
 import "../common/logging"
-import parsetoml
 import "../common/caching"
 import algorithm
 
@@ -466,8 +465,8 @@ proc getWeather*(config: Config): string =
     # Returns current weather
     let cacheFile = "weather".toCachePath
     var location = "";
-    if config.misc.contains("location"):
-        location = config.misc["location"].getStr().replace(" ", "+")
+    if config.misc.location != "":
+        location = config.misc.location.replace(" ", "+")
 
     result = readCache(cacheFile)
     if result != "":

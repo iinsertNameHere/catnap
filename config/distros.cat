@@ -1,0 +1,916 @@
+$distros = [
+
+    ; ### A ###
+
+    {%alpine
+        [
+            "{$blue}    /\\ /\\    "
+            "{$blue}   // \\  \\   "
+            "{$blue}  //   \\  \\  "
+            "{$blue} ///    \\  \\ "
+            "{$blue}///      \\  \\"
+        ]
+        margin = [3 2 2]
+    }
+
+    {%amogos
+        [
+            "{$red}      -///:.   "
+            "{$red}     smhhhhmh`"
+            "{$red}    :NA{$blue}mogO{$red}SNs "
+            "{$red}    hNNmmmmNNN "
+            "{$red}    NNNNNNNNNN "
+            "{$red}   :NNNNNNNNNN "
+            "{$red}   mNNssussNNN "
+            "{$red}  sNn:    sNNo "
+            "{$red}+ooo+     sNNo "
+            "{$red}        +oooo`"
+        ]
+        margin = [1 2 3]
+    }
+
+    {%android
+        [
+            "{$green}  ;,           ,;  "
+            "{$green}   ';,.-----.,;'   "
+            "{$green}  ,'           ',  "
+            "{$green} /    O     O    \\ "
+            "{$green}|                 |"
+            "{$green}'-----------------'"
+        ]
+        margin = [2 2 2]
+    }
+
+    {%arch
+        [
+            "{$blue}      /\\      "
+            "{$blue}     /  \\     "
+            "{$blue}    /\\   \\    "
+            "{$blue}   /      \\   "
+            "{$blue}  /   ,,   \\  "
+            "{$blue} /   |  |  -\\ "
+            "{$blue}/_-''    ''-_\\"
+        ]
+        margin = [2 2 3]
+    }
+
+    {%arch_old
+        [
+            "{$blue}     -+*##*+-        "
+            "{$blue}   -+#######*={$black}:      "
+            "{$blue}  -+*******+++={$black}+*+   "
+            "{$blue} -++++++++=====- {$black}**+-"
+            "{$blue} =++==+     =====-{$black}-=="
+            "{$blue}+++++         +++-{$black}---"
+            "{$blue}++++        {$black}+++{$blue}+++{$black}=  "
+            "{$blue}****   {$black}******+  {$blue}**   "
+            "{$blue}***              *   "
+        ]
+        margin = [1 2 3]
+    }
+
+    {%archbang
+        [
+            "{$cyan}        /\\        "
+            "{$cyan}       / _\\       "
+            "{$cyan}      /  \\ /      "
+            "{$cyan}     /   // \\     "
+            "{$cyan}    /   //   \\    "
+            "{$cyan}   / ___()___ \\   "
+            "{$cyan}  /.`      `/.\\  "
+        ]
+        margin = [3 2 3]
+    }
+
+    {%archcraft
+        [
+            "{$green}      .      "
+            "{$green}     / \\     "
+            "{$green}    /\\  \\    "
+            "{$green}   /     \\   "
+            "{$green}  / , ^ , \\  "
+            "{$green} /  <   > -\\ "
+            "{$green}/_-''   ''-_\\"
+        ]
+        margin = [2 2 3]
+    }
+
+    {%arco %arcolinux
+        [
+            "{$blue}          A          "
+            "{$blue}         ooo         "
+            "{$blue}        ooooo        "
+            "{$blue}       ooooooo       "
+            "{$blue}      ooooooooo      "
+            "{$blue}     ooooo ooooo     "
+            "{$blue}    ooooo   ooooo    "
+            "{$blue}   ooooo     ooooo   "
+            "{$blue}  ooooo  {$green}oooooooooo  "
+            "{$blue} ooooo      {$green}oooooooo "
+            "{$blue}ooooo          {$green}oooooo"
+        ]
+        margin = [1 2 2]
+    }
+
+    {%artix
+        [
+            "{$blue}      /\\      "
+            "{$blue}     /  \\     "
+            "{$blue}    /`'.,\\    "
+            "{$blue}   /     ',   "
+            "{$blue}  /      ,`\\  "
+            "{$blue} /   ,.'`.  \\ "
+            "{$blue}/.,'`     `'.\\"
+        ]
+        margin = [2 2 2]
+    }
+
+    ; ### B ###
+
+    {%bedrock
+        [
+            "{$white}__       "
+            "{$white}\\ \\___   "
+            "{$white} \\  _ \\  "
+            "{$white}  \\___/  "
+        ]
+        margin = [4 3 3]
+    }
+
+    {%buildroot
+        [
+            "{$yellow}   ___     "
+            "{$yellow} / \\`   \\  "
+            "{$yellow}|   :  :|  "
+            "{$yellow} -. _:__.- "
+            "{$yellow} ` ---- `"
+        ]
+        margin = [3 3 3]
+    }
+
+    ; ### C ###
+
+    {%cachy %cachyos
+        [
+            "{$cyan}   /''''''''''''/  "
+            "{$cyan}  /''''''''''''/   "
+            "{$cyan} /''''''/          "
+            "{$cyan}/''''''/           "
+            "{$cyan}\\......\\           "
+            "{$cyan} \\......\\          "
+            "{$cyan}  \\.............../  "
+            "{$cyan}   \\............./ "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%centos
+        [
+            "{$green} ____{$yellow}^{$magenta}____  "
+            "{$green} |\\  {$yellow}|{$magenta}  /|  "
+            "{$green} | \\ {$yellow}|{$magenta} / |  "
+            "{$magenta}<---- {$blue}----> "
+            "{$blue} | / {$green}|{$yellow} \\ |  "
+            "{$blue} |/__{$green}|{$yellow}__\\|  "
+            "{$green}     v      "
+        ]
+        margin = [2 3 2]
+    }
+
+    {%crux
+        [
+            "{$blue}    ___   "
+            "{$blue}   (.· |  "
+            "{$blue}   ({$yellow}<>{$blue} |  "
+            "{$blue}  / {$white}__{$blue}  \\ "
+            "{$blue} ( {$white}/  \\{$blue} /|"
+            "{$yellow}_/\\{$white}(__){$yellow}/_)"
+            "{$yellow}\\/{$blue}-____{$yellow}\\/ "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%crystal
+        [
+            "{$magenta}        -//. "
+            "{$magenta}      -//.   "
+            "{$magenta}    -//. .   "
+            "{$magenta}  -//.  '//- "
+            "{$magenta} /+:      :+/"
+            "{$magenta}  .//'  .//. "
+            "{$magenta}    . .//.   "
+            "{$magenta}    .//.     "
+            "{$magenta}  .//.       "
+        ]
+        margin = [2 2 2]
+    }
+
+    ; ### D ###
+
+    {%dahlia %dahliaos
+        [
+            "{$red}      _       "
+            "{$red}  ___/ \\___   "
+            "{$red} |   _-_   |  "
+            "{$red} | /     \\ |  "
+            "{$red}/ |       | \\ "
+            "{$red}\\ |       | / "
+            "{$red} | \\ _ _ / |  "
+            "{$red} |___ - ___|  "
+            "{$red}     \\_/      "
+        ]
+        margin = [1 4 3]
+    }
+
+    {%debian
+        [
+            "{$red}  , - = - ,   "
+            "{$red} =    ,,   =  "
+            "{$red}=   :°   ;  = "
+            "{$red}=   :.      = "
+            "{$red}^=    ° == °  "
+            "{$red}°=.           "
+            "{$red} ^==..        "
+            "{$red}   ^^°==..    "
+            "{$red}        ^^°=  "
+        ]
+        margin = [1 2 3]
+    }
+
+    {%deepin
+        [
+            "{$blue}    ____________    "
+            "{$blue}   /  /  /   ___\\   "
+            "{$blue}  /   | / __/ ___\\  "
+            "{$blue} /     \\/ / /     \\ "
+            "{$blue}|        \\   \\     |"
+            "{$blue} \\_______/  _/    / "
+            "{$blue}  \\________/     /  "
+            "{$blue}   \\____________/   "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%devuan
+        [
+            "..:::.      "
+            "    ..-==-  "
+            "        .+#:"
+            "         =@@"
+            "      :+%@#:"
+            ".:=+#@@%*:  "
+            "@@@@#=:     "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%dragonfly %dragonflybsd
+        [
+            "   ,{$red}_{$white},    "
+            "('-_{$red}|{$white}_-') "
+            " >--{$red}|{$white}--<  "
+            "(_-'{$red}|{$white}'-_) "
+            "    {$red}|     "
+            "    {$red}|     "
+            "    {$red}|     "
+        ]
+        margin = [2 3 2]
+    }
+
+    ; ### E ###
+
+    {%elementary %elementaryos
+        [
+            "{$white}  _______  "
+            "{$white} / ____  \\ "
+            "{$white}/  |  /  /\\"
+            "{$white}|__\\ /  / |"
+            "{$white}\\   /__/  /"
+            "{$white} \\_______/ "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%endeavour %endeavouros
+        [
+            "{$magenta}       /\\     "
+            "{$red}     /{$magenta}/  \\{$cyan}\\   "
+            "{$red}    /{$magenta}/    \\{$cyan}\\  "
+            "{$red}  / {$magenta}/     _) {$cyan})"
+            "{$red} /_{$magenta}/___-- {$cyan}__- "
+            "{$cyan}/____--       "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%evolution %evolutionos
+        [
+            "{$green}      $2,coddoc'                "
+            "{$green}   'cddddddddddc'               "
+            "{$green} 'ddd$1OWWXXXXXXK$2ddo.         "
+            "{$green}.dddd$1OMX$2ddddddddddd.        "
+            "{$green}odddd$1OMX$2k$100O$2k$1OO$2ddddo"
+            "{$green}.dddd$1OMX$2kOOOxOkdddd.        "
+            "{$green} .ddd$1OWW$2X$1XXXXXK$2ddd'     "
+            "{$green}   'dddddddddddd'               "
+            "{$green}      'cddddd,                  "
+        ]
+        margin = [2 3 3]
+    }
+
+    ; ### F ###
+
+    {%fedora
+        [
+            "{$white}       _____  "
+            "{$white}     /   __){$blue}\\ "
+            "{$white}     |  /  {$blue}\\ \\"
+            "{$blue}  __{$white}_|  |_{$blue}_/ /"
+            "{$blue} / {$white}(_    _){$blue}_/ "
+            "{$blue}/ /  {$white}|  |     "
+            "{$blue}\\ \\{$white}__/  |     "
+            "{$blue} \\{$white}(_____/     "
+        ]
+        margin = [1 2 3]
+    }
+
+    {%freebsd
+        [
+            "{$red}/\\,-'''''-,/\\  "
+            "{$red}\\_)       (_/  "
+            "{$red}|           |  "
+            "{$red}|           |  "
+            " {$red};         ;   "
+            "  {$red}'-_____-'    "
+        ]
+        margin = [2 4 2]
+    }
+
+    ; ### G ###
+
+    {%garuda
+        [
+            "{$magenta}     .----.   "
+            "{$magenta}   .'   ,  '. "
+            "{$magenta} .'    '-----|"
+            "{$magenta}'.   -----,   "
+            "{$magenta}  '.____.'    "
+        ]
+        margin = [3 2 3]
+    }
+
+    {%gentoo
+        [
+            "{$magenta} _-----_   "
+            "{$magenta}(       \\  "
+            "{$magenta}\\    0   \\ "
+            "{$white} \\        )"
+            "{$white} /      _/ "
+            "{$white}(     _-   "
+            "{$white}\\____-     "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%guix
+        [
+            "{$yellow}|.__          __.| "
+            "{$yellow}|__ \\        / __| "
+            "{$yellow}   \\ \\      / /    "
+            "{$yellow}    \\ \\    / /     "
+            "{$yellow}     \\ \\  / /      "
+            "{$yellow}      \\ \\/ /       "
+            "{$yellow}       \\__/        "
+        ]
+        margin = [3 2 3]
+    }
+
+    ; ### H ###
+
+    {%hyperbola
+        [
+            "    |`__.`/  "
+            "    \\____/   "
+            "    .--.     "
+            "   /    \\    "
+            "  /  ___ \\   "
+            " / .`   `.\\  "
+            "/.`      `.\\  "
+        ]
+        margin = [2 2 3]
+    }
+
+    ; ### I ###
+
+    {%iglunix
+        [
+            "       |              "
+            "       |          |   "
+            "                  |   "
+            "  |    ________       "
+            "  |  /\\   |    \\      "
+            "    /  \\  |     \\  |  "
+            "   /    \\        \\ |  "
+            "  /      \\________\\   "
+            "  \\      /        /   "
+            "   \\    /        /    "
+            "    \\  /        /     "
+            "     \\/________/      "
+        ]
+        margin = [0 2 2]
+    }
+
+    {%instant %instantos
+        [
+            "{$white} ,-''-,      "
+            "{$white}: .''. :     "
+            "{$white}: ',,' :     "
+            "{$white} '-____:__   "
+            "{$white}       :  `."
+            "{$white}       `._.'  "
+        ]
+        margin = [3 2 2]
+    }
+
+    ; ### K ###
+
+    {%kali
+        [
+            "{$blue}        ⢀ ⡀        "
+            "{$blue}     ⢀⡀⢀⡀⢣⡐⣄       "
+            "{$blue}  ⢤⣬⣿⣿⣿⣿⣿⣶⣿⣮⣷⣄     "
+            "{$blue} ⢴⣿⣿⠛⠉  ⠈⠉⠻⣿⣿⣿⣷⣄   "
+            "{$blue}⢠⣿⣿⡇        ⢿⣿⣦⣿⣦  "
+            "{$blue} ⡸⣿⣷⡀        ⠙⠻⣿⣷⡀ "
+            "{$blue}  ⠸⠻⣿⣦⡀        ⠈⢻⣿⠇"
+            "{$blue}     ⠉⠛⠷⣦⣄⡀     ⠈⠁ "
+            "{$blue}         ⠉⠛⢷⣄      "
+            "{$blue}            ⠈⢿     "
+        ]
+        margin = [0 1 2]
+    }
+
+    {%neon %kdeneon
+        [
+            "{$green}    --- _   "
+            "{$green} /  ---  \\  "
+            "{$green}|  |   |  | "
+            "{$green} \\  --- _/  "
+            "{$green}    ---     "
+        ]
+        margin = [3 3 3]
+    }
+
+    ; ### L ###
+
+    {%lite %linuxlite
+        [
+            "{$yellow}   /\\ "
+            "{$yellow}  /  \\"
+            "{$yellow} / {$white}/ {$yellow}/"
+            "{$yellow}> {$white}/ {$yellow}/ "
+            "{$yellow}\\ {$white}\\ {$yellow}\\ "
+            " {$yellow}\\_{$white}\\{$yellow}_\\"
+            "{$white}    \\ "
+        ]
+        margin = [3 3 4]
+    }
+
+    ; ### M ###
+
+    {%macos
+        [
+            "{$green}       .:'      "
+            "{$green}    _ :'_       "
+            "{$yellow} .'\\`_\\`-'_\\`.  "
+            "{$red}:________.-'    "
+            "{$red}:________:      "
+            "{$magenta} :_______\\`-;   "
+            "{$blue}  \\`._.-._.'    "
+        ]
+        margin = [2 4 2]
+    }
+
+    {%mageria
+        [
+            "{$blue}   *     "
+            "{$blue}    *    "
+            "{$blue}   **    "
+            "{$black} /\\__/\\  "
+            "{$black}/      \\ "
+            "{$black}\\      / "
+            "{$black} \\____/  "
+        ]
+        margin = [2 4 3]
+    }
+
+    {%manjaro
+        [
+            "{$green}        {$reset}  {$green}    "
+            "{$green}        {$reset}  {$green}    "
+            "{$green}   {$reset}       {$green}    "
+            "{$green}   {$reset}  {$green}   {$reset}  {$green}    "
+            "{$green}   {$reset}  {$green}   {$reset}  {$green}    "
+            "{$green}   {$reset}  {$green}   {$reset}  {$green}    "
+        ]
+        margin = [2 2 4]
+    }
+
+    {%mint %linuxmint
+        [
+            "{$cyan} ___________ "
+            "{$cyan}|_          \\"
+            "{$cyan}  | {$white}| _____ {$cyan}|"
+            "{$cyan}  | {$white}| | | | {$cyan}|"
+            "{$cyan}  | {$white}| | | | {$cyan}|"
+            "{$cyan}  | {$white}\\_____/ {$cyan}|"
+            "{$cyan}  \\_________/"
+        ]
+        margin = [2 2 4]
+    }
+
+    {%mx
+        [
+            "{$white}    \\\\  /    "
+            "{$white}     \\\\/     "
+            "{$white}      \\\\     "
+            "{$white}   /\\/ \\\\    "
+            "{$white}  /  \\  /\\   "
+            "{$white} /    \\/  \\  "
+            "{$white}/__________\\ "
+        ]
+        margin = [2 2 2]
+    }
+
+    ; ### N ###
+
+    {%netbsd
+        [
+            "{$white}\\\\{$yellow}\\`-______,----__  "
+            "{$white} \\\\        {$yellow}__,---\\`_"
+            "{$white}  \\\\       {$yellow}\\`.____  "
+            "{$white}   \\\\{$yellow}-______,----\\`-"
+            "{$white}    \\\\              "
+            "{$white}     \\\\             "
+            "{$white}      \\\\            "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%nobara
+        [
+            "{$white} _._.  _..,._          "
+            "{$white}|##############.       "
+            "{$white}|################.     "
+            "{$white}|#####/  .  \\#####.    "
+            "{$white}|####|  ###   > ###    "
+            "{$white}|#####  \\`\\`\\`|##### "
+            "{$white}|######==_   |#####    "
+            "{$white}|######\"##|  |#####    "
+            "{$white} \\`\"\"\\`\\` '  \\`\\##/ "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%nixos
+        [
+            "{$blue}     ⣀⡀  {$cyan}⣀⣀⡀ ⢀⣀     "
+            "{$blue}    ⠈⢿⣷⡀ {$cyan}⠈⢿⣷⣄⣾⡿⠃    "
+            "{$blue}  ⢀⣶⣶⣾⣿⣿⣶⣶⣮{$cyan}⣻⣿⣿⠁ {$blue}⢠⡀  "
+            "{$cyan}     ⣩⣭⡍    ⢻⣿⣆{$blue}⢠⣿⡗  "
+            "{$cyan}⢠⣤⣤⣤⣴⣿⠟      ⠹{$blue}⣳⣿⣿⣤⣤⡄"
+            "{$cyan}⠘⠛⠛⣿⣿⢯{$blue}⣦      ⣰⣿⠟⠛⠛⠛⠃"
+            "{$cyan}  ⢼⣿⠋{$blue}⠹⣿⣧{$cyan}⢀⣀⣀⣀⣜⣛⣋⣀⣀⡀  "
+            "{$cyan}  ⠈⠃ {$blue}⢀⣾⣿⣷{$cyan}⡻⠿⠿⢿⣿⡿⠿⠿⠁  "
+            "{$blue}    ⢠⣾⡿⠙⢿⣷⡀ {$cyan}⠈⢿⣷⡄    "
+            "{$blue}     ⠉⠁ ⠈⠉⠉  {$cyan}⠈⠉     "
+        ]
+        margin = [1 2 3]
+    }
+
+    {%none
+        [""]
+        margin = [0 0 0]
+    }
+
+    ; ### O ###
+
+    {%openbsd
+        [
+            "{$yellow}      _____    "
+            "{$yellow}    \\-     -/  "
+            "{$yellow} \\_/         \\ "
+            "{$yellow} |        {$white}O O{$yellow} |"
+            "{$yellow} |_  <   )  3 )"
+            "{$yellow} / \\         / "
+            " {$yellow}   /-_____-\\  "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%opensuse %opensuse_suse %opensuse-tumbleweed
+        [
+            "{$reset}           .;ldkO0000Okdl;.           "
+            "{$reset}       .;d00xl:^''''''^:ok00d;.       "
+            "{$reset}     .d00l'                'o00d.     "
+            "{$reset}   .d0Kd'  {$green}Okxol:;,.          {$reset}:O0d.   "
+            "{$reset}  .OK{$green}KKK0kOKKKKKKKKKKOxo:,      {$reset}lK0.  "
+            "{$reset} ,0K{$green}KKKKKKKKKKKKKKKOP^{$reset},,,.{$green}^dx:    {$reset};OO, "
+            "{$reset}.OK{$green}KKKKKKKKKKKKKKKk'{$reset}.oOPPb.{$green}'Ok.   {$reset}cKO."
+            "{$reset}:KK{$green}KKKKKKKKKKKKKKK: {$reset}kKx..dd {$green}lKd   {$reset}'OK:"
+            "{$reset}dKK{$green}KKKKKKKKKOxOKKKd {$reset}^OKKKO' {$green}kKKc   {$reset}dKd"
+            "{$reset}dKK{$green}KKKKKKKKKK;.;oOKx,..{$reset}^{$green}..;kKKKO.  {$reset}dKd"
+            "{$reset}:KK{$green}KKKKKKKKKK0o;...^cdxxOK0O/^^'  {$reset}.OK:"
+            "{$reset} kKK{$green}KKKKKKKKKKKKKOx;,,......,;od  {$reset}lKk "
+            "{$reset} '0K{$green}KKKKKKKKKKKKKKKKKKKK00KKOo^  {$reset}c00' "
+            "{$reset}  'kK{$green}KKOxddxkOO00000Okxoc;''   {$reset}.dKk'  "
+            "{$reset}    l0Ko.                    .c00l'   "
+            "{$reset}     'l0Kk:.              .;xK0l'     "
+            "{$reset}        'lkK0xl:;,,,,;:ldO0kl'        "
+            "{$reset}            '^:ldxkkkkxdl:^'          "
+        ]
+        margin = [0 0 2]
+    }
+
+    ; ### P ###
+
+    {%parabola
+        [
+            "  __ __ __  _  "
+            "`_//_//_/ / `. "
+            "          /  .`"
+            "         / .`  "
+            "        /.`    "
+            "       /`      "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%pop %popos %pop_os
+        [
+            "{$cyan}  ______             "
+            "{$cyan}  \\   _ \\        __  "
+            "{$cyan}   \\ \\ \\ \\      / /  "
+            "{$cyan}    \\ \\_\\ \\    / /   "
+            "{$cyan}     \\  ___\\  /_/    "
+            "{$cyan}      \\ \\    _       "
+            "{$cyan}     __\\_\\__(_)_     "
+            "{$cyan}    (___________)    "
+        ]
+        margin = [1 1 2]
+    }
+
+    {%postmarketos
+        [
+            "{$green}        /\\        "
+            "{$green}       /  \\       "
+            "{$green}      /    \\      "
+            "{$green}      \\__   \\     "
+            "{$green}    /\\__ \\  _\\    "
+            "{$green}   /   /  \\/ __   "
+            "{$green}  /   / ____/  \\  "
+            "{$green} /    \\ \\       \\ "
+            "{$green}/_____/ /________\\"
+        ]
+        margin = [2 2 2]
+    }
+
+    {%pureos
+        [
+            " _____________ "
+            "|  _________  |"
+            "| |         | |"
+            "| |         | |"
+            "| |_________| |"
+            "|_____________|"
+        ]
+        margin = [3 2 2]
+    }
+
+    ; ### R ###
+
+    {%raspbian %raspberrypios
+        [
+            "{$green}  __  __   "
+            "{$green} (_\\)(/_)  "
+            "{$red} (_(__)_)  "
+            "{$red}(_(_)(_)_) "
+            "{$red} (_(__)_)  "
+            "{$red}   (__)    "
+        ]
+        margin = [2 2 3]
+    }
+
+    {%reborn %rebornos
+        [
+            "{$blue}   _______   "
+            "{$blue}  /\\_____/\\  "
+            "{$blue} / /\\___/\\ \\ "
+            "{$blue}/_/_/   \\_\\_\\"
+            "{$blue}\\ \\ \\___/ / /"
+            "{$blue} \\ \\/___\\/ / "
+            "{$blue}  \\/_____\\/  "
+        ]
+        margin = [2 3 3]
+    }
+
+    {%rocky
+        [
+            "{$green}    `-/+++++++++/-.`     "
+            "{$green} `-+++++++++++++++++-`   "
+            "{$green}.+++++++++++++++++++++.  "
+            "{$green}-+++++++++++++++++++++++."
+            "{$green}+++++++++++++++/-/+++++++"
+            "{$green}+++++++++++++/.   ./+++++"
+            "{$green}+++++++++++:.       ./+++"
+            "{$green}+++++++++:`   `:/:`   .:/"
+            "{$green}-++++++:`   .:+++++:`    "
+            "{$green} .+++-`   ./+++++++++:`  "
+            "{$green}  `-`   ./+++++++++++-   "
+            "{$green}       -+++++++++:-.`    "
+        ]
+        margin = [1 2 3]
+    }
+
+    ; ### S ###
+
+    {%slackware
+        [
+            "{$blue}   ________  "
+            "{$blue}  /  ______| "
+            "{$blue}  | |______  "
+            "{$blue}  \\______  \\ "
+            "{$blue}   ______| | "
+            "{$blue}| |________/ "
+            "{$blue}|____________"
+        ]
+        margin = [2 2 3]
+    }
+
+    {%solus
+        [
+            "{$blue}     /|       "
+            "{$blue}    / |\\      "
+            "{$blue}   /  | \\ _   "
+            "{$blue}  /___|__\\_\\  "
+            "{$blue}  \\         / "
+            "{$blue}   \\-------'  "
+        ]
+        margin = [3 2 2]
+    }
+
+    {%sourcemage
+        [
+            "       :ymNMNho.              "
+            ".+sdmNMMMMMMMMMMy`            "
+            ".-::/yMMMMMMMMMMMm-           "
+            "      sMMMMMMMMMMMm/          "
+            "     /NMMMMMMMMMMMMMm:        "
+            "    .MMMMMMMMMMMMMMMMM:       "
+            "    `MMMMMMMMMMMMMMMMMN.      "
+            "     NMMMMMMMMMMMMMMMMMd      "
+            "     mMMMMMMMMMMMMMMMMMMo     "
+            "     hhMMMMMMMMMMMMMMMMMM.    "
+            "     .`/MMMMMMMMMMMMMMMMMs    "
+            "        :mMMMMMMMMMMMMMMMN`   "
+            "         `sMMMMMMMMMMMMMMM+   "
+            "           /NMMMMMMMMMMMMMN`  "
+            "             oMMMMMMMMMMMMM+  "
+            "          ./sd.-hMMMMMMMMmmN` "
+            "      ./+oyyyh- `MMMMMMMMMmNh "
+            "                 sMMMMMMMMMmmo"
+            "                 `NMMMMMMMMMd:"
+            "                  -dMMMMMMMMMo"
+            "                    -shmNMMms."
+        ]
+        margin = [0 2 3]
+    }
+
+    ; ### T ###
+
+    {%tux %default
+        [
+            "{$black}      .--.     "
+            "{$black}     |{$reset}o{$black}_{$reset}o {$black}|    "
+            "{$black}     |{$yellow}:_/ {$black}|    "
+            "{$black}    /{$reset}/{$black}   \\ {$black}\\   "
+            "{$black}   ({$reset}|     | {$black})  "
+            "{$yellow}  /'/{$reset}|_   _/{$yellow}'\\  "
+            "{$yellow}  \\___){$black}={$yellow}(___/  "
+        ]
+        margin = [2 2 3]
+    }
+
+    ; ### U ###
+
+    {%ubuntu
+        [
+            "{$red}                .-.   "
+            "{$red}        .-'````(   )  "
+            "{$red}     ,`\\ \\    `-`.    "
+            "{$red}    /   \\ '````-.   ` "
+            "{$red}  .-.  ,         `___:"
+            "{$red} (   ) :          ___ "
+            "{$red}  `-`  `         ,   :"
+            "{$red}    \\   / ,....-`   , "
+            "{$red}     `./ /      .-.`  "
+            "{$red}        `-....-(   )  "
+            "{$red}                `-`   "
+        ]
+        margin = [0 2 4]
+    }
+
+    ; ### V ###
+
+    {%vanilla %vanillaos
+        [
+            "{$yellow}        .#.           "
+            "{$yellow}       :#=#:          "
+            "{$yellow}.#=\":.:##=##:.:\"=#.   "
+            "{$yellow}\\`:#=#####=####=##:\\` "
+            "{$yellow} \\`:####=\\` \\`=####:\\`"
+            "{$yellow}   .:##,. .,##:.      "
+            "{$yellow}  :##=##:-:##=##:     "
+            "{$yellow} .#=##:\\`   \\`:##=#.  "
+            "{$yellow}  \\`\\`           \\`\\` "
+        ]
+        margin = [2 2 2]
+    }
+
+    {%venom
+        [
+            "{$white} ++**               "
+            "{$white}  *===**====+*      "
+            "{$white}   *====*   +===+   "
+            "{$white} *==*+===*    *===* "
+            "{$white}*===* *===+    *===*"
+            "{$white}*===*  +===+   *===*"
+            "{$white}*===*   +===*  *===*"
+            "{$white} *===*    *===+*==* "
+            "{$white}   +===+   *===+=*  "
+            "{$white}      *+====**===*  "
+            "{$white}               **++ "
+        ]
+        margin = [1 2 3]
+    }
+
+    {%void
+        [
+            "{$green}    _______  "
+            "{$green} _ \\______ - "
+            "{$green}| \\  ___  \\ |"
+            "{$green}| | /   \\ | |"
+            "{$green}| | \\___/ | |"
+            "{$green}| \\______ \\_|"
+            "{$green} -_______\\   "
+        ]
+        margin = [2 2 4]
+    }
+
+    {%voyager
+        [
+            "{$red} _____   ____ "
+            "{$red}|     | |    |"
+            "{$red}|     | |    |"
+            "{$red}|     | |    |"
+            "{$red}|     | |____|"
+            "{$red}|     | _____ "
+            "{$red}|     ||     |"
+            "{$red}|_____||_____|"
+        ]
+        margin = [2 2 2]
+    }
+
+    ; ### X ###
+
+    {%xero %xerolinux
+        [
+            "{$white}        /\\       "
+            "{$white}______ /  \\______"
+            "{$white}      /\\  /\\     "
+            "{$white}     /  ||  \\    "
+            "{$white}____/__/__\\__\\___"
+            "{$white}   / __|  |__-\\  "
+            "{$white}  /_-''    ''-_\\ "
+        ]
+        margin = [3 2 2]
+    }
+
+    ; ### Z ###
+
+    {%zorin
+        [
+            "{$blue}    ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆    "
+            "{$blue}   ⠐⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠂   "
+            "{$blue}                    "
+            "{$blue} ⣴⣿⣿⣿⣿⣿⣿⣿⡿⠟⠋⠁  ⣀⣤⣶⣦ "
+            "{$blue}⢼⣿⣿⣿⣿⣿⠿⠋⠁  ⢀⣠⣶⣿⣿⣿⣿⣿⡇"
+            "{$blue} ⠹⣿⠛⠉   ⣀⣴⣾⣿⣿⣿⣿⣿⣿⣿⠟ "
+            "{$blue}                    "
+            "{$blue}   ⠠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠄   "
+            "{$blue}    ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏    "
+        ]
+        margin = [1 1 2]
+    }
+
+]

@@ -8,8 +8,6 @@ jobs:
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
-      - name: "Install Nim"
-        uses: iffy/install-nim@v5
       - name: "Setup Nim"
         uses: jiro4989/setup-nim-action@v1
         with:
@@ -20,4 +18,6 @@ jobs:
       - name: "Install mesa-utils"
         run: sudo apt-get install mesa-utils
       - name: "Run Tests"
-        run: cd scripts && ./test-commandline-args.sh
+        run: |
+          chmod +x scripts/*.sh
+          cd scripts && ./test-commandline-args.sh && ./test-bad-configs.sh

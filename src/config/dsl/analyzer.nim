@@ -11,11 +11,12 @@ type ConfigValueKind* = enum
     cvChar
     cvNumber
     cvBool
-    cvHex       # #cba6f7
-    cvAnsi      # !31
-    cvRgb       # (r, g, b)
+    cvHex       # #cba6f7 => decoded to ANSI at resolve time
+    cvAnsi      # !31     => decoded to ANSI at resolve time
+    cvRgb       # (r g b) => decoded to ANSI at resolve time
     cvList
     cvStat
+    cvArt       # {%name [...] margin=[...]}
     cvVarRef    # unresolved $name
 
 type ConfigValue* = ref object
@@ -31,10 +32,14 @@ type ConfigValue* = ref object
     of cvStat:
         statId*:   string
         statArgs*: Table[string, ConfigValue]
+    of cvArt:
+        artNames*: seq[string]
+        art*:      seq[string]    # raw strings, may contain {$var}
+        margin*:   array[3, int]
     of cvVarRef:  refName*: string
 
-type Config* = object
-    vars*: Table[string, ConfigValue]   # keyed without leading $
+type DslOutput* = object
+    vars*: Table[string, ConfigValue]
 
 type AnalyzeError* = object of CatchableError
 type ResolveError* = object of CatchableError
@@ -42,7 +47,6 @@ type ResolveError* = object of CatchableError
 #### Helpers ####
 
 proc analyzeError(line: int, msg: string) =
-
     raise newException(AnalyzeError, "line " & $line & ": " & msg)
 
 proc resolveError(msg: string) =
@@ -51,24 +55,57 @@ proc resolveError(msg: string) =
 proc fmtCycle(chain: seq[string]): string =
     chain.join(" -> ") & " -> " & chain[0]
 
-# #### Import pre-pass ####
+#### Color decoding ####
 
-# Walks the top-level node list and replaces every nkImport with the parsed
-# nodes from that file. The result is a flat seq[Node] with no nkImport left.
-# Import paths are resolved relative to `baseDir`.
-# `visiting` holds the canonicalized paths currently on the call stack so
-# circular imports (a imports b imports a) are caught.
+proc rgbToAnsi*(r, g, b: int): string =
+    "\e[38;2;" & $r & ";" & $g & ";" & $b & "m"
+
+proc hexToAnsi*(hex: string): string =
+    let h = hex[1..^1]  # strip #
+    case h.len:
+        of 3:
+            let r = parseHexInt(h[0..0] & h[0..0])
+            let g = parseHexInt(h[1..1] & h[1..1])
+            let b = parseHexInt(h[2..2] & h[2..2])
+            rgbToAnsi(r, g, b)
+        of 6:
+            let r = parseHexInt(h[0..1])
+            let g = parseHexInt(h[2..3])
+            let b = parseHexInt(h[4..5])
+            rgbToAnsi(r, g, b)
+        else:
+            resolveError("invalid hex color (expected 3 or 6 digits): " & hex)
+            ""
+
+proc ansiCodeToEscape*(code: string): string =
+    # !31 -> \e[31m
+    "\e[" & code[1..^1] & "m"
+
+proc valueToString*(v: ConfigValue): string =
+    case v.kind:
+    of cvString:  v.strVal
+    of cvChar:    v.charVal
+    of cvNumber:  $v.numVal
+    of cvBool:    $v.boolVal
+    of cvAnsi:    ansiCodeToEscape(v.ansiVal)
+    of cvHex:     hexToAnsi(v.hexVal)
+    of cvRgb:     rgbToAnsi(v.r, v.g, v.b)
+    else:
+        resolveError("cannot convert " & $v.kind & " to string")
+        ""
+
+#### Import pre-pass ####
 
 proc runImportPass*(nodes: seq[Node], baseDir: string,
                     visiting: var seq[string]): seq[Node] =
     for n in nodes:
         if n == nil: continue
         if n.kind == nkImport:
-            let path = expandFilename(baseDir / n.path)
-            if not fileExists(path):
-                analyzeError(n.line, "imported file not found: " & path)
+            let rawPath = baseDir / n.path
+            if not fileExists(rawPath):
+                analyzeError(n.line, "imported file not found: " & rawPath)
+            let path = expandFilename(rawPath)
 
-            # Circular import check
             if path in visiting:
                 let cycle = visiting[visiting.find(path)..^1] & @[path]
                 raise newException(AnalyzeError,
@@ -89,9 +126,25 @@ proc runImportPass*(nodes: seq[Node], baseDir: string): seq[Node] =
     var visiting: seq[string] = @[]
     runImportPass(nodes, baseDir, visiting)
 
+#### Default color injection ####
+
+proc injectDefaultColors*(vars: var Table[string, ConfigValue]) =
+    const defaults = [
+        ("black",         "!30"), ("red",           "!31"),
+        ("green",         "!32"), ("yellow",         "!33"),
+        ("blue",          "!34"), ("magenta",        "!35"),
+        ("cyan",          "!36"), ("white",          "!37"),
+        ("bright_black",  "!90"), ("bright_red",     "!91"),
+        ("bright_green",  "!92"), ("bright_yellow",  "!93"),
+        ("bright_blue",   "!94"), ("bright_magenta", "!95"),
+        ("bright_cyan",   "!96"), ("bright_white",   "!97"),
+        ("reset",         "!0"),
+    ]
+    for (name, code) in defaults:
+        if not vars.hasKey(name):
+            vars[name] = ConfigValue(kind: cvAnsi, ansiVal: code)
+
 #### Analyze pass ####
-#
-# Converts AST nodes to ConfigValues. VarRefs are left as cvVarRef.
 
 proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue
 
@@ -109,6 +162,29 @@ proc analyzeScalar(n: Node): ConfigValue =
             analyzeError(n.line, "expected scalar value, got " & $n.kind)
             nil
 
+proc analyzeArtMargin(n: Node): array[3, int] =
+    if n == nil:
+        return [0, 1, 1]
+    if n.kind != nkList:
+        analyzeError(n.line, "margin must be a list of numbers")
+    let items = n.items
+    for item in items:
+        if item.kind != nkNumber:
+            analyzeError(item.line, "margin values must be numbers")
+    case items.len:
+        of 1:
+            let v = parseInt(items[0].numVal)
+            [v, v, v]
+        of 2:
+            let top   = parseInt(items[0].numVal)
+            let sides = parseInt(items[1].numVal)
+            [top, sides, sides]
+        of 3:
+            [parseInt(items[0].numVal), parseInt(items[1].numVal), parseInt(items[2].numVal)]
+        else:
+            analyzeError(n.line, "margin must have 1, 2, or 3 values")
+            [0, 0, 0]
+
 proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue =
     case n.kind:
         of nkString, nkChar, nkNumber, nkBool, nkHex, nkAnsi, nkRgb, nkVarRef:
@@ -116,7 +192,6 @@ proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue =
 
         of nkList:
             if inStatArg:
-                # Flat list only
                 var items: seq[ConfigValue] = @[]
                 for item in n.items:
                     case item.kind:
@@ -144,12 +219,23 @@ proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue =
                 args[argNode.argKey] = v
             ConfigValue(kind: cvStat, statId: n.statId[1..^1], statArgs: args) # strip @
 
+        of nkArtBlock:
+            var artStrings: seq[string] = @[]
+            for lineNode in n.artLines:
+                if lineNode.kind != nkString:
+                    analyzeError(lineNode.line, "art lines must be string literals")
+                artStrings.add lineNode.strVal
+            let margin = analyzeArtMargin(n.artMarginNode)
+            ConfigValue(kind: cvArt, artNames: n.artNames,
+                        art: artStrings, margin: margin)
+
         else:
             analyzeError(n.line, "unexpected node kind in value position: " & $n.kind)
             nil
 
-proc analyzeNodes*(nodes: seq[Node]): Config =
+proc analyzeNodes*(nodes: seq[Node]): DslOutput =
     result.vars = initTable[string, ConfigValue]()
+    injectDefaultColors(result.vars)
     for n in nodes:
         if n == nil: continue
         case n.kind:
@@ -157,18 +243,47 @@ proc analyzeNodes*(nodes: seq[Node]): Config =
                 let name = n.varName[1..^1]  # strip $
                 result.vars[name] = analyzeValue(n.value)
             of nkImport:
-                # Should not appear after the import pre-pass
                 analyzeError(n.line, "unexpected import node during analyze (import pre-pass skipped?)")
             else:
                 analyzeError(n.line, "unexpected top-level node: " & $n.kind)
 
-#### Resolution pass ####
+#### String interpolation ####
 
-# Replaces every cvVarRef with the actual value from the symbol table.
-# Hard errors on undefined names or circular references ($a = $b, $b = $a).
+proc interpolateString(s: string, env: Table[string, ConfigValue],
+                       visiting: var seq[string]): string
 
 proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
                   visiting: var seq[string]): ConfigValue
+
+proc interpolateString(s: string, env: Table[string, ConfigValue],
+                       visiting: var seq[string]): string =
+    var i = 0
+    while i < s.len:
+        if i + 1 < s.len and s[i] == '{' and s[i+1] == '$':
+            let start = i + 2
+            var j = start
+            while j < s.len and s[j] != '}':
+                inc j
+            if j < s.len:
+                let varName = s[start..<j]
+                if not env.hasKey(varName):
+                    resolveError("undefined variable in interpolation: $" & varName)
+                if varName in visiting:
+                    let cycle = visiting[visiting.find(varName)..^1]
+                    resolveError("circular variable reference: " & fmtCycle(cycle))
+                visiting.add varName
+                let resolved = resolveValue(env[varName], env, visiting)
+                discard visiting.pop()
+                result &= valueToString(resolved)
+                i = j + 1
+            else:
+                result &= s[i]
+                inc i
+        else:
+            result &= s[i]
+            inc i
+
+#### Resolution pass ####
 
 proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
                   visiting: var seq[string]): ConfigValue =
@@ -178,7 +293,6 @@ proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
             if not env.hasKey(name):
                 resolveError("undefined variable: $" & name)
 
-            # Circular reference check
             if name in visiting:
                 let cycle = visiting[visiting.find(name)..^1]
                 resolveError("circular variable reference: " & fmtCycle(cycle))
@@ -186,6 +300,13 @@ proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
             visiting.add name
             result = resolveValue(env[name], env, visiting)
             discard visiting.pop()
+
+        of cvString:
+            if '{' in v.strVal:
+                result = ConfigValue(kind: cvString,
+                    strVal: interpolateString(v.strVal, env, visiting))
+            else:
+                result = v
 
         of cvList:
             var items: seq[ConfigValue] = @[]
@@ -199,14 +320,88 @@ proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
                 args[key] = resolveValue(val, env, visiting)
             result = ConfigValue(kind: cvStat, statId: v.statId, statArgs: args)
 
+        of cvArt:
+            var resolvedArt: seq[string] = @[]
+            for line in v.art:
+                if '{' in line:
+                    resolvedArt.add interpolateString(line, env, visiting)
+                else:
+                    resolvedArt.add line
+            result = ConfigValue(kind: cvArt, artNames: v.artNames,
+                                 art: resolvedArt, margin: v.margin)
+
         else:
             result = v  # scalars are already fully resolved
 
-proc resolveConfig*(cfg: Config): Config =
+proc resolveDslOutput*(cfg: DslOutput): DslOutput =
     result.vars = initTable[string, ConfigValue]()
     for name, val in cfg.vars:
         var visiting: seq[string] = @[name]
         result.vars[name] = resolveValue(val, cfg.vars, visiting)
+
+#### Post-resolve validation ####
+
+proc validateDslOutput*(output: DslOutput) =
+    for name in ["stats", "distros", "layout"]:
+        if not output.vars.hasKey(name):
+            resolveError("required variable '$" & name & "' is not defined")
+
+    let layoutVal = output.vars["layout"]
+    if layoutVal.kind != cvString:
+        resolveError("$layout must be a string value")
+    const validLayouts = ["Inline", "ArtOnTop", "StatsOnTop"]
+    if layoutVal.strVal notin validLayouts:
+        resolveError("$layout must be one of: Inline, ArtOnTop, StatsOnTop (got: \"" & layoutVal.strVal & "\")")
+
+    if output.vars.hasKey("borderstyle"):
+        let bsVal = output.vars["borderstyle"]
+        if bsVal.kind != cvString:
+            resolveError("$borderstyle must be a string value")
+        const validStyles = ["line", "dashed", "dotted", "noborder", "doubleline"]
+        if bsVal.strVal notin validStyles:
+            resolveError("$borderstyle must be one of: line, dashed, dotted, noborder, doubleline (got: \"" & bsVal.strVal & "\")")
+
+    if output.vars.hasKey("stats_margin_top"):
+        let smtVal = output.vars["stats_margin_top"]
+        if smtVal.kind != cvNumber:
+            resolveError("$stats_margin_top must be a number")
+
+    let statsVal = output.vars["stats"]
+    if statsVal.kind != cvList:
+        resolveError("$stats must be a list")
+    for i, item in statsVal.items:
+        if item.kind != cvStat:
+            resolveError("$stats[" & $i & "] must be a stat entry ({@statid ...})")
+        let required = if item.statId == "separator": @["color"] else: @["icon", "name", "color"]
+        for field in required:
+            if not item.statArgs.hasKey(field):
+                resolveError("$stats[" & $i & "] (@" & item.statId &
+                             ") missing required field: " & field)
+        if item.statArgs.hasKey("icon"):
+            if item.statArgs["icon"].kind != cvChar:
+                resolveError("$stats[" & $i & "] (@" & item.statId &
+                             ") 'icon' must be a char literal (use single quotes)")
+        if item.statArgs.hasKey("symbol"):
+            if item.statArgs["symbol"].kind != cvChar:
+                resolveError("$stats[" & $i & "] (@" & item.statId &
+                             ") 'symbol' must be a char literal (use single quotes)")
+        if item.statArgs.hasKey("name"):
+            let nameKind = item.statArgs["name"].kind
+            if nameKind notin {cvString, cvChar}:
+                resolveError("$stats[" & $i & "] (@" & item.statId & ") 'name' must be a string")
+
+    let distrosVal = output.vars["distros"]
+    if distrosVal.kind != cvList:
+        resolveError("$distros must be a list")
+    for i, item in distrosVal.items:
+        if item.kind != cvArt:
+            resolveError("$distros[" & $i & "] must be an art block ({%name [...]})")
+        if item.artNames.len == 0:
+            resolveError("$distros[" & $i & "] must have at least one name")
+        if item.art.len == 0:
+            resolveError("$distros[" & $i & "] must have at least one art line")
+
+#### Debug dump ####
 
 proc dumpValue*(v: ConfigValue, indent: int = 0): string =
     let pad  = "  ".repeat(indent)
@@ -230,4 +425,10 @@ proc dumpValue*(v: ConfigValue, indent: int = 0): string =
             for key, val in v.statArgs:
                 s &= pad2 & key & " =\n"
                 s &= dumpValue(val, indent + 2) & "\n"
+            s.strip(trailing = true)
+        of cvArt:
+            var s = pad & "Art(" & v.artNames.join(", ") & ") margin=[" &
+                    $v.margin[0] & " " & $v.margin[1] & " " & $v.margin[2] & "]\n"
+            for line in v.art:
+                s &= pad2 & "\"" & line & "\"\n"
             s.strip(trailing = true)

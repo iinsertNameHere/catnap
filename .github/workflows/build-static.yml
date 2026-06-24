@@ -51,9 +51,6 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
 
-            - name: "Install Nim"
-              uses: iffy/install-nim@v5
-
             - name: "Setup Nim"
               uses: jiro4989/setup-nim-action@v1
               with:

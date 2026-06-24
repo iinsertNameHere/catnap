@@ -3,12 +3,11 @@ import strutils
 import strformat
 from unicode import toLower
 
-from "definitions" import CONFIGPATH, DISTROSPATH
+from "definitions" import CONFIGPATH
 import "logging"
 
 type Args* = object
     cfgPath*:  string
-    dstPath*:  string
     distroid*: string
     statname*: string
     layout*:   string
@@ -20,7 +19,6 @@ type Args* = object
 
 proc parseArgs*(): Args =
     result.cfgPath = CONFIGPATH
-    result.dstPath = DISTROSPATH
 
     var idx = 1
     while idx <= paramCount():
@@ -43,14 +41,6 @@ proc parseArgs*(): Args =
             else:
                 idx += 1
                 result.cfgPath = paramStr(idx)
-
-        of "-a", "--art":
-            if idx >= paramCount():
-                logError(&"'{param}' - No value was specified!", false)
-                result.hasError = true
-            else:
-                idx += 1
-                result.dstPath = paramStr(idx)
 
         of "-d", "--distroid":
             if idx >= paramCount():

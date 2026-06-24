@@ -1,7 +1,7 @@
 import std/wordwrap
-import parsetoml
-import strformat
 import strutils
+import strformat
+import tables
 import os
 
 from "common/definitions" import STATNAMES, CACHEPATH, TEMPPATH
@@ -33,7 +33,6 @@ proc printHelp(cfg: Config) =
     echo "    -g  --grep                 <StatName>     Get the stats value"
     echo "    -n  --no-cache                            Clears the cache before execution"
     echo "    -c  --config               <ConfigPath>   Uses a custom location for the config file"
-    echo "    -a  --art                  <DistrosPath>  Uses a custom location for the distros file"
     echo ""
     echo "    -m  --margin               <Margin>       Overwrite margin value for the displayed logo (Example: 1,2,3)"
     echo "    -l  --layout               <Layout>       Overwrite layout config value [Inline,ArtOnTop,StatsOnTop]"
@@ -55,7 +54,7 @@ if args.noCache and dirExists(CACHEPATH): removeDir(CACHEPATH)
 if not dirExists(CACHEPATH): createDir(CACHEPATH)
 if not dirExists(TEMPPATH):  createDir(TEMPPATH)
 
-var cfg = LoadConfig(args.cfgPath, args.dstPath)
+var cfg = LoadConfig(args.cfgPath)
 
 if args.help:     printHelp(cfg); quit(0)
 if args.hasError: quit(1)
@@ -66,7 +65,7 @@ if args.statname == "":
             cfg.distroart[key].margin = [args.margin[0], args.margin[1], args.margin[2]]
 
     if args.layout != "":
-        cfg.misc["layout"] = parseString(&"val = '{args.layout}'")["val"]
+        cfg.misc.layout = args.layout
 
     let fetchinfo = fetchSystemInfo(cfg, args.distroid)
     echo ""
