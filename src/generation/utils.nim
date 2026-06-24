@@ -29,17 +29,18 @@ proc buildStatBlock*(statEntries: seq[StatEntry], config: Config, fi: FetchInfo,
         if l > maxlen: maxlen = l
 
     let text_color = config.misc.text_color
+    let bc = config.misc.border_color
 
     proc addStat(entry: StatEntry, value: string) =
         var line = entry.icon & " " & entry.name
         while uint(line.runeLen) < maxlen:
             line &= " "
         case borderstyle:
-            of "line":       sb.add("│ " & entry.color & line & colors.Default & " │ " & text_color & value & colors.Default)
-            of "dashed":     sb.add("┊ " & entry.color & line & colors.Default & " ┊ " & text_color & value & colors.Default)
-            of "dotted":     sb.add("┇ " & entry.color & line & colors.Default & " ┇ " & text_color & value & colors.Default)
-            of "noborder":   sb.add("  " & entry.color & line & colors.Default & "   " & text_color & value & colors.Default)
-            of "doubleline": sb.add("║ " & entry.color & line & colors.Default & " ║ " & text_color & value & colors.Default)
+            of "line":       sb.add(bc & "│ " & entry.color & line & colors.Default & bc & " │ " & text_color & value & colors.Default)
+            of "dashed":     sb.add(bc & "┊ " & entry.color & line & colors.Default & bc & " ┊ " & text_color & value & colors.Default)
+            of "dotted":     sb.add(bc & "┇ " & entry.color & line & colors.Default & bc & " ┇ " & text_color & value & colors.Default)
+            of "noborder":   sb.add(bc & "  " & entry.color & line & colors.Default & bc & "   " & text_color & value & colors.Default)
+            of "doubleline": sb.add(bc & "║ " & entry.color & line & colors.Default & bc & " ║ " & text_color & value & colors.Default)
             else:
                 logError(&"{config.configFile}:borderstyle - Invalid style")
                 quit(1)
@@ -49,11 +50,11 @@ proc buildStatBlock*(statEntries: seq[StatEntry], config: Config, fi: FetchInfo,
         fetchinfolist_keys.add(k)
 
     case borderstyle:
-        of "line":       sb.add("╭" & "─".fill(int(maxlen + 1)) & "╮")
-        of "dashed":     sb.add("╭" & "┄".fill(int(maxlen + 1)) & "╮")
-        of "dotted":     sb.add("•" & "•".fill(int(maxlen + 1)) & "•")
-        of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
-        of "doubleline": sb.add("╔" & "═".fill(int(maxlen + 1)) & "╗")
+        of "line":       sb.add(bc & "╭" & "─".fill(int(maxlen + 1)) & "╮" & colors.Default)
+        of "dashed":     sb.add(bc & "╭" & "┄".fill(int(maxlen + 1)) & "╮" & colors.Default)
+        of "dotted":     sb.add(bc & "•" & "•".fill(int(maxlen + 1)) & "•" & colors.Default)
+        of "noborder":   sb.add(bc & " " & " ".fill(int(maxlen + 1)) & " " & colors.Default)
+        of "doubleline": sb.add(bc & "╔" & "═".fill(int(maxlen + 1)) & "╗" & colors.Default)
         else:
             logError(&"{config.configFile}:borderstyle - Invalid style")
             quit(1)
@@ -63,11 +64,11 @@ proc buildStatBlock*(statEntries: seq[StatEntry], config: Config, fi: FetchInfo,
 
         if entry.id == "separator":
             case borderstyle:
-                of "line":       sb.add("├" & entry.color & "─".fill(int(maxlen + 1)) & colors.Default & "┤")
-                of "dashed":     sb.add("┊" & entry.color & "┄".fill(int(maxlen + 1)) & colors.Default & "┊")
-                of "dotted":     sb.add("┇" & entry.color & "•".fill(int(maxlen + 1)) & colors.Default & "┇")
+                of "line":       sb.add(bc & "├" & bc & "─".fill(int(maxlen + 1)) & bc & "┤" & colors.Default)
+                of "dashed":     sb.add(bc & "┊" & bc & "┄".fill(int(maxlen + 1)) & bc & "┊" & colors.Default)
+                of "dotted":     sb.add(bc & "┇" & bc & "•".fill(int(maxlen + 1)) & bc & "┇" & colors.Default)
                 of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
-                of "doubleline": sb.add("╠" & entry.color & "═".fill(int(maxlen + 1)) & colors.Default & "╣")
+                of "doubleline": sb.add(bc & "╠" & bc & "═".fill(int(maxlen + 1)) & bc & "╣" & colors.Default)
             continue
 
         if entry.id notin fetchinfolist_keys:
@@ -85,11 +86,11 @@ proc buildStatBlock*(statEntries: seq[StatEntry], config: Config, fi: FetchInfo,
             break
 
     case borderstyle:
-        of "line":       sb.add("╰" & "─".fill(int(maxlen + 1)) & "╯")
-        of "dashed":     sb.add("╰" & "┄".fill(int(maxlen + 1)) & "╯")
-        of "dotted":     sb.add("•" & "•".fill(int(maxlen + 1)) & "•")
-        of "noborder":   sb.add(" " & " ".fill(int(maxlen + 1)) & " ")
-        of "doubleline": sb.add("╚" & "═".fill(int(maxlen + 1)) & "╝")
+        of "line":       sb.add(bc & "╰" & "─".fill(int(maxlen + 1)) & "╯" & colors.Default)
+        of "dashed":     sb.add(bc & "╰" & "┄".fill(int(maxlen + 1)) & "╯" & colors.Default)
+        of "dotted":     sb.add(bc & "•" & "•".fill(int(maxlen + 1)) & "•" & colors.Default)
+        of "noborder":   sb.add(bc & " " & " ".fill(int(maxlen + 1)) & " " & colors.Default)
+        of "doubleline": sb.add(bc & "╚" & "═".fill(int(maxlen + 1)) & "╝" & colors.Default)
         else: discard
 
     return sb

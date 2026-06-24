@@ -1,5 +1,4 @@
 from "types" import Color, ColorSet
-import strutils
 import nre
 
 proc initForeground(): ColorSet =

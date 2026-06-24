@@ -12,7 +12,7 @@ proc loadDslConfig*(src: string, baseDir: string = "."): DslOutput =
         let flat   = runImportPass(raw, baseDir)
         let cfg    = analyzeNodes(flat)
         result     = resolveDslOutput(cfg)
-        validateDslOutput(result)
+        validateWithSchema(result, buildSchema())
     except Exception as e:
         logError("config error: " & e.msg)
         quit(1)
@@ -21,6 +21,13 @@ proc dslToConfig*(output: DslOutput, configFile: string): Config =
     result.configFile = configFile
 
     for item in output.vars["stats"].items:
+        let enabled = if item.statArgs.hasKey("enabled"): item.statArgs["enabled"].boolVal else: true
+        if not enabled: continue
+
+        if item.statId == "separator":
+            result.stats.add(StatEntry(id: "separator"))
+            continue
+
         var entry = StatEntry(id: item.statId)
         if item.statArgs.hasKey("icon"):   entry.icon   = valueToString(item.statArgs["icon"])
         if item.statArgs.hasKey("name"):   entry.name   = valueToString(item.statArgs["name"])
@@ -38,10 +45,4 @@ proc dslToConfig*(output: DslOutput, configFile: string): Config =
     result.misc.stats_margin_top = if output.vars.hasKey("stats_margin_top"): output.vars["stats_margin_top"].numVal else: 0
     result.misc.location         = if output.vars.hasKey("location"):         output.vars["location"].strVal         else: ""
     result.misc.text_color       = if output.vars.hasKey("text_color"):       valueToString(output.vars["text_color"]) else: valueToString(output.vars["reset"])
-
-proc dumpDslConfig*(cfg: DslOutput) =
-    echo "=== Config ==="
-    for name, val in cfg.vars:
-        echo "$" & name & " ="
-        echo dumpValue(val, indent = 1)
-        echo ""
+    result.misc.border_color     = if output.vars.hasKey("border_color"):     valueToString(output.vars["border_color"]) else: valueToString(output.vars["white"])

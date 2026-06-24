@@ -2,19 +2,19 @@ $distros = [
 
     ; ### A ###
 
-    {%alpine
-        [
+    %{  id="alpine"
+        art=[
             "{$blue}    /\\ /\\    "
             "{$blue}   // \\  \\   "
             "{$blue}  //   \\  \\  "
             "{$blue} ///    \\  \\ "
             "{$blue}///      \\  \\"
         ]
-        margin = [3 2 2]
+        margin=[3 2 2]
     }
 
-    {%amogos
-        [
+    %{  id="amogos"
+        art=[
             "{$red}      -///:.   "
             "{$red}     smhhhhmh`"
             "{$red}    :NA{$blue}mogO{$red}SNs "
@@ -26,11 +26,11 @@ $distros = [
             "{$red}+ooo+     sNNo "
             "{$red}        +oooo`"
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%android
-        [
+    %{  id="android"
+        art=[
             "{$green}  ;,           ,;  "
             "{$green}   ';,.-----.,;'   "
             "{$green}  ,'           ',  "
@@ -38,11 +38,11 @@ $distros = [
             "{$green}|                 |"
             "{$green}'-----------------'"
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%arch
-        [
+    %{  id="arch"
+        art=[
             "{$blue}      /\\      "
             "{$blue}     /  \\     "
             "{$blue}    /\\   \\    "
@@ -51,11 +51,11 @@ $distros = [
             "{$blue} /   |  |  -\\ "
             "{$blue}/_-''    ''-_\\"
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%arch_old
-        [
+    %{  id="arch_old"
+        art=[
             "{$blue}     -+*##*+-        "
             "{$blue}   -+#######*={$black}:      "
             "{$blue}  -+*******+++={$black}+*+   "
@@ -66,11 +66,11 @@ $distros = [
             "{$blue}****   {$black}******+  {$blue}**   "
             "{$blue}***              *   "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%archbang
-        [
+    %{  id="archbang"
+        art=[
             "{$cyan}        /\\        "
             "{$cyan}       / _\\       "
             "{$cyan}      /  \\ /      "
@@ -79,11 +79,11 @@ $distros = [
             "{$cyan}   / ___()___ \\   "
             "{$cyan}  /.`      `/.\\  "
         ]
-        margin = [3 2 3]
+        margin=[3 2 3]
     }
 
-    {%archcraft
-        [
+    %{  id="archcraft"
+        art=[
             "{$green}      .      "
             "{$green}     / \\     "
             "{$green}    /\\  \\    "
@@ -92,11 +92,11 @@ $distros = [
             "{$green} /  <   > -\\ "
             "{$green}/_-''   ''-_\\"
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%arco %arcolinux
-        [
+    %{  id=["arco" "arcolinux"]
+        art=[
             "{$blue}          A          "
             "{$blue}         ooo         "
             "{$blue}        ooooo        "
@@ -109,11 +109,11 @@ $distros = [
             "{$blue} ooooo      {$green}oooooooo "
             "{$blue}ooooo          {$green}oooooo"
         ]
-        margin = [1 2 2]
+        margin=[1 2 2]
     }
 
-    {%artix
-        [
+    %{  id="artix"
+        art=[
             "{$blue}      /\\      "
             "{$blue}     /  \\     "
             "{$blue}    /`'.,\\    "
@@ -122,36 +122,36 @@ $distros = [
             "{$blue} /   ,.'`.  \\ "
             "{$blue}/.,'`     `'.\\"
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
     ; ### B ###
 
-    {%bedrock
-        [
+    %{  id="bedrock"
+        art=[
             "{$white}__       "
             "{$white}\\ \\___   "
             "{$white} \\  _ \\  "
             "{$white}  \\___/  "
         ]
-        margin = [4 3 3]
+        margin=[4 3 3]
     }
 
-    {%buildroot
-        [
+    %{  id="buildroot"
+        art=[
             "{$yellow}   ___     "
             "{$yellow} / \\`   \\  "
             "{$yellow}|   :  :|  "
             "{$yellow} -. _:__.- "
             "{$yellow} ` ---- `"
         ]
-        margin = [3 3 3]
+        margin=[3 3 3]
     }
 
     ; ### C ###
 
-    {%cachy %cachyos
-        [
+    %{  id=["cachy" "cachyos"]
+        art=[
             "{$cyan}   /''''''''''''/  "
             "{$cyan}  /''''''''''''/   "
             "{$cyan} /''''''/          "
@@ -161,11 +161,11 @@ $distros = [
             "{$cyan}  \\.............../  "
             "{$cyan}   \\............./ "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%centos
-        [
+    %{  id="centos"
+        art=[
             "{$green} ____{$yellow}^{$magenta}____  "
             "{$green} |\\  {$yellow}|{$magenta}  /|  "
             "{$green} | \\ {$yellow}|{$magenta} / |  "
@@ -174,11 +174,11 @@ $distros = [
             "{$blue} |/__{$green}|{$yellow}__\\|  "
             "{$green}     v      "
         ]
-        margin = [2 3 2]
+        margin=[2 3 2]
     }
 
-    {%crux
-        [
+    %{  id="crux"
+        art=[
             "{$blue}    ___   "
             "{$blue}   (.· |  "
             "{$blue}   ({$yellow}<>{$blue} |  "
@@ -187,11 +187,11 @@ $distros = [
             "{$yellow}_/\\{$white}(__){$yellow}/_)"
             "{$yellow}\\/{$blue}-____{$yellow}\\/ "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%crystal
-        [
+    %{  id="crystal"
+        art=[
             "{$magenta}        -//. "
             "{$magenta}      -//.   "
             "{$magenta}    -//. .   "
@@ -202,13 +202,13 @@ $distros = [
             "{$magenta}    .//.     "
             "{$magenta}  .//.       "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
     ; ### D ###
 
-    {%dahlia %dahliaos
-        [
+    %{  id=["dahlia" "dahliaos"]
+        art=[
             "{$red}      _       "
             "{$red}  ___/ \\___   "
             "{$red} |   _-_   |  "
@@ -219,11 +219,11 @@ $distros = [
             "{$red} |___ - ___|  "
             "{$red}     \\_/      "
         ]
-        margin = [1 4 3]
+        margin=[1 4 3]
     }
 
-    {%debian
-        [
+    %{  id="debian"
+        art=[
             "{$red}  , - = - ,   "
             "{$red} =    ,,   =  "
             "{$red}=   :°   ;  = "
@@ -234,11 +234,11 @@ $distros = [
             "{$red}   ^^°==..    "
             "{$red}        ^^°=  "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%deepin
-        [
+    %{  id="deepin"
+        art=[
             "{$blue}    ____________    "
             "{$blue}   /  /  /   ___\\   "
             "{$blue}  /   | / __/ ___\\  "
@@ -248,11 +248,11 @@ $distros = [
             "{$blue}  \\________/     /  "
             "{$blue}   \\____________/   "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%devuan
-        [
+    %{  id="devuan"
+        art=[
             "..:::.      "
             "    ..-==-  "
             "        .+#:"
@@ -261,11 +261,11 @@ $distros = [
             ".:=+#@@%*:  "
             "@@@@#=:     "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%dragonfly %dragonflybsd
-        [
+    %{  id=["dragonfly" "dragonflybsd"]
+        art=[
             "   ,{$red}_{$white},    "
             "('-_{$red}|{$white}_-') "
             " >--{$red}|{$white}--<  "
@@ -274,13 +274,13 @@ $distros = [
             "    {$red}|     "
             "    {$red}|     "
         ]
-        margin = [2 3 2]
+        margin=[2 3 2]
     }
 
     ; ### E ###
 
-    {%elementary %elementaryos
-        [
+    %{  id=["elementary" "elementaryos"]
+        art=[
             "{$white}  _______  "
             "{$white} / ____  \\ "
             "{$white}/  |  /  /\\"
@@ -288,11 +288,11 @@ $distros = [
             "{$white}\\   /__/  /"
             "{$white} \\_______/ "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%endeavour %endeavouros
-        [
+    %{  id=["endeavour" "endeavouros"]
+        art=[
             "{$magenta}       /\\     "
             "{$red}     /{$magenta}/  \\{$cyan}\\   "
             "{$red}    /{$magenta}/    \\{$cyan}\\  "
@@ -300,11 +300,11 @@ $distros = [
             "{$red} /_{$magenta}/___-- {$cyan}__- "
             "{$cyan}/____--       "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%evolution %evolutionos
-        [
+    %{  id=["evolution" "evolutionos"]
+        art=[
             "{$green}      $2,coddoc'                "
             "{$green}   'cddddddddddc'               "
             "{$green} 'ddd$1OWWXXXXXXK$2ddo.         "
@@ -315,13 +315,13 @@ $distros = [
             "{$green}   'dddddddddddd'               "
             "{$green}      'cddddd,                  "
         ]
-        margin = [2 3 3]
+        margin=[2 3 3]
     }
 
     ; ### F ###
 
-    {%fedora
-        [
+    %{  id="fedora"
+        art=[
             "{$white}       _____  "
             "{$white}     /   __){$blue}\\ "
             "{$white}     |  /  {$blue}\\ \\"
@@ -331,11 +331,11 @@ $distros = [
             "{$blue}\\ \\{$white}__/  |     "
             "{$blue} \\{$white}(_____/     "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%freebsd
-        [
+    %{  id="freebsd"
+        art=[
             "{$red}/\\,-'''''-,/\\  "
             "{$red}\\_)       (_/  "
             "{$red}|           |  "
@@ -343,24 +343,24 @@ $distros = [
             " {$red};         ;   "
             "  {$red}'-_____-'    "
         ]
-        margin = [2 4 2]
+        margin=[2 4 2]
     }
 
     ; ### G ###
 
-    {%garuda
-        [
+    %{  id="garuda"
+        art=[
             "{$magenta}     .----.   "
             "{$magenta}   .'   ,  '. "
             "{$magenta} .'    '-----|"
             "{$magenta}'.   -----,   "
             "{$magenta}  '.____.'    "
         ]
-        margin = [3 2 3]
+        margin=[3 2 3]
     }
 
-    {%gentoo
-        [
+    %{  id="gentoo"
+        art=[
             "{$magenta} _-----_   "
             "{$magenta}(       \\  "
             "{$magenta}\\    0   \\ "
@@ -369,11 +369,11 @@ $distros = [
             "{$white}(     _-   "
             "{$white}\\____-     "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%guix
-        [
+    %{  id="guix"
+        art=[
             "{$yellow}|.__          __.| "
             "{$yellow}|__ \\        / __| "
             "{$yellow}   \\ \\      / /    "
@@ -382,13 +382,13 @@ $distros = [
             "{$yellow}      \\ \\/ /       "
             "{$yellow}       \\__/        "
         ]
-        margin = [3 2 3]
+        margin=[3 2 3]
     }
 
     ; ### H ###
 
-    {%hyperbola
-        [
+    %{  id="hyperbola"
+        art=[
             "    |`__.`/  "
             "    \\____/   "
             "    .--.     "
@@ -397,13 +397,13 @@ $distros = [
             " / .`   `.\\  "
             "/.`      `.\\  "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
     ; ### I ###
 
-    {%iglunix
-        [
+    %{  id="iglunix"
+        art=[
             "       |              "
             "       |          |   "
             "                  |   "
@@ -417,11 +417,11 @@ $distros = [
             "    \\  /        /     "
             "     \\/________/      "
         ]
-        margin = [0 2 2]
+        margin=[0 2 2]
     }
 
-    {%instant %instantos
-        [
+    %{  id=["instant" "instantos"]
+        art=[
             "{$white} ,-''-,      "
             "{$white}: .''. :     "
             "{$white}: ',,' :     "
@@ -429,13 +429,13 @@ $distros = [
             "{$white}       :  `."
             "{$white}       `._.'  "
         ]
-        margin = [3 2 2]
+        margin=[3 2 2]
     }
 
     ; ### K ###
 
-    {%kali
-        [
+    %{  id="kali"
+        art=[
             "{$blue}        ⢀ ⡀        "
             "{$blue}     ⢀⡀⢀⡀⢣⡐⣄       "
             "{$blue}  ⢤⣬⣿⣿⣿⣿⣿⣶⣿⣮⣷⣄     "
@@ -447,24 +447,24 @@ $distros = [
             "{$blue}         ⠉⠛⢷⣄      "
             "{$blue}            ⠈⢿     "
         ]
-        margin = [0 1 2]
+        margin=[0 1 2]
     }
 
-    {%neon %kdeneon
-        [
+    %{  id=["neon" "kdeneon"]
+        art=[
             "{$green}    --- _   "
             "{$green} /  ---  \\  "
             "{$green}|  |   |  | "
             "{$green} \\  --- _/  "
             "{$green}    ---     "
         ]
-        margin = [3 3 3]
+        margin=[3 3 3]
     }
 
     ; ### L ###
 
-    {%lite %linuxlite
-        [
+    %{  id=["lite" "linuxlite"]
+        art=[
             "{$yellow}   /\\ "
             "{$yellow}  /  \\"
             "{$yellow} / {$white}/ {$yellow}/"
@@ -473,13 +473,13 @@ $distros = [
             " {$yellow}\\_{$white}\\{$yellow}_\\"
             "{$white}    \\ "
         ]
-        margin = [3 3 4]
+        margin=[3 3 4]
     }
 
     ; ### M ###
 
-    {%macos
-        [
+    %{  id="macos"
+        art=[
             "{$green}       .:'      "
             "{$green}    _ :'_       "
             "{$yellow} .'\\`_\\`-'_\\`.  "
@@ -488,11 +488,11 @@ $distros = [
             "{$magenta} :_______\\`-;   "
             "{$blue}  \\`._.-._.'    "
         ]
-        margin = [2 4 2]
+        margin=[2 4 2]
     }
 
-    {%mageria
-        [
+    %{  id="mageria"
+        art=[
             "{$blue}   *     "
             "{$blue}    *    "
             "{$blue}   **    "
@@ -501,11 +501,11 @@ $distros = [
             "{$black}\\      / "
             "{$black} \\____/  "
         ]
-        margin = [2 4 3]
+        margin=[2 4 3]
     }
 
-    {%manjaro
-        [
+    %{  id="manjaro"
+        art=[
             "{$green}        {$reset}  {$green}    "
             "{$green}        {$reset}  {$green}    "
             "{$green}   {$reset}       {$green}    "
@@ -513,11 +513,11 @@ $distros = [
             "{$green}   {$reset}  {$green}   {$reset}  {$green}    "
             "{$green}   {$reset}  {$green}   {$reset}  {$green}    "
         ]
-        margin = [2 2 4]
+        margin=[2 2 4]
     }
 
-    {%mint %linuxmint
-        [
+    %{  id=["mint" "linuxmint"]
+        art=[
             "{$cyan} ___________ "
             "{$cyan}|_          \\"
             "{$cyan}  | {$white}| _____ {$cyan}|"
@@ -526,11 +526,11 @@ $distros = [
             "{$cyan}  | {$white}\\_____/ {$cyan}|"
             "{$cyan}  \\_________/"
         ]
-        margin = [2 2 4]
+        margin=[2 2 4]
     }
 
-    {%mx
-        [
+    %{  id="mx"
+        art=[
             "{$white}    \\\\  /    "
             "{$white}     \\\\/     "
             "{$white}      \\\\     "
@@ -539,13 +539,13 @@ $distros = [
             "{$white} /    \\/  \\  "
             "{$white}/__________\\ "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
     ; ### N ###
 
-    {%netbsd
-        [
+    %{  id="netbsd"
+        art=[
             "{$white}\\\\{$yellow}\\`-______,----__  "
             "{$white} \\\\        {$yellow}__,---\\`_"
             "{$white}  \\\\       {$yellow}\\`.____  "
@@ -554,11 +554,11 @@ $distros = [
             "{$white}     \\\\             "
             "{$white}      \\\\            "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%nobara
-        [
+    %{  id="nobara"
+        art=[
             "{$white} _._.  _..,._          "
             "{$white}|##############.       "
             "{$white}|################.     "
@@ -569,11 +569,11 @@ $distros = [
             "{$white}|######\"##|  |#####    "
             "{$white} \\`\"\"\\`\\` '  \\`\\##/ "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%nixos
-        [
+    %{  id="nixos"
+        art=[
             "{$blue}     ⣀⡀  {$cyan}⣀⣀⡀ ⢀⣀     "
             "{$blue}    ⠈⢿⣷⡀ {$cyan}⠈⢿⣷⣄⣾⡿⠃    "
             "{$blue}  ⢀⣶⣶⣾⣿⣿⣶⣶⣮{$cyan}⣻⣿⣿⠁ {$blue}⢠⡀  "
@@ -585,18 +585,18 @@ $distros = [
             "{$blue}    ⢠⣾⡿⠙⢿⣷⡀ {$cyan}⠈⢿⣷⡄    "
             "{$blue}     ⠉⠁ ⠈⠉⠉  {$cyan}⠈⠉     "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%none
-        [""]
-        margin = [0 0 0]
+    %{  id="none"
+        art=[""]
+        margin=[0 0 0]
     }
 
     ; ### O ###
 
-    {%openbsd
-        [
+    %{  id="openbsd"
+        art=[
             "{$yellow}      _____    "
             "{$yellow}    \\-     -/  "
             "{$yellow} \\_/         \\ "
@@ -605,11 +605,11 @@ $distros = [
             "{$yellow} / \\         / "
             " {$yellow}   /-_____-\\  "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%opensuse %opensuse_suse %opensuse-tumbleweed
-        [
+    %{  id=["opensuse" "opensuse_suse" "opensuse-tumbleweed"]
+        art=[
             "{$reset}           .;ldkO0000Okdl;.           "
             "{$reset}       .;d00xl:^''''''^:ok00d;.       "
             "{$reset}     .d00l'                'o00d.     "
@@ -629,13 +629,13 @@ $distros = [
             "{$reset}        'lkK0xl:;,,,,;:ldO0kl'        "
             "{$reset}            '^:ldxkkkkxdl:^'          "
         ]
-        margin = [0 0 2]
+        margin=[0 0 2]
     }
 
     ; ### P ###
 
-    {%parabola
-        [
+    %{  id="parabola"
+        art=[
             "  __ __ __  _  "
             "`_//_//_/ / `. "
             "          /  .`"
@@ -643,11 +643,11 @@ $distros = [
             "        /.`    "
             "       /`      "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%pop %popos %pop_os
-        [
+    %{  id=["pop" "popos" "pop_os"]
+        art=[
             "{$cyan}  ______             "
             "{$cyan}  \\   _ \\        __  "
             "{$cyan}   \\ \\ \\ \\      / /  "
@@ -657,11 +657,11 @@ $distros = [
             "{$cyan}     __\\_\\__(_)_     "
             "{$cyan}    (___________)    "
         ]
-        margin = [1 1 2]
+        margin=[1 1 2]
     }
 
-    {%postmarketos
-        [
+    %{  id="postmarketos"
+        art=[
             "{$green}        /\\        "
             "{$green}       /  \\       "
             "{$green}      /    \\      "
@@ -672,11 +672,11 @@ $distros = [
             "{$green} /    \\ \\       \\ "
             "{$green}/_____/ /________\\"
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%pureos
-        [
+    %{  id="pureos"
+        art=[
             " _____________ "
             "|  _________  |"
             "| |         | |"
@@ -684,13 +684,13 @@ $distros = [
             "| |_________| |"
             "|_____________|"
         ]
-        margin = [3 2 2]
+        margin=[3 2 2]
     }
 
     ; ### R ###
 
-    {%raspbian %raspberrypios
-        [
+    %{  id=["raspbian" "raspberrypios"]
+        art=[
             "{$green}  __  __   "
             "{$green} (_\\)(/_)  "
             "{$red} (_(__)_)  "
@@ -698,11 +698,11 @@ $distros = [
             "{$red} (_(__)_)  "
             "{$red}   (__)    "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%reborn %rebornos
-        [
+    %{  id=["reborn" "rebornos"]
+        art=[
             "{$blue}   _______   "
             "{$blue}  /\\_____/\\  "
             "{$blue} / /\\___/\\ \\ "
@@ -711,11 +711,11 @@ $distros = [
             "{$blue} \\ \\/___\\/ / "
             "{$blue}  \\/_____\\/  "
         ]
-        margin = [2 3 3]
+        margin=[2 3 3]
     }
 
-    {%rocky
-        [
+    %{  id="rocky"
+        art=[
             "{$green}    `-/+++++++++/-.`     "
             "{$green} `-+++++++++++++++++-`   "
             "{$green}.+++++++++++++++++++++.  "
@@ -729,13 +729,13 @@ $distros = [
             "{$green}  `-`   ./+++++++++++-   "
             "{$green}       -+++++++++:-.`    "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
     ; ### S ###
 
-    {%slackware
-        [
+    %{  id="slackware"
+        art=[
             "{$blue}   ________  "
             "{$blue}  /  ______| "
             "{$blue}  | |______  "
@@ -744,11 +744,11 @@ $distros = [
             "{$blue}| |________/ "
             "{$blue}|____________"
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
-    {%solus
-        [
+    %{  id="solus"
+        art=[
             "{$blue}     /|       "
             "{$blue}    / |\\      "
             "{$blue}   /  | \\ _   "
@@ -756,11 +756,11 @@ $distros = [
             "{$blue}  \\         / "
             "{$blue}   \\-------'  "
         ]
-        margin = [3 2 2]
+        margin=[3 2 2]
     }
 
-    {%sourcemage
-        [
+    %{  id="sourcemage"
+        art=[
             "       :ymNMNho.              "
             ".+sdmNMMMMMMMMMMy`            "
             ".-::/yMMMMMMMMMMMm-           "
@@ -783,13 +783,13 @@ $distros = [
             "                  -dMMMMMMMMMo"
             "                    -shmNMMms."
         ]
-        margin = [0 2 3]
+        margin=[0 2 3]
     }
 
     ; ### T ###
 
-    {%tux %default
-        [
+    %{  id=["tux" "default"]
+        art=[
             "{$black}      .--.     "
             "{$black}     |{$reset}o{$black}_{$reset}o {$black}|    "
             "{$black}     |{$yellow}:_/ {$black}|    "
@@ -798,13 +798,13 @@ $distros = [
             "{$yellow}  /'/{$reset}|_   _/{$yellow}'\\  "
             "{$yellow}  \\___){$black}={$yellow}(___/  "
         ]
-        margin = [2 2 3]
+        margin=[2 2 3]
     }
 
     ; ### U ###
 
-    {%ubuntu
-        [
+    %{  id="ubuntu"
+        art=[
             "{$red}                .-.   "
             "{$red}        .-'````(   )  "
             "{$red}     ,`\\ \\    `-`.    "
@@ -817,13 +817,13 @@ $distros = [
             "{$red}        `-....-(   )  "
             "{$red}                `-`   "
         ]
-        margin = [0 2 4]
+        margin=[0 2 4]
     }
 
     ; ### V ###
 
-    {%vanilla %vanillaos
-        [
+    %{  id=["vanilla" "vanillaos"]
+        art=[
             "{$yellow}        .#.           "
             "{$yellow}       :#=#:          "
             "{$yellow}.#=\":.:##=##:.:\"=#.   "
@@ -834,11 +834,11 @@ $distros = [
             "{$yellow} .#=##:\\`   \\`:##=#.  "
             "{$yellow}  \\`\\`           \\`\\` "
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
-    {%venom
-        [
+    %{  id="venom"
+        art=[
             "{$white} ++**               "
             "{$white}  *===**====+*      "
             "{$white}   *====*   +===+   "
@@ -851,11 +851,11 @@ $distros = [
             "{$white}      *+====**===*  "
             "{$white}               **++ "
         ]
-        margin = [1 2 3]
+        margin=[1 2 3]
     }
 
-    {%void
-        [
+    %{  id="void"
+        art=[
             "{$green}    _______  "
             "{$green} _ \\______ - "
             "{$green}| \\  ___  \\ |"
@@ -864,11 +864,11 @@ $distros = [
             "{$green}| \\______ \\_|"
             "{$green} -_______\\   "
         ]
-        margin = [2 2 4]
+        margin=[2 2 4]
     }
 
-    {%voyager
-        [
+    %{  id="voyager"
+        art=[
             "{$red} _____   ____ "
             "{$red}|     | |    |"
             "{$red}|     | |    |"
@@ -878,13 +878,13 @@ $distros = [
             "{$red}|     ||     |"
             "{$red}|_____||_____|"
         ]
-        margin = [2 2 2]
+        margin=[2 2 2]
     }
 
     ; ### X ###
 
-    {%xero %xerolinux
-        [
+    %{  id=["xero" "xerolinux"]
+        art=[
             "{$white}        /\\       "
             "{$white}______ /  \\______"
             "{$white}      /\\  /\\     "
@@ -893,13 +893,13 @@ $distros = [
             "{$white}   / __|  |__-\\  "
             "{$white}  /_-''    ''-_\\ "
         ]
-        margin = [3 2 2]
+        margin=[3 2 2]
     }
 
     ; ### Z ###
 
-    {%zorin
-        [
+    %{  id="zorin"
+        art=[
             "{$blue}    ⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣆    "
             "{$blue}   ⠐⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠂   "
             "{$blue}                    "
@@ -910,7 +910,7 @@ $distros = [
             "{$blue}   ⠠⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⠄   "
             "{$blue}    ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏    "
         ]
-        margin = [1 1 2]
+        margin=[1 1 2]
     }
 
 ]

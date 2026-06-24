@@ -15,6 +15,7 @@ type
     MiscConfig* = object
         layout*:           string
         borderstyle*:      string
+        border_color*:     string
         stats_margin_top*: int
         location*:         string
         text_color*:       string

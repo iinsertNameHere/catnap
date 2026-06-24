@@ -16,7 +16,7 @@ type ConfigValueKind* = enum
     cvRgb       # (r g b) => decoded to ANSI at resolve time
     cvList
     cvStat
-    cvArt       # {%name [...] margin=[...]}
+    cvArt
     cvVarRef    # unresolved $name
 
 type ConfigValue* = ref object
@@ -34,17 +34,65 @@ type ConfigValue* = ref object
         statArgs*: Table[string, ConfigValue]
     of cvArt:
         artNames*: seq[string]
-        art*:      seq[string]    # raw strings, may contain {$var}
+        art*:      seq[string]
         margin*:   array[3, int]
     of cvVarRef:  refName*: string
 
 type DslOutput* = object
     vars*: Table[string, ConfigValue]
 
+#### Schema types ####
+
+type
+    StatFieldSpec* = object
+        kinds*:    set[ConfigValueKind]
+        required*: bool
+
+    StatSpec* = object
+        fields*: Table[string, StatFieldSpec]
+
+    VarSpec* = object
+        kinds*:    set[ConfigValueKind]
+        required*: bool
+
+    Schema* = object
+        vars*:      Table[string, VarSpec]
+        statTypes*: Table[string, StatSpec]  # "*" = fallback for unknown stat ids
+
+proc buildSchema*(): Schema =
+    let separatorFields = {
+        "enabled": StatFieldSpec(kinds: {cvBool}, required: false),
+    }.toTable
+
+    let defaultFields = {
+        "enabled": StatFieldSpec(kinds: {cvBool},                        required: false),
+        "color":   StatFieldSpec(kinds: {cvHex, cvAnsi, cvRgb},          required: true),
+        "icon":    StatFieldSpec(kinds: {cvChar},                        required: true),
+        "name":    StatFieldSpec(kinds: {cvString, cvChar},              required: true),
+    }.toTable
+
+    var colorsFields = defaultFields
+    colorsFields["symbol"] = StatFieldSpec(kinds: {cvChar}, required: true)
+
+    result.statTypes["separator"] = StatSpec(fields: separatorFields)
+    result.statTypes["colors"]     = StatSpec(fields: colorsFields)
+    result.statTypes["*"]         = StatSpec(fields: defaultFields)
+
+    result.vars = {
+        "stats":             VarSpec(kinds: {cvList},              required: true),
+        "distros":           VarSpec(kinds: {cvList},              required: true),
+        "layout":            VarSpec(kinds: {cvString},            required: true),
+        "borderstyle":       VarSpec(kinds: {cvString},            required: false),
+        "border_color":      VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
+        "stats_margin_top":  VarSpec(kinds: {cvNumber},            required: false),
+        "text_color":        VarSpec(kinds: {cvHex, cvAnsi, cvRgb}, required: false),
+        "location":          VarSpec(kinds: {cvString},            required: false),
+    }.toTable
+
+#### Errors ####
+
 type AnalyzeError* = object of CatchableError
 type ResolveError* = object of CatchableError
-
-#### Helpers ####
 
 proc analyzeError(line: int, msg: string) =
     raise newException(AnalyzeError, "line " & $line & ": " & msg)
@@ -61,7 +109,7 @@ proc rgbToAnsi*(r, g, b: int): string =
     "\e[38;2;" & $r & ";" & $g & ";" & $b & "m"
 
 proc hexToAnsi*(hex: string): string =
-    let h = hex[1..^1]  # strip #
+    let h = hex[1..^1]
     case h.len:
         of 3:
             let r = parseHexInt(h[0..0] & h[0..0])
@@ -78,7 +126,6 @@ proc hexToAnsi*(hex: string): string =
             ""
 
 proc ansiCodeToEscape*(code: string): string =
-    # !31 -> \e[31m
     "\e[" & code[1..^1] & "m"
 
 proc valueToString*(v: ConfigValue): string =
@@ -146,7 +193,7 @@ proc injectDefaultColors*(vars: var Table[string, ConfigValue]) =
 
 #### Analyze pass ####
 
-proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue
+proc analyzeValue(n: Node, inObjField: bool = false): ConfigValue
 
 proc analyzeScalar(n: Node): ConfigValue =
     case n.kind:
@@ -157,77 +204,92 @@ proc analyzeScalar(n: Node): ConfigValue =
         of nkHex:     ConfigValue(kind: cvHex,     hexVal:  n.hexVal)
         of nkAnsi:    ConfigValue(kind: cvAnsi,    ansiVal: n.ansiVal)
         of nkRgb:     ConfigValue(kind: cvRgb,     r: n.r, g: n.g, b: n.b)
-        of nkVarRef:  ConfigValue(kind: cvVarRef,  refName: n.refName[1..^1]) # strip $
+        of nkVarRef:  ConfigValue(kind: cvVarRef,  refName: n.refName[1..^1])  # strip $
         else:
             analyzeError(n.line, "expected scalar value, got " & $n.kind)
             nil
 
-proc analyzeArtMargin(n: Node): array[3, int] =
-    if n == nil:
-        return [0, 1, 1]
-    if n.kind != nkList:
-        analyzeError(n.line, "margin must be a list of numbers")
-    let items = n.items
-    for item in items:
-        if item.kind != nkNumber:
-            analyzeError(item.line, "margin values must be numbers")
-    case items.len:
+proc analyzeArtMargin(v: ConfigValue, line: int): array[3, int] =
+    if v.kind != cvList:
+        analyzeError(line, "margin must be a list of numbers")
+    for item in v.items:
+        if item.kind != cvNumber:
+            analyzeError(line, "margin values must be numbers")
+    case v.items.len:
         of 1:
-            let v = parseInt(items[0].numVal)
-            [v, v, v]
+            let x = v.items[0].numVal
+            [x, x, x]
         of 2:
-            let top   = parseInt(items[0].numVal)
-            let sides = parseInt(items[1].numVal)
-            [top, sides, sides]
+            [v.items[0].numVal, v.items[1].numVal, v.items[1].numVal]
         of 3:
-            [parseInt(items[0].numVal), parseInt(items[1].numVal), parseInt(items[2].numVal)]
+            [v.items[0].numVal, v.items[1].numVal, v.items[2].numVal]
         else:
-            analyzeError(n.line, "margin must have 1, 2, or 3 values")
+            analyzeError(line, "margin must have 1, 2, or 3 values")
             [0, 0, 0]
 
-proc analyzeValue(n: Node, inStatArg: bool = false): ConfigValue =
+proc analyzeValue(n: Node, inObjField: bool = false): ConfigValue =
     case n.kind:
         of nkString, nkChar, nkNumber, nkBool, nkHex, nkAnsi, nkRgb, nkVarRef:
             analyzeScalar(n)
 
         of nkList:
-            if inStatArg:
-                var items: seq[ConfigValue] = @[]
-                for item in n.items:
-                    case item.kind:
-                        of nkString, nkChar, nkNumber, nkBool, nkHex, nkAnsi, nkRgb, nkVarRef:
-                            items.add analyzeScalar(item)
-                        of nkList:
-                            analyzeError(item.line, "nested lists are not allowed in stat named args")
-                        of nkStatRef:
-                            analyzeError(item.line, "stat refs are not allowed in stat named args")
-                        else:
-                            analyzeError(item.line, "unexpected node in stat arg list: " & $item.kind)
-                ConfigValue(kind: cvList, items: items)
-            else:
-                var items: seq[ConfigValue] = @[]
-                for item in n.items:
-                    items.add analyzeValue(item, inStatArg = false)
-                ConfigValue(kind: cvList, items: items)
+            var items: seq[ConfigValue] = @[]
+            for item in n.items:
+                items.add analyzeValue(item, inObjField)
+            ConfigValue(kind: cvList, items: items)
 
-        of nkStatRef:
-            if inStatArg:
-                analyzeError(n.line, "stat refs are not allowed as stat named arg values")
+        of nkStatObj:
+            if inObjField:
+                analyzeError(n.line, "stat objects are not allowed as field values")
             var args = initTable[string, ConfigValue]()
-            for argNode in n.namedArgs:
-                let v = analyzeValue(argNode.argValue, inStatArg = true)
-                args[argNode.argKey] = v
-            ConfigValue(kind: cvStat, statId: n.statId[1..^1], statArgs: args) # strip @
+            for (key, valNode) in n.fields:
+                args[key] = analyzeValue(valNode, inObjField = true)
+            if not args.hasKey("id"):
+                analyzeError(n.line, "stat object missing required field 'id'")
+            let idVal = args["id"]
+            if idVal.kind != cvString:
+                analyzeError(n.line, "stat 'id' must be a string")
+            let statId = idVal.strVal
+            args.del("id")
+            ConfigValue(kind: cvStat, statId: statId, statArgs: args)
 
-        of nkArtBlock:
-            var artStrings: seq[string] = @[]
-            for lineNode in n.artLines:
-                if lineNode.kind != nkString:
-                    analyzeError(lineNode.line, "art lines must be string literals")
-                artStrings.add lineNode.strVal
-            let margin = analyzeArtMargin(n.artMarginNode)
-            ConfigValue(kind: cvArt, artNames: n.artNames,
-                        art: artStrings, margin: margin)
+        of nkArtObj:
+            if inObjField:
+                analyzeError(n.line, "art objects are not allowed as field values")
+            var rawFields = initTable[string, ConfigValue]()
+            for (key, valNode) in n.fields:
+                rawFields[key] = analyzeValue(valNode, inObjField = true)
+
+            if not rawFields.hasKey("id"):
+                analyzeError(n.line, "art object missing required field 'id'")
+            var artNames: seq[string] = @[]
+            let idVal = rawFields["id"]
+            case idVal.kind:
+                of cvString: artNames.add idVal.strVal
+                of cvList:
+                    for item in idVal.items:
+                        if item.kind != cvString:
+                            analyzeError(n.line, "art 'id' list must contain strings only")
+                        artNames.add item.strVal
+                else:
+                    analyzeError(n.line, "art 'id' must be a string or list of strings")
+
+            if not rawFields.hasKey("art"):
+                analyzeError(n.line, "art object missing required field 'art'")
+            let artVal = rawFields["art"]
+            if artVal.kind != cvList:
+                analyzeError(n.line, "art 'art' must be a list of strings")
+            var artLines: seq[string] = @[]
+            for item in artVal.items:
+                if item.kind != cvString:
+                    analyzeError(n.line, "art 'art' must contain strings only")
+                artLines.add item.strVal
+
+            var margin: array[3, int] = [0, 1, 1]
+            if rawFields.hasKey("margin"):
+                margin = analyzeArtMargin(rawFields["margin"], n.line)
+
+            ConfigValue(kind: cvArt, artNames: artNames, art: artLines, margin: margin)
 
         else:
             analyzeError(n.line, "unexpected node kind in value position: " & $n.kind)
@@ -292,11 +354,9 @@ proc resolveValue(v: ConfigValue, env: Table[string, ConfigValue],
             let name = v.refName
             if not env.hasKey(name):
                 resolveError("undefined variable: $" & name)
-
             if name in visiting:
                 let cycle = visiting[visiting.find(name)..^1]
                 resolveError("circular variable reference: " & fmtCycle(cycle))
-
             visiting.add name
             result = resolveValue(env[name], env, visiting)
             discard visiting.pop()
@@ -339,67 +399,68 @@ proc resolveDslOutput*(cfg: DslOutput): DslOutput =
         var visiting: seq[string] = @[name]
         result.vars[name] = resolveValue(val, cfg.vars, visiting)
 
-#### Post-resolve validation ####
+#### Schema validation ####
 
-proc validateDslOutput*(output: DslOutput) =
-    for name in ["stats", "distros", "layout"]:
+proc validateWithSchema*(output: DslOutput, schema: Schema) =
+    # Check required top-level vars exist and have correct types
+    for name, spec in schema.vars:
         if not output.vars.hasKey(name):
-            resolveError("required variable '$" & name & "' is not defined")
+            if spec.required:
+                resolveError("required variable '$" & name & "' is not defined")
+        else:
+            let val = output.vars[name]
+            if val.kind notin spec.kinds:
+                resolveError("variable '$" & name & "' has wrong type: got " & $val.kind)
 
-    let layoutVal = output.vars["layout"]
-    if layoutVal.kind != cvString:
-        resolveError("$layout must be a string value")
-    const validLayouts = ["Inline", "ArtOnTop", "StatsOnTop"]
-    if layoutVal.strVal notin validLayouts:
-        resolveError("$layout must be one of: Inline, ArtOnTop, StatsOnTop (got: \"" & layoutVal.strVal & "\")")
+    # Validate enum-constrained string vars
+    if output.vars.hasKey("layout"):
+        const validLayouts = ["Inline", "ArtOnTop", "StatsOnTop"]
+        if output.vars["layout"].strVal notin validLayouts:
+            resolveError("$layout must be one of: Inline, ArtOnTop, StatsOnTop (got: \"" &
+                         output.vars["layout"].strVal & "\")")
 
     if output.vars.hasKey("borderstyle"):
-        let bsVal = output.vars["borderstyle"]
-        if bsVal.kind != cvString:
-            resolveError("$borderstyle must be a string value")
         const validStyles = ["line", "dashed", "dotted", "noborder", "doubleline"]
-        if bsVal.strVal notin validStyles:
-            resolveError("$borderstyle must be one of: line, dashed, dotted, noborder, doubleline (got: \"" & bsVal.strVal & "\")")
+        if output.vars["borderstyle"].strVal notin validStyles:
+            resolveError("$borderstyle must be one of: line, dashed, dotted, noborder, doubleline (got: \"" &
+                         output.vars["borderstyle"].strVal & "\")")
 
-    if output.vars.hasKey("stats_margin_top"):
-        let smtVal = output.vars["stats_margin_top"]
-        if smtVal.kind != cvNumber:
-            resolveError("$stats_margin_top must be a number")
+    # Validate $stats
+    if output.vars.hasKey("stats"):
+        let statsVal = output.vars["stats"]
+        if statsVal.kind != cvList:
+            resolveError("$stats must be a list")
+        for i, item in statsVal.items:
+            if item.kind != cvStat:
+                resolveError("$stats[" & $i & "] must be a stat entry (@{...})")
+            let statId = item.statId
+            let spec =
+                if schema.statTypes.hasKey(statId): schema.statTypes[statId]
+                elif schema.statTypes.hasKey("*"):  schema.statTypes["*"]
+                else: continue
+            for fieldName, fieldSpec in spec.fields:
+                if fieldSpec.required and not item.statArgs.hasKey(fieldName):
+                    resolveError("$stats[" & $i & "] (@" & statId &
+                                 ") missing required field '" & fieldName & "'")
+            for fieldName, fieldVal in item.statArgs:
+                if spec.fields.hasKey(fieldName):
+                    let fieldSpec = spec.fields[fieldName]
+                    if fieldVal.kind notin fieldSpec.kinds:
+                        resolveError("$stats[" & $i & "] (@" & statId &
+                                     ") field '" & fieldName & "' has wrong type: got " & $fieldVal.kind)
 
-    let statsVal = output.vars["stats"]
-    if statsVal.kind != cvList:
-        resolveError("$stats must be a list")
-    for i, item in statsVal.items:
-        if item.kind != cvStat:
-            resolveError("$stats[" & $i & "] must be a stat entry ({@statid ...})")
-        let required = if item.statId == "separator": @["color"] else: @["icon", "name", "color"]
-        for field in required:
-            if not item.statArgs.hasKey(field):
-                resolveError("$stats[" & $i & "] (@" & item.statId &
-                             ") missing required field: " & field)
-        if item.statArgs.hasKey("icon"):
-            if item.statArgs["icon"].kind != cvChar:
-                resolveError("$stats[" & $i & "] (@" & item.statId &
-                             ") 'icon' must be a char literal (use single quotes)")
-        if item.statArgs.hasKey("symbol"):
-            if item.statArgs["symbol"].kind != cvChar:
-                resolveError("$stats[" & $i & "] (@" & item.statId &
-                             ") 'symbol' must be a char literal (use single quotes)")
-        if item.statArgs.hasKey("name"):
-            let nameKind = item.statArgs["name"].kind
-            if nameKind notin {cvString, cvChar}:
-                resolveError("$stats[" & $i & "] (@" & item.statId & ") 'name' must be a string")
-
-    let distrosVal = output.vars["distros"]
-    if distrosVal.kind != cvList:
-        resolveError("$distros must be a list")
-    for i, item in distrosVal.items:
-        if item.kind != cvArt:
-            resolveError("$distros[" & $i & "] must be an art block ({%name [...]})")
-        if item.artNames.len == 0:
-            resolveError("$distros[" & $i & "] must have at least one name")
-        if item.art.len == 0:
-            resolveError("$distros[" & $i & "] must have at least one art line")
+    # Validate $distros
+    if output.vars.hasKey("distros"):
+        let distrosVal = output.vars["distros"]
+        if distrosVal.kind != cvList:
+            resolveError("$distros must be a list")
+        for i, item in distrosVal.items:
+            if item.kind != cvArt:
+                resolveError("$distros[" & $i & "] must be an art block (%{...})")
+            if item.artNames.len == 0:
+                resolveError("$distros[" & $i & "] must have at least one name")
+            if item.art.len == 0:
+                resolveError("$distros[" & $i & "] must have at least one art line")
 
 #### Debug dump ####
 
@@ -432,3 +493,10 @@ proc dumpValue*(v: ConfigValue, indent: int = 0): string =
             for line in v.art:
                 s &= pad2 & "\"" & line & "\"\n"
             s.strip(trailing = true)
+
+proc dumpDslOutput*(cfg: DslOutput) =
+    echo "=== Config ==="
+    for name, val in cfg.vars:
+        echo "$" & name & " ="
+        echo dumpValue(val, indent = 1)
+        echo ""

@@ -11,9 +11,11 @@ type TokenKind* = enum
     tkAnsi        # !31
     # Identifiers
     tkVariable    # $name
-    tkStatId      # @username, @cpu, @memory
-    tkArtId       # %artname
     tkKey         # bar, color, enabled... (bare word before =)
+
+    # Sigils
+    tkAt          # @
+    tkPercent     # %
 
     # Structure
     tkImport      # import
@@ -29,8 +31,8 @@ type TokenKind* = enum
 
 type Token* = object
     kind*: TokenKind
-    value*: string      # raw source text of the token
-    line*: int          # for error reporting
+    value*: string
+    line*: int
 
 type Lexer* = object
     src*: string
@@ -69,7 +71,7 @@ proc lexString(l: var Lexer): Token =
     while l.pos < l.src.len and l.peek() != '"':
         let c = l.advance()
         if c == '\\' and l.pos < l.src.len:
-            buf.add l.advance()   # escaped char
+            buf.add l.advance()
         else:
             buf.add c
     discard l.advance()  # closing "
@@ -82,7 +84,6 @@ proc lexChar(l: var Lexer): Token =
         discard l.advance()
         buf.add l.advance()
     else:
-        # consume all bytes until closing ' (handles multi-byte UTF-8)
         while l.pos < l.src.len and l.peek() != '\'':
             buf.add l.advance()
     discard l.advance()  # closing '
@@ -108,20 +109,6 @@ proc lexVariable(l: var Lexer): Token =
     while l.pos < l.src.len and (l.peek().isAlphaAscii() or l.peek() in {'_', '0'..'9'}):
         buf.add l.advance()
     Token(kind: tkVariable, value: buf)
-
-proc lexStatId(l: var Lexer): Token =
-    discard l.advance()  # consume @
-    var buf = "@"
-    while l.pos < l.src.len and (l.peek().isAlphaAscii() or l.peek() in {'_', '0'..'9'}):
-        buf.add l.advance()
-    Token(kind: tkStatId, value: buf)
-
-proc lexArtId(l: var Lexer): Token =
-    discard l.advance()  # consume %
-    var buf = "%"
-    while l.pos < l.src.len and (l.peek().isAlphaAscii() or l.peek() in {'_', '-', '0'..'9'}):
-        buf.add l.advance()
-    Token(kind: tkArtId, value: buf)
 
 proc lexNumber(l: var Lexer): Token =
     var buf = ""
@@ -149,11 +136,11 @@ proc nextToken*(l: var Lexer): Token =
     case l.peek():
         of '"':  result = l.lexString()
         of '\'': result = l.lexChar()
-        of '#':  result = l.lexHex()      # #cba6f7
-        of '!':  result = l.lexAnsi()     # !31
-        of '$':  result = l.lexVariable() # $name
-        of '@':  result = l.lexStatId()   # @cpu
-        of '%':  result = l.lexArtId()    # %artname
+        of '#':  result = l.lexHex()
+        of '!':  result = l.lexAnsi()
+        of '$':  result = l.lexVariable()
+        of '@':  discard l.advance(); result = Token(kind: tkAt,      value: "@")
+        of '%':  discard l.advance(); result = Token(kind: tkPercent,  value: "%")
         of '=':  discard l.advance(); result = Token(kind: tkEquals,   value: "=")
         of '[':  discard l.advance(); result = Token(kind: tkLBracket, value: "[")
         of ']':  discard l.advance(); result = Token(kind: tkRBracket, value: "]")
@@ -163,7 +150,7 @@ proc nextToken*(l: var Lexer): Token =
         of ')':  discard l.advance(); result = Token(kind: tkRParen,   value: ")")
         of '\n': discard l.advance(); result = Token(kind: tkNewLine,  value: "\\n")
         elif l.peek().isDigit(): result = l.lexNumber()
-        else:    result = l.lexBareWord() # key or import keyword or true/false
+        else:    result = l.lexBareWord()
     result.line = startLine
 
 proc tokenize*(src: string): seq[Token] =

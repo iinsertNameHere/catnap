@@ -24,3 +24,4 @@ $bright_cyan    = #89dceb  ; sky
 $bright_white   = #f5e0dc  ; rosewater
 
 $text_color = #cdd6f4  ; text
+$border_color = $text_color

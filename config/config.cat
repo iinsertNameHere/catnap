@@ -2,26 +2,27 @@ import "distros.cat"
 
 $layout           = "Inline"
 $borderstyle      = "line"
+$border_color     = $white
 $stats_margin_top = 0
 $location         = ""
 
 $stats = [
-    {@username  icon=''   name="user"      color=$red}
-    {@hostname  icon=''   name="hostname"  color=$yellow}
-    {@uptime    icon=''   name="uptime"    color=$blue}
-    {@distro    icon=''   name="distro"    color=$green}
-    {@kernel    icon=''   name="kernel"    color=$magenta}
-    {@desktop   icon=''   name="desktop"   color=$cyan}
-    {@terminal  icon=''   name="term"      color=$red}
-    {@shell     icon=''   name="shell"     color=$magenta}
-    {@separator color=$white}
-    {@packages  icon=''  name="packages"  color=$red}    ; WARNING: Resource Intensive
-    {@weather   icon=''  name="weather"   color=$blue}   ; Requires curl and an emoji font. WARNING: Resource Intensive
-    {@gpu       icon='󱔐'  name="gpu"      color=$magenta}  ; WARNING: Resource Intensive
-    {@cpu       icon=''  name="cpu"       color=$red}
-    {@battery   icon=''  name="battery"   color=$green}
-    {@memory    icon=''  name="memory"    color=$yellow}
+    @{id="username"  icon=''   name="user"      color=$red}
+    @{id="hostname"  icon=''   name="hostname"  color=$yellow}
+    @{id="uptime"    icon=''   name="uptime"    color=$blue}
+    @{id="distro"    icon=''   name="distro"    color=$green}
+    @{id="kernel"    icon=''   name="kernel"    color=$magenta}
+    @{id="desktop"   icon=''   name="desktop"   color=$cyan}
+    @{id="terminal"  icon=''   name="term"      color=$red}
+    @{id="shell"     icon=''   name="shell"     color=$magenta}
+    @{id="separator"}
+    @{id="packages"  icon=''  name="packages"  color=$red}    ; WARNING: Resource Intensive
+    @{id="weather"   icon=''  name="weather"   color=$blue}   ; Requires curl and an emoji font. WARNING: Resource Intensive
+    @{id="gpu"       icon='󱔐'  name="gpu"      color=$magenta}  ; WARNING: Resource Intensive
+    @{id="cpu"       icon=''  name="cpu"       color=$red}
+    @{id="battery"   icon=''  name="battery"   color=$green}
+    @{id="memory"    icon=''  name="memory"    color=$yellow}
     ; The following stats do not work on MacOS and the BSDs.
-    {@disk_0    icon=''  name="disk"      color=$green}
-    {@colors    icon=''   name="colors"    color=$reset  symbol=''}
+    @{id="disk_0"    icon=''  name="disk"      color=$green}
+    @{id="colors"    icon=''   name="colors"    color=$reset  symbol=''}
 ]

@@ -16,11 +16,8 @@ type NodeKind* = enum
     nkRgb         # (255 100 200)
     nkVarRef      # $name
     nkList        # [item item item]
-    nkStatRef     # {@cpu key=val ...}
-    nkArtBlock    # {%name1 %name2 ["line1" "line2"] margin=[1 2 3]}
-
-    # Stat ref internals
-    nkNamedArg    # key=value (only inside nkStatRef)
+    nkStatObj     # @{id="statid" icon='' ...}
+    nkArtObj      # %{id="name" art=[...] margin=[...]}
 
 type Node* = ref object
     line*: int
@@ -48,16 +45,8 @@ type Node* = ref object
             refName*: string
         of nkList:
             items*: seq[Node]
-        of nkStatRef:
-            statId*:    string
-            namedArgs*: seq[Node]
-        of nkArtBlock:
-            artNames*:      seq[string]    # % prefixes stripped
-            artLines*:      seq[Node]      # nkString nodes
-            artMarginNode*: Node           # nkList of nkNumber, or nil
-        of nkNamedArg:
-            argKey*:   string
-            argValue*: Node           # only scalar kinds
+        of nkStatObj, nkArtObj:
+            fields*: seq[(string, Node)]
 
 type Parser* = object
     tokens*: seq[Token]
@@ -94,13 +83,13 @@ proc parseValue(p: var Parser): Node  # forward declaration
 proc parseScalar(p: var Parser): Node =
     let tok = p.peek()
     case tok.kind:
-        of tkString:  discard p.advance(); Node(kind: nkString, line: tok.line, strVal:  tok.value)
-        of tkChar:    discard p.advance(); Node(kind: nkChar,   line: tok.line, charVal: tok.value)
-        of tkNumber:  discard p.advance(); Node(kind: nkNumber, line: tok.line, numVal:  tok.value)
-        of tkBool:    discard p.advance(); Node(kind: nkBool,   line: tok.line, boolVal: tok.value == "true")
-        of tkHex:     discard p.advance(); Node(kind: nkHex,    line: tok.line, hexVal:  tok.value)
-        of tkAnsi:    discard p.advance(); Node(kind: nkAnsi,   line: tok.line, ansiVal: tok.value)
-        of tkVariable:discard p.advance(); Node(kind: nkVarRef, line: tok.line, refName: tok.value)
+        of tkString:   discard p.advance(); Node(kind: nkString, line: tok.line, strVal:  tok.value)
+        of tkChar:     discard p.advance(); Node(kind: nkChar,   line: tok.line, charVal: tok.value)
+        of tkNumber:   discard p.advance(); Node(kind: nkNumber, line: tok.line, numVal:  tok.value)
+        of tkBool:     discard p.advance(); Node(kind: nkBool,   line: tok.line, boolVal: tok.value == "true")
+        of tkHex:      discard p.advance(); Node(kind: nkHex,    line: tok.line, hexVal:  tok.value)
+        of tkAnsi:     discard p.advance(); Node(kind: nkAnsi,   line: tok.line, ansiVal: tok.value)
+        of tkVariable: discard p.advance(); Node(kind: nkVarRef, line: tok.line, refName: tok.value)
         of tkLParen:
             let line = tok.line
             discard p.advance()  # (
@@ -114,71 +103,30 @@ proc parseScalar(p: var Parser): Node =
                 "line " & $tok.line & ": unexpected token " & $tok.kind &
                 " (" & tok.value & ")")
 
-proc parseStatRef(p: var Parser): Node =
-    let line = p.peek().line
+proc parseObjFields(p: var Parser): seq[(string, Node)] =
     discard expect(p, tkLBrace)
-    let statId = expect(p, tkStatId).value
-
-    var namedArgs: seq[Node] = @[]
+    p.skipNewlines()
     while not p.check(tkRBrace) and not p.check(tkEof):
         let keyTok = expect(p, tkKey)
         discard expect(p, tkEquals)
-        let val = p.parseScalar()
-        namedArgs.add Node(kind: nkNamedArg, line: keyTok.line,
-                        argKey: keyTok.value, argValue: val)
-
-    discard expect(p, tkRBrace)
-    Node(kind: nkStatRef, line: line, statId: statId, namedArgs: namedArgs)
-
-proc parseArtBlock(p: var Parser): Node =
-    let line = p.peek().line
-    discard expect(p, tkLBrace)
-
-    var artNames: seq[string] = @[]
-    while p.check(tkArtId):
-        artNames.add p.advance().value[1..^1]  # strip %
-
-    if artNames.len == 0:
-        raise newException(ParseError,
-            "line " & $line & ": art block must have at least one %name")
-
-    p.skipNewlines()
-    var artLines: seq[Node] = @[]
-    discard expect(p, tkLBracket)
-    p.skipNewlines()
-    while not p.check(tkRBracket) and not p.check(tkEof):
-        let tok = p.peek()
-        if tok.kind != tkString:
-            raise newException(ParseError,
-                "line " & $tok.line & ": art lines must be string literals")
-        artLines.add Node(kind: nkString, line: tok.line, strVal: p.advance().value)
-        p.skipNewlines()
-    discard expect(p, tkRBracket)
-
-    p.skipNewlines()
-    var artMarginNode: Node = nil
-    while p.check(tkKey):
-        let keyTok = p.advance()
-        discard expect(p, tkEquals)
         let val = p.parseValue()
-        if keyTok.value == "margin":
-            artMarginNode = val
+        result.add (keyTok.value, val)
         p.skipNewlines()
-
     discard expect(p, tkRBrace)
-    Node(kind: nkArtBlock, line: line, artNames: artNames,
-         artLines: artLines, artMarginNode: artMarginNode)
 
 proc parseValue(p: var Parser): Node =
     case p.peek().kind:
-        of tkLBrace:
-            if p.pos + 1 < p.tokens.len and p.tokens[p.pos + 1].kind == tkArtId:
-                p.parseArtBlock()
-            else:
-                p.parseStatRef()
+        of tkAt:
+            let line = p.peek().line
+            discard p.advance()
+            Node(kind: nkStatObj, line: line, fields: p.parseObjFields())
+        of tkPercent:
+            let line = p.peek().line
+            discard p.advance()
+            Node(kind: nkArtObj, line: line, fields: p.parseObjFields())
         of tkLBracket:
             let line = p.peek().line
-            discard p.advance()  # [
+            discard p.advance()
             var items: seq[Node] = @[]
             p.skipNewlines()
             while not p.check(tkRBracket) and not p.check(tkEof):
@@ -237,18 +185,16 @@ proc dumpNode*(n: Node, indent: int = 0): string =
             var s = pad & "List(\n"
             for item in n.items: s &= dumpNode(item, indent + 1) & "\n"
             s & pad & ")"
-        of nkStatRef:
-            var s = pad & "StatRef(" & n.statId & ")\n"
-            for arg in n.namedArgs: s &= dumpNode(arg, indent + 1) & "\n"
-            s
-        of nkArtBlock:
-            var s = pad & "ArtBlock(" & n.artNames.join(", ") & ")\n"
-            for line in n.artLines: s &= dumpNode(line, indent + 1) & "\n"
-            if n.artMarginNode != nil:
-                s &= pad & "  margin=\n" & dumpNode(n.artMarginNode, indent + 2)
-            s
-        of nkNamedArg:
-            pad & "NamedArg(" & n.argKey & "=)\n" & dumpNode(n.argValue, indent + 1)
+        of nkStatObj:
+            var s = pad & "StatObj(\n"
+            for (key, val) in n.fields:
+                s &= pad & "  " & key & "=\n" & dumpNode(val, indent + 2) & "\n"
+            s & pad & ")"
+        of nkArtObj:
+            var s = pad & "ArtObj(\n"
+            for (key, val) in n.fields:
+                s &= pad & "  " & key & "=\n" & dumpNode(val, indent + 2) & "\n"
+            s & pad & ")"
 
 proc dumpAst*(nodes: seq[Node]): string =
     echo "=== Ast ==="
