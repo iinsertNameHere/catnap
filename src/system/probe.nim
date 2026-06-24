@@ -9,12 +9,13 @@ import tables
 import osproc
 import nre
 from unicode import toLower
-from "../common/definitions" import PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath
+from "../common/definitions" import PKGMANAGERS, PKGCOUNTCOMMANDS
+from "../common/utils" import toCachePath, toTmpPath
 from "../config/types" import Config
 from "types" import DistroId
 import "../common/logging"
 import parsetoml
-import "caching"
+import "../common/caching"
 import algorithm
 
 proc getDistro*(): string =

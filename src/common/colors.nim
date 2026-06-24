@@ -42,20 +42,16 @@ proc initBackgroundBright(): ColorSet = # <..>
     result.Cyan    = "\e[46;1m" # CN
     result.White   = "\e[47;1m" # WE
 
-# Global ColorSets:
 const
-    Foreground*:        ColorSet = static: initForeground()
-    ForegroundBright*:  ColorSet = static: initForegroundBright()
+    Foreground*:       ColorSet = static: initForeground()
+    ForegroundBright*: ColorSet = static: initForegroundBright()
     Background*:       ColorSet = static: initBackground()
     BackgroundBright*: ColorSet = static: initBackgroundBright()
 
-# Reset Value
 const Default*: Color = static: "\e[0m" # !DT!
 
 proc Colorize*(s: string): string =
-    # Function to replace color codes with the correct ansi color code.
-
-    result = s # Parse normal Foreground
+    result = s
         .replace("(BK)", Foreground.Black)
         .replace("(RD)", Foreground.Red)
         .replace("(GN)", Foreground.Green)
@@ -65,7 +61,7 @@ proc Colorize*(s: string): string =
         .replace("(CN)", Foreground.Cyan)
         .replace("(WE)", Foreground.White)
 
-    result = result # Parse bright Foreground
+    result = result
         .replace("{BK}", ForegroundBright.Black)
         .replace("{RD}", ForegroundBright.Red)
         .replace("{GN}", ForegroundBright.Green)
@@ -75,7 +71,7 @@ proc Colorize*(s: string): string =
         .replace("{CN}", ForegroundBright.Cyan)
         .replace("{WE}", ForegroundBright.White)
 
-    result = result # Parse normal Background
+    result = result
         .replace("[BK]", Background.Black)
         .replace("[RD]", Background.Red)
         .replace("[GN]", Background.Green)
@@ -85,7 +81,7 @@ proc Colorize*(s: string): string =
         .replace("[CN]", Background.Cyan)
         .replace("[WE]", Background.White)
 
-    result = result # Parse bright Background
+    result = result
         .replace("<BK>", BackgroundBright.Black)
         .replace("<RD>", BackgroundBright.Red)
         .replace("<GN>", BackgroundBright.Green)
@@ -95,10 +91,9 @@ proc Colorize*(s: string): string =
         .replace("<CN>", BackgroundBright.Cyan)
         .replace("<WE>", BackgroundBright.White)
 
-    result = result.replace("!DT!", Default) # Parse Default
+    result = result.replace("!DT!", Default)
 
 proc Uncolorize*(s: string): string =
-    ## Removes ANSI color codes from string
     result = s.replace(nre.re"\e(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "")
 
 proc Reset*() =

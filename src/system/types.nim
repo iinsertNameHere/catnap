@@ -1,13 +1,7 @@
 import tables
+from "../config/types" import Logo
 
 type
-    Margin = array[3, int]
-
-    Logo* = object
-        margin*: Margin
-        art*: seq[string]
-        isAlias*: bool
-
     DistroId* = object
         id*: string
         like*: string

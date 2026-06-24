@@ -21,21 +21,32 @@ $ versionctl
 ├── docs/  # Contains man docs
 ├── image/ # Contains all images for README.md
 ├── src/
-│   ├── catnaplib/
-│   │   ├── drawing/    # Files for rendering output
-│   │   ├── generation/ # Files for generating output objects
-│   │   ├── global/     # Files used globally
-│   │   ├── platform/   # Files related to fetching system info
-│   │   └── terminal/   # Files related to terminal stuff (Colors, Logging)
+│   ├── common/     # Layer 1 => no internal deps; stdlib only
+│   ├── config/     # Layer 2 => depends on: common
+│   ├── system/     # Layer 3 => depends on: common, config
+│   ├── generation/ # Layer 4 => depends on: common, config, system
+│   ├── rendering/  # Layer 5 => depends on: common, config, system, generation
 │   ├── extern/
 │   │   ├── headers/   # Contains extern c++ headers (hpp)
 │   │   └── libraries/ # Contains extern libs
-│   └── catnap.nim # Entry src file
+│   └── catnap.nim  # Entry point
 ├── scripts/     # Test Scripts etc.
 ├── config.nims  # nim install, nim debug, ...
 └── CHANGELOG.md # Changelog for current development version (versionctl print)
 
 ```
+
+## Module layer rules
+
+The `src/` tree is divided into strict dependency layers. A module **may only import from its own layer or lower**; importing upward is forbidden.
+
+| Layer | Package | May import |
+|-------|---------|------------|
+| 1 | `common/` | stdlib only |
+| 2 | `config/` | `common` |
+| 3 | `system/` | `common`, `config` |
+| 4 | `generation/` | `common`, `config`, `system` |
+| 5 | `rendering/` | `common`, `config`, `system`, `generation` |
 
 # How to add a new distro
 

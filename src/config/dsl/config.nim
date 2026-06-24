@@ -2,7 +2,7 @@ import lexer
 import parser
 import analyzer
 import tables
-import "../common/logging"
+import "../../common/logging"
 
 proc loadConfig*(src: string, baseDir: string = "."): Config =
     try:

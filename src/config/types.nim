@@ -1,8 +1,12 @@
 import parsetoml
 import tables
-from "../system/types" import Logo
 
 type
+    Logo* = object
+        margin*: array[3, int]
+        art*: seq[string]
+        isAlias*: bool
+
     Config* = object
         configFile*: string
         distrosFile*: string

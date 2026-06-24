@@ -1,3 +1,4 @@
+import os
 from "definitions" import CACHEPATH, TEMPPATH
 
 proc toCachePath*(p: string): string =

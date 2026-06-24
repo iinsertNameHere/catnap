@@ -1,7 +1,6 @@
 import "../common/logging"
 from "../common/definitions" import STATNAMES, STATKEYS, DISTROSPATH, GLOBALCONFIGPATH, GLOBALDISTROSPATH
-from "types" import Config
-from "../system/types" import Logo
+from "types" import Config, Logo
 from os import fileExists, getEnv, existsEnv
 import strformat
 import strutils

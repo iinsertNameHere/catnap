@@ -49,6 +49,6 @@ proc readCache*(filename: string, default: string = ""): string =
             if line == "NEVER": expiration = (now() + 1.hours)
             else: expiration = parse(line, datetimeFormat)
             break
-    
+
     if now() >= expiration: return default
     return content.join("\n")

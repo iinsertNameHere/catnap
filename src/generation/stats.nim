@@ -1,6 +1,6 @@
 from "../common/definitions" import STATNAMES
-from "../rendering/types" import Color
-from "../generation/types" import Stats, Stat
+from "../common/types" import Color
+from "types" import Stats, Stat
 import parsetoml
 import unicode
 import tables

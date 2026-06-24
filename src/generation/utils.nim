@@ -8,11 +8,10 @@ from "../config/types" import Config
 from "../system/types" import FetchInfo
 from "types" import Stats, Stat
 from "stats" import newStat
-import "../rendering/colors"
+import "../common/colors"
 import "../common/logging"
 
-proc repeat*(s: string, i: int): string =
-    # Repeats a string 's', 'i' times
+proc fill*(s: string, i: int): string =
     for _ in countup(0, i):
         result &= s
 
@@ -69,15 +68,15 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, config: Config, fi: 
     # Construct the stats section with all stats that are not NIL
     case borderstyle:
         of "line":
-            sb.add("╭" & "─".repeat(int(stats.maxlen + 1)) & "╮")
+            sb.add("╭" & "─".fill(int(stats.maxlen + 1)) & "╮")
         of "dashed":
-            sb.add("╭" & "┄".repeat(int(stats.maxlen + 1)) & "╮")
+            sb.add("╭" & "┄".fill(int(stats.maxlen + 1)) & "╮")
         of "dotted":
-            sb.add("•" & "•".repeat(int(stats.maxlen + 1)) & "•")
+            sb.add("•" & "•".fill(int(stats.maxlen + 1)) & "•")
         of "noborder":
-            sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+            sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
         of "doubleline":
-            sb.add("╔" & "═".repeat(int(stats.maxlen + 1)) & "╗")
+            sb.add("╔" & "═".fill(int(stats.maxlen + 1)) & "╗")
     var fetchinfolist_keys: seq[string]
     for k in fi.list.keys:
         fetchinfolist_keys.add(k)
@@ -88,15 +87,15 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, config: Config, fi: 
         if stat.split('_')[0] == "sep":
             case borderstyle:
                 of "line":
-                    sb.add("├" & "─".repeat(int(stats.maxlen + 1)) & "┤")
+                    sb.add("├" & "─".fill(int(stats.maxlen + 1)) & "┤")
                 of "dashed":
-                    sb.add("┊" & "┄".repeat(int(stats.maxlen + 1)) & "┊")
+                    sb.add("┊" & "┄".fill(int(stats.maxlen + 1)) & "┊")
                 of "dotted":
-                    sb.add("┇" & "•".repeat(int(stats.maxlen + 1)) & "┇")
+                    sb.add("┇" & "•".fill(int(stats.maxlen + 1)) & "┇")
                 of "noborder":
-                    sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+                    sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
                 of "doubleline":
-                    sb.add("╠" & "═".repeat(int(stats.maxlen + 1)) & "╣")
+                    sb.add("╠" & "═".fill(int(stats.maxlen + 1)) & "╣")
             continue
 
         if stat notin fetchinfolist_keys:
@@ -110,13 +109,13 @@ proc buildStatBlock*(stat_names: seq[string], stats: Stats, config: Config, fi: 
         addStat(stats.list["colors"], colorval)
     case borderstyle:
         of "line":
-            sb.add("╰" & "─".repeat(int(stats.maxlen + 1)) & "╯")
+            sb.add("╰" & "─".fill(int(stats.maxlen + 1)) & "╯")
         of "dashed":
-            sb.add("╰" & "┄".repeat(int(stats.maxlen + 1)) & "╯")
+            sb.add("╰" & "┄".fill(int(stats.maxlen + 1)) & "╯")
         of "dotted":
-            sb.add("•" & "•".repeat(int(stats.maxlen + 1)) & "•")
+            sb.add("•" & "•".fill(int(stats.maxlen + 1)) & "•")
         of "noborder":
-            sb.add(" " & " ".repeat(int(stats.maxlen + 1)) & " ")
+            sb.add(" " & " ".fill(int(stats.maxlen + 1)) & " ")
         of "doubleline":
-            sb.add("╚" & "═".repeat(int(stats.maxlen + 1)) & "╝")
+            sb.add("╚" & "═".fill(int(stats.maxlen + 1)) & "╝")
     return sb

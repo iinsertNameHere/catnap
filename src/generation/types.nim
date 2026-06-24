@@ -1,5 +1,5 @@
 import tables
-from "../rendering/types" import Color
+from "../common/types" import Color
 
 type
     Stat* = object

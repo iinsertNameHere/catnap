@@ -3,7 +3,7 @@ import os
 import strformat
 import re
 
-const versionFile = "src/catnaplib/global/version.nim"
+const versionFile = "src/common/version.nim"
 const changelogFile = "CHANGELOG.md"
 
 proc usage() =

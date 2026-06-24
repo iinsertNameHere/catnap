@@ -1,11 +1,11 @@
 import sugar
 import parsetoml
 
-from "../config/types" import Config
-from "types" import FetchInfo, Logo
+from "../config/types" import Config, Logo
+from "types" import FetchInfo
 import "probe"
 
-proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
+proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
     result.distroId = probe.getDistroId()
     result.list["username"] = proc(): string = return probe.getUser()
     result.list["hostname"] = proc(): string = return probe.getHostname()
@@ -47,7 +47,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
         result.list["disk_0"] = proc(): string = ""
         result.disk_statnames.add("disk_0")
 
-    var distroId = (if distroId != "nil": distroId else: result.distroId.id)
+    var distroId = (if distroId != "": distroId else: result.distroId.id)
 
     if not config.distroart.contains(distroId):
         distroId = result.distroId.like
