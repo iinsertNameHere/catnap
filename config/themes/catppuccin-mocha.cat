@@ -1,0 +1,27 @@
+;* ─────────────────────────────────────────────────────────────────
+   Catppuccin Mocha theme for catnap
+   Import this at the top of your config to apply the theme:
+       import "themes/catppuccin-mocha.cat"
+   https://github.com/catppuccin/catppuccin
+   ───────────────────────────────────────────────────────────────── *;
+
+$black   = #45475a  ; surface1
+$red     = #f38ba8  ; red
+$green   = #a6e3a1  ; green
+$yellow  = #f9e2af  ; yellow
+$blue    = #89b4fa  ; blue
+$magenta = #cba6f7  ; mauve
+$cyan    = #94e2d5  ; teal
+$white   = #cdd6f4  ; text
+
+$bright_black   = #6c7086  ; overlay0
+$bright_red     = #eba0ac  ; maroon
+$bright_green   = #a6e3a1  ; green
+$bright_yellow  = #fab387  ; peach
+$bright_blue    = #b4befe  ; lavender
+$bright_magenta = #f5c2e7  ; pink
+$bright_cyan    = #89dceb  ; sky
+$bright_white   = #f5e0dc  ; rosewater
+
+$text_color = #cdd6f4  ; text
+$border_color = $text_color

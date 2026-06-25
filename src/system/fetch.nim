@@ -1,10 +1,11 @@
 import sugar
+import tables
 
-from "../global/definitions" import FetchInfo, Config, toTmpPath
-import parsetoml
+from "../config/types" import Config, Logo
+from "types" import FetchInfo
 import "probe"
 
-proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
+proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
     result.distroId = probe.getDistroId()
     result.list["username"] = proc(): string = return probe.getUser()
     result.list["hostname"] = proc(): string = return probe.getHostname()
@@ -16,7 +17,8 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
     result.list["shell"]    = proc(): string = return probe.getShell()
     result.list["memory"]   = proc(): string = return probe.getMemory()
     result.list["battery"]  = proc(): string = return probe.getBattery()
-    result.list["cpu"]      = proc(): string = return probe.getCpu()
+    result.list["cpu"]       = proc(): string = return probe.getCpu()
+    result.list["cpu_usage"] = proc(): string = return probe.getCpuUsage()
     result.list["gpu"]      = proc(): string = return probe.getGpu()
     result.list["packages"] = proc(): string = return probe.getPackages()
     result.list["weather"]  = proc(): string = return probe.getWeather(config)
@@ -42,15 +44,17 @@ proc fetchSystemInfo*(config: Config, distroId: string = "nil"): FetchInfo =
             result.list["disk_0"] = proc(): string = return probe.getDisk(mounts[0])
             result.disk_statnames.add("disk_0")
     else:
-        #TODO: add macos support
         result.list["disk_0"] = proc(): string = ""
         result.disk_statnames.add("disk_0")
 
-    var distroId = (if distroId != "nil": distroId else: result.distroId.id)
+    var distroId = (if distroId != "": distroId else: result.distroId.id)
 
     if not config.distroart.contains(distroId):
         distroId = result.distroId.like
         if not config.distroart.contains(distroId):
             distroId = "default"
 
-    result.logo = config.distroart[distroId]
+    if config.distroart.contains(distroId):
+        result.logo = config.distroart[distroId]
+    else:
+        result.logo = Logo(margin: [0, 1, 1], art: @[])

@@ -9,10 +9,12 @@ import tables
 import osproc
 import nre
 from unicode import toLower
-from "../global/definitions" import DistroId, PKGMANAGERS, PKGCOUNTCOMMANDS, toCachePath, toTmpPath, Config
-import "../terminal/logging"
-import parsetoml
-import "caching"
+from "../common/definitions" import PKGMANAGERS, PKGCOUNTCOMMANDS
+from "../common/utils" import toCachePath, toTmpPath
+from "../config/types" import Config
+from "types" import DistroId
+import "../common/logging"
+import "../common/caching"
 import algorithm
 
 proc getDistro*(): string =
@@ -208,7 +210,8 @@ proc getBattery*(): string =
                     batterys.add((parseInt($dir.path[^1]), batteryPath))
 
         if batterys.len < 1:
-            logError("No battery detected!")
+            logError("No battery detected!", fatal=false)
+            return "N/A"
 
         # Sort batterys by number
         sort(batterys)
@@ -233,7 +236,8 @@ proc getMounts*(): seq[string] =
 
     let mounts_raw = $getMountPoints()
     if mounts_raw == "":
-        logError("Failed to get disk mounting Points")
+        logError("Failed to get disk mounting Points", fatal=false)
+        return @[]
 
     let mounts = mounts_raw.split(',')
 
@@ -294,6 +298,40 @@ proc getCpu*(): string =
 
     writeCache(cacheFile, result, initDuration(days=1))
 
+proc getCpuUsage*(): string =
+    when defined(linux):
+        let tmpFile = "cpu_usage".toTmpPath
+        let statLine = readFile("/proc/stat").split("\n")[0]
+        let parts = statLine.splitWhitespace()
+        if parts.len < 5: return "N/A"
+        try:
+            let user    = parseInt(parts[1])
+            let nice    = parseInt(parts[2])
+            let system  = parseInt(parts[3])
+            let idle    = parseInt(parts[4])
+            let iowait  = if parts.len > 5: parseInt(parts[5]) else: 0
+            let irq     = if parts.len > 6: parseInt(parts[6]) else: 0
+            let softirq = if parts.len > 7: parseInt(parts[7]) else: 0
+            let total     = user + nice + system + idle + iowait + irq + softirq
+            let idleTotal = idle + iowait
+            var usage = "N/A"
+            if fileExists(tmpFile):
+                let prev = readFile(tmpFile).strip().split(":")
+                if prev.len == 2:
+                    let prevTotal = parseInt(prev[0])
+                    let prevIdle  = parseInt(prev[1])
+                    let deltaTotal = total - prevTotal
+                    let deltaIdle  = idleTotal - prevIdle
+                    if deltaTotal > 0:
+                        let pct = int(round((1.0 - float(deltaIdle) / float(deltaTotal)) * 100.0))
+                        usage = $pct & "%"
+            writeFile(tmpFile, $total & ":" & $idleTotal)
+            return usage
+        except ValueError:
+            return "N/A"
+    else:
+        return "N/A"
+
 proc getPkgManager(distroId: DistroId): string =
     for key in PKGMANAGERS.keys:
         if distroId.id == key:
@@ -328,7 +366,8 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
     let tmpFile = "packages.txt".toTmpPath
     let cmd: string = PKGCOUNTCOMMANDS[pkgManager] & " > " & tmpFile
     if execCmd(cmd) != 0:
-        logError("Failed to fetch pkg count!")
+        logError("Failed to fetch pkg count!", fatal=false)
+        return "N/A"
 
     let count = readFile(tmpFile).strip()
     result = count & " [" & pkgManager & "]"
@@ -344,7 +383,7 @@ proc cleanGpuName(raw: string): string =
         ("AMD Radeon",   "AMD Radeon"),
         ("NVIDIA",       "NVIDIA"),
         ("Intel",        "Intel"),
-        # Mesa software renderers – collapse to a readable label
+        # Mesa software renderers - collapse to a readable label
         ("llvmpipe",     "Software (llvmpipe)"),
         ("softpipe",     "Software (softpipe)"),
         ("D3D12",        "Software (D3D12)"),
@@ -359,7 +398,7 @@ proc cleanGpuName(raw: string): string =
             break
 
 proc getVramMb(): int =
-    # AMD / amdgpu – most reliable
+    # AMD / amdgpu - most reliable
     let drmBase = "/sys/class/drm"
     if dirExists(drmBase):
         for kind in ["card0", "card1", "card2"]:
@@ -371,14 +410,14 @@ proc getVramMb(): int =
                         return int(bytes div (1024 * 1024))
                 except: discard
 
-    # NVIDIA – parse nvidia-smi
+    # NVIDIA - parse nvidia-smi
     try:
         let raw = execProcess("nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null").strip()
         if raw != "":
             return parseInt(raw.splitLines()[0].strip())
     except: discard
 
-    # Intel / generic – drm resource file
+    # Intel / generic - drm resource file
     if dirExists(drmBase):
         for kind in ["card0", "card1", "card2"]:
             let p = drmBase / kind / "device" / "resource"
@@ -398,10 +437,10 @@ proc getVramMb(): int =
     return 0
 
 proc formatVram(mb: int): string =
-    # Round to the nearest sensible marketing size (e.g. 16376 MB → "16GB").
+    # Round to the nearest sensible marketing size (e.g. 16376 MB -> "16GB").
     if mb <= 0: return ""
     let gb = mb div 1024
-    # Snap to the nearest power-of-two GB tier (2, 4, 6, 8, 12, 16, 24, 32 …)
+    # Snap to the nearest power-of-two GB tier (2, 4, 6, 8, 12, 16, 24, 32 ...)
     const tiers = [2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 48, 64, 80]
     for t in tiers:
         if gb <= t: return $t & "GB"
@@ -421,7 +460,9 @@ proc getGpu*(): string =
         if execCmd("glxinfo -B > " & tmpFile & " 2>&1") != 0:
             if readFile(tmpFile).strip() == "Error: unable to open display":
                 result = "Unknown"
-            else: logError("Failed to fetch GPU!")
+            else:
+                logError("Failed to fetch GPU!", fatal=false)
+                result = "N/A"
         else:
             var rawDevice    = "Unknown"
             var unifiedMemory = ""
@@ -463,8 +504,8 @@ proc getWeather*(config: Config): string =
     # Returns current weather
     let cacheFile = "weather".toCachePath
     var location = "";
-    if config.misc.contains("location"):
-        location = config.misc["location"].getStr().replace(" ", "+")
+    if config.misc.location != "":
+        location = config.misc.location.replace(" ", "+")
 
     result = readCache(cacheFile)
     if result != "":
@@ -472,7 +513,8 @@ proc getWeather*(config: Config): string =
 
     let tmpFile = "weather.txt".toTmpPath
     if execCmd("curl -s wttr.in/" & location & "?format=3 > " & tmpFile) != 0:
-        logError("Failed to fetch weather!")
+        logError("Failed to fetch weather!", fatal=false)
+        return "N/A"
 
     result = readFile(tmpFile).strip()
     writeCache(cacheFile, result, initDuration(minutes=20))

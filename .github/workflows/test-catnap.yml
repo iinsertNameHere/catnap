@@ -8,16 +8,18 @@ jobs:
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
-      - name: "Install Nim"
-        uses: iffy/install-nim@v5
       - name: "Setup Nim"
         uses: jiro4989/setup-nim-action@v1
         with:
           nim-version: "stable"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Install dependencies"
+        run: sudo apt-get install -y libpcre3 libpcre3-dev
       - name: "Build Catnap"
         run: nim debug
-      - name: "Install mesa-utils"
-        run: sudo apt-get install mesa-utils
+      - name: "Verify binary"
+        run: bin/catnap -v
       - name: "Run Tests"
-        run: cd scripts && ./test-commandline-args.sh
+        run: |
+          chmod +x scripts/*.sh
+          cd scripts && ./test-commandline-args.sh && ./test-bad-configs.sh

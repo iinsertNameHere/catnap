@@ -23,7 +23,7 @@
 I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple system-information **concatenation** tool using `nim👑`. It is quite **customizable** and has possibilities to alter the names and colors of the statistics. In the future, I also intend to add more distribution logos. Feel free to contribute to the project at any time.
 
 > #### ⏱️ Execution Time 
-> *Around **0.006** seconds on my laptop
+> Around **0.008** seconds on my laptop
 
 #### 📊 Displayed Statistics
 <details>
@@ -48,7 +48,6 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 </details>
 
 #### ❤️ Shoutout to:
-- [NimParsers/parsetoml](https://github.com/NimParsers/parsetoml) for the toml parsing
 - [ssleert/Nitch](https://github.com/ssleert/nitch) for the inspiration
 - [All contributors](#thanks-to-all-contributors-)
 
@@ -83,10 +82,11 @@ It covers installation, usage and configuration!
 <br>
 
 ## 🧪 Testing
-To test catnap, run the following command in the catnap repo:
+To test catnap, run the following commands in the catnap repo:
 ```bash
-$ cd tests/
-$ ./commandline_args.sh
+$ nim debug
+$ ./scripts/test-commandline-args.sh
+$ ./scripts/test-bad-configs.sh
 ```
 
 <br>
