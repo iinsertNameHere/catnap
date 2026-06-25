@@ -794,13 +794,13 @@ $distros = [
 
     %{  id=["tux" "default"]
         art=[
-            "{$black}      .--.     "
-            "{$black}     |{$reset}o{$black}_{$reset}o {$black}|    "
-            "{$black}     |{$yellow}:_/ {$black}|    "
-            "{$black}    /{$reset}/{$black}   \\ {$black}\\   "
-            "{$black}   ({$reset}|     | {$black})  "
-            "{$yellow}  /'/{$reset}|_   _/{$yellow}'\\ "
-            "{$yellow}  \\___){$black}={$yellow}(___/  "
+            "{$bright_black}       .--.     "
+            "{$bright_black}      |{$white}o{$yellow}_{$white}o {$bright_black}|    "
+            "{$bright_black}      |{$yellow}:_/ {$bright_black}|    "
+            "{$bright_black}     /{$white}/   \\ {$bright_black}\\   "
+            "{$bright_black}    ({$white}|     | {$bright_black})  "
+            "{$bright_black}   {$yellow}/'/|_   _/'\\ "
+            "{$bright_black}   {$yellow}\\___){$bright_black}={$yellow}(____/  "
         ]
         margin=[2 2 3]
     }
