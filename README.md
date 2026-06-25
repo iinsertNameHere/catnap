@@ -65,9 +65,6 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 <br>
 <i>Distro Showcase:</i>
 <br>
-<img src="image/distros.png">
-
-<br>
 </details>
 
 <br>
