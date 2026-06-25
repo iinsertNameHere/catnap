@@ -59,11 +59,9 @@ I created `Catnap🌿` (originally known as `Catnip`) as a playful, simple syste
 <details>
   <summary style="font-size: 18px; font-weight: 600;">Demo Images ✨</summary>
 
-<i>Default:</i>
+<i>Example: </i>
 <br>
 <img src="image/demo1.png">
-<br>
-<i>Distro Showcase:</i>
 <br>
 </details>
 
