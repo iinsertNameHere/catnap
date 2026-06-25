@@ -165,8 +165,6 @@ jobs:
             needs.release.outputs.version != '' &&
             github.event.inputs.skip_binaries != 'true'
         uses: ./.github/workflows/build-static.yml
-        with:
-            force: ${{ github.event.inputs.force || 'false' }}
 
     attach-binaries:
         needs: [release, build-binaries]

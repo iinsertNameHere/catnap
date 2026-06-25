@@ -10,7 +10,7 @@ $graph_width      = 15
 
 $stats = [
     @{id="username"  icon=''   name="user"      color=$red}
-    @{id="hostname"  icon=''   name="hostname"  color=$yellow}
+    @{id="hostname"  icon=''   name="hostname"  color=$yellow enabled=false}
     @{id="uptime"    icon=''   name="uptime"    color=$blue}
     @{id="separator"}
     @{id="kernel"    icon=''   name="kernel"    color=$magenta}

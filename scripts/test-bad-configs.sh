@@ -47,12 +47,12 @@ run_bad() {
 
 run_bad "missing \$stats" '
 $distros = []
-$layout  = "Inline"
+$layout  = "inline"
 ' "required variable '\$stats' is not defined"
 
 run_bad "missing \$distros" '
 $stats  = []
-$layout = "Inline"
+$layout = "inline"
 ' "required variable '\$distros' is not defined"
 
 run_bad "missing \$layout" '
@@ -76,78 +76,78 @@ $distros = []
 $layout  = "Bogus"
 ' '$layout must be one of'
 
-run_bad "invalid \$borderstyle" '
-$stats       = []
-$distros     = []
-$layout      = "Inline"
-$borderstyle = "invalid"
-' '$borderstyle must be one of'
+run_bad "invalid \$border_style" '
+$stats        = []
+$distros      = []
+$layout       = "inline"
+$border_style = "invalid"
+' '$border_style must be one of'
 
 run_bad "\$stats_margin_top not a number" '
 $stats            = []
 $distros          = []
-$layout           = "Inline"
+$layout           = "inline"
 $stats_margin_top = "nope"
-' '$stats_margin_top must be a number'
+' "'\$stats_margin_top' has wrong type"
 
 # ------------------------------------------------------------------
 # Stat entry validation
 # ------------------------------------------------------------------
 
 run_bad "stat missing icon" '
-$stats   = [{@username name="user" color=$red}]
+$stats   = [@{id="username" name="user" color=$red}]
 $distros = []
-$layout  = "Inline"
-' "missing required field: icon"
+$layout  = "inline"
+' "missing required field 'icon'"
 
-run_bad "stat missing name" '
-$stats   = [{@username icon='"'"''"'"' color=$red}]
+run_bad "stat missing name" \
+$'$stats   = [@{id="username" icon=\'\' color=$red}]\n$distros = []\n$layout  = "inline"' \
+"missing required field 'name'"
+
+run_bad "stat missing color" \
+$'$stats   = [@{id="username" icon=\'\' name="user"}]\n$distros = []\n$layout  = "inline"' \
+"missing required field 'color'"
+
+run_bad "separator enabled wrong type" '
+$stats   = [@{id="separator" enabled="yes"}]
 $distros = []
-$layout  = "Inline"
-' "missing required field: name"
+$layout  = "inline"
+' "field 'enabled' has wrong type"
 
-run_bad "stat missing color" '
-$stats   = [{@username icon='"'"''"'"' name="user"}]
+run_bad "icon is a string not char" '
+$stats   = [@{id="username" icon="nf-fa-user" name="user" color=$red}]
 $distros = []
-$layout  = "Inline"
-' "missing required field: color"
-
-run_bad "separator missing color" '
-$stats   = [{@separator}]
-$distros = []
-$layout  = "Inline"
-' "missing required field: color"
-
-run_bad "icon is a string not char" \
-$'$stats   = [{@username icon="nf-fa-user" name="user" color=$red}]\n$distros = []\n$layout  = "Inline"' \
-"'icon' must be a char literal"
+$layout  = "inline"
+' "field 'icon' has wrong type"
 
 run_bad "symbol is a string not char" \
-$'$stats   = [{@colors icon=\'\' name="colors" color=$reset symbol="circle"}]\n$distros = []\n$layout  = "Inline"' \
-"'symbol' must be a char literal"
+$'$stats   = [@{id="colors" icon=\'\' name="colors" color=$reset symbol="circle"}]\n$distros = []\n$layout  = "inline"' \
+"field 'symbol' has wrong type"
 
 # ------------------------------------------------------------------
 # Art block validation
 # ------------------------------------------------------------------
 
-run_bad "distro art with no lines" \
-$'$stats   = []\n$distros = [{%myos []}]\n$layout  = "Inline"' \
-"must have at least one art line"
+run_bad "distro art with no lines" '
+$stats   = []
+$distros = [%{id="myos" art=[]}]
+$layout  = "inline"
+' "must have at least one art line"
 
 # ------------------------------------------------------------------
 # Variable resolution errors
 # ------------------------------------------------------------------
 
 run_bad "undefined variable reference" \
-$'$stats   = [{@username icon=\'\' name="user" color=$undefined_color}]\n$distros = []\n$layout  = "Inline"' \
+$'$stats   = [@{id="username" icon=\'\' name="user" color=$undefined_color}]\n$distros = []\n$layout  = "inline"' \
 "undefined variable"
 
 run_bad "circular variable reference" \
-$'$a = $b\n$b = $a\n$stats = []\n$distros = []\n$layout = "Inline"' \
+$'$a = $b\n$b = $a\n$stats = []\n$distros = []\n$layout = "inline"' \
 "circular variable reference"
 
 run_bad "import non-existent file" \
-$'import "does_not_exist.cat"\n$stats = []\n$distros = []\n$layout = "Inline"' \
+$'import "does_not_exist.cat"\n$stats = []\n$distros = []\n$layout = "inline"' \
 "imported file not found"
 
 # ------------------------------------------------------------------

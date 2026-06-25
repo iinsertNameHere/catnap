@@ -34,9 +34,9 @@ run "Grep: memory"          $CATNAP -c $CFG -g memory
 run "Grep: disk_0"          $CATNAP -c $CFG -g disk_0
 run "Grep: disks"           $CATNAP -c $CFG -g disks
 run "Margin"                $CATNAP -c $CFG -m 1,2,3 -n
-run "Layout: ArtOnTop"      $CATNAP -c $CFG -l ArtOnTop -n
-run "Layout: StatsOnTop"    $CATNAP -c $CFG -l StatsOnTop -n
-run "Layout: Inline"        $CATNAP -c $CFG -l Inline -n
+run "Layout: art_on_top"    $CATNAP -c $CFG -l art_on_top -n
+run "Layout: stats_on_top"  $CATNAP -c $CFG -l stats_on_top -n
+run "Layout: inline"        $CATNAP -c $CFG -l inline -n
 run "Default config"        $CATNAP -c ../config/config.cat -n
 
 echo ""
