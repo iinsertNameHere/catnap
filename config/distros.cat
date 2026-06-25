@@ -1,3 +1,7 @@
+;   /\_/\   catnap distros
+;  ( -.- )  distro ASCII art and margin settings
+;   > z <   imported automatically by config.cat
+
 $distros = [
 
     ; ### A ###
@@ -795,7 +799,7 @@ $distros = [
             "{$black}     |{$yellow}:_/ {$black}|    "
             "{$black}    /{$reset}/{$black}   \\ {$black}\\   "
             "{$black}   ({$reset}|     | {$black})  "
-            "{$yellow}  /'/{$reset}|_   _/{$yellow}'\\  "
+            "{$yellow}  /'/{$reset}|_   _/{$yellow}'\\ "
             "{$yellow}  \\___){$black}={$yellow}(___/  "
         ]
         margin=[2 2 3]

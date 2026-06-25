@@ -1,4 +1,5 @@
 import strformat
+import strutils
 
 import "../common/logging"
 from "../config/types" import Config
@@ -17,6 +18,17 @@ proc Render*(config: Config, fetchinfo: FetchInfo) =
     var distro_art: seq[string]
     for idx in countup(0, fetchinfo.logo.art.len - 1):
         distro_art.add(" ".fill(margin_left) & fetchinfo.logo.art[idx] & colors.Default & " ".fill(margin_right))
+
+    # Normalize art lines to uniform visible width so no single line pushes stats off-column.
+    if distro_art.len > 0:
+        var maxArtWidth = 0
+        for line in distro_art:
+            let w = line.reallen
+            if w > maxArtWidth: maxArtWidth = w
+        for i in 0 ..< distro_art.len:
+            let delta = maxArtWidth - distro_art[i].reallen
+            if delta > 0:
+                distro_art[i] &= " ".repeat(delta)
 
     if margin_top > 0 and distro_art.len > 0:
         let l = distro_art[0].reallen - 1
