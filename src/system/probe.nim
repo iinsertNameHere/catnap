@@ -383,7 +383,7 @@ proc cleanGpuName(raw: string): string =
         ("AMD Radeon",   "AMD Radeon"),
         ("NVIDIA",       "NVIDIA"),
         ("Intel",        "Intel"),
-        # Mesa software renderers – collapse to a readable label
+        # Mesa software renderers - collapse to a readable label
         ("llvmpipe",     "Software (llvmpipe)"),
         ("softpipe",     "Software (softpipe)"),
         ("D3D12",        "Software (D3D12)"),
@@ -398,7 +398,7 @@ proc cleanGpuName(raw: string): string =
             break
 
 proc getVramMb(): int =
-    # AMD / amdgpu – most reliable
+    # AMD / amdgpu - most reliable
     let drmBase = "/sys/class/drm"
     if dirExists(drmBase):
         for kind in ["card0", "card1", "card2"]:
@@ -410,14 +410,14 @@ proc getVramMb(): int =
                         return int(bytes div (1024 * 1024))
                 except: discard
 
-    # NVIDIA – parse nvidia-smi
+    # NVIDIA - parse nvidia-smi
     try:
         let raw = execProcess("nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>/dev/null").strip()
         if raw != "":
             return parseInt(raw.splitLines()[0].strip())
     except: discard
 
-    # Intel / generic – drm resource file
+    # Intel / generic - drm resource file
     if dirExists(drmBase):
         for kind in ["card0", "card1", "card2"]:
             let p = drmBase / kind / "device" / "resource"
@@ -437,10 +437,10 @@ proc getVramMb(): int =
     return 0
 
 proc formatVram(mb: int): string =
-    # Round to the nearest sensible marketing size (e.g. 16376 MB → "16GB").
+    # Round to the nearest sensible marketing size (e.g. 16376 MB -> "16GB").
     if mb <= 0: return ""
     let gb = mb div 1024
-    # Snap to the nearest power-of-two GB tier (2, 4, 6, 8, 12, 16, 24, 32 …)
+    # Snap to the nearest power-of-two GB tier (2, 4, 6, 8, 12, 16, 24, 32 ...)
     const tiers = [2, 4, 6, 8, 10, 12, 16, 20, 24, 32, 48, 64, 80]
     for t in tiers:
         if gb <= t: return $t & "GB"
