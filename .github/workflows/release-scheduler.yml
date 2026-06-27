@@ -135,20 +135,13 @@ jobs:
                     done
                   fi
 
-            - name: Package source release
+            - name: Package config files
               if: steps.decide.outputs.release == 'true'
               run: |
                   VERSION="${{ steps.version.outputs.version }}"
-                  mkdir -p dist
-                  rsync -av \
-                    --exclude=".git" \
-                    --exclude="dist" \
-                    --exclude=".github" \
-                    --exclude="*.lock" \
-                    ./ dist/catnap/
-                  tar -czf "catnap-${VERSION}-source.tar.gz" -C dist catnap
+                  tar -czf "catnap-${VERSION}-config.tar.gz" config/
 
-            - name: Create Release (source only)
+            - name: Create Release
               if: steps.decide.outputs.release == 'true'
               id: create_release
               uses: softprops/action-gh-release@v2
@@ -156,7 +149,7 @@ jobs:
                   tag_name: ${{ steps.version.outputs.version }}
                   name: ${{ steps.version.outputs.version }}
                   body_path: CHANGELOG.md
-                  files: catnap-${{ steps.version.outputs.version }}-source.tar.gz
+                  files: catnap-${{ steps.version.outputs.version }}-config.tar.gz
 
     build-binaries:
         needs: release
@@ -181,10 +174,11 @@ jobs:
 
             - name: Rename binaries with target suffix
               run: |
+                  VERSION="${{ needs.release.outputs.version }}"
                   mkdir -p release-files
                   for dir in artifacts/catnap-linux-*/; do
-                    target=$(basename "$dir")
-                    cp "$dir/catnap" "release-files/${target}"
+                    arch=$(basename "$dir" | sed 's/catnap-linux-//')
+                    cp "$dir/catnap" "release-files/catnap-${VERSION}-${arch}"
                   done
                   ls -la release-files/
 

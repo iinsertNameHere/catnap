@@ -33,7 +33,7 @@ jobs:
                     - target: armv7-unknown-linux-musleabihf
                       muslcc: armv7-unknown-linux-musleabihf-gcc
                       nim_cpu: arm
-                      artifact: catnap-linux-armv7
+                      artifact: catnap-linux-armv7l
                       host: armv7-linux-musleabihf
 
         steps:
