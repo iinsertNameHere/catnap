@@ -12,6 +12,9 @@ $layout       = "inline"
 $border_style = "single"
 $border_color = $white
 
+; Overwrite the distroid. Empty => Use autodetect
+$distroid     = ""
+
 ; -- Stats position -----------------------------------------------------------
 ; Blank lines above the stat block. Useful with art_on_top or stats_on_top
 

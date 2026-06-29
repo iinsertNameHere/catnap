@@ -26,8 +26,9 @@ type
         text_color*:       string
         graph_style*:      string
         graph_width*:      int
-        graph_color_fg*:    string
-        graph_color_bg*:    string
+        graph_color_fg*:   string
+        graph_color_bg*:   string
+        distroid*:            string             
 
     Config* = object
         configFile*: string

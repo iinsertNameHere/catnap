@@ -56,3 +56,6 @@ proc dslToConfig*(output: DslOutput, configFile: string): Config =
     result.misc.graph_width      = if output.vars.hasKey("graph_width"):      output.vars["graph_width"].numVal          else: 15
     result.misc.graph_color_fg   = if output.vars.hasKey("graph_color_fg"):   valueToString(output.vars["graph_color_fg"]) else: ""
     result.misc.graph_color_bg   = if output.vars.hasKey("graph_color_bg"):   valueToString(output.vars["graph_color_bg"]) else: ""
+    result.misc.distroid         = if output.vars.hasKey("distroid"):         output.vars["distroid"].strVal              else: ""
+
+

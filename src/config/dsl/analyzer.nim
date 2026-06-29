@@ -93,6 +93,7 @@ proc buildSchema*(): Schema =
         "stats_margin_top":  VarSpec(kinds: {cvNumber},             required: false),
         "location":          VarSpec(kinds: {cvString},             required: false),
         "graph_width":       VarSpec(kinds: {cvNumber},             required: false),
+        "distroid":          VarSpec(kinds: {cvString},             required: false),
     }.toTable
 
 #### Errors ####

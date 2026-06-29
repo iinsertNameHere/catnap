@@ -67,7 +67,10 @@ if args.statname == "":
     if args.layout != "":
         cfg.misc.layout = args.layout
 
-    let fetchinfo = fetchSystemInfo(cfg, args.distroid)
+    let distroid = (if (args.distroid != ""): args.distroid else: cfg.misc.distroid)
+  
+
+    let fetchinfo = fetchSystemInfo(cfg, distroid)
     echo ""
     Render(cfg, fetchinfo)
     echo ""
