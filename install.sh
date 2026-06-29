@@ -1,14 +1,36 @@
 #!/bin/bash
 
+###### Validate tools ######
+
+ERR=0
+
+# Check that curl is available
 curl --version >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Couldn't fin curl command. Make sure it is installed and available in your PATH!"
+    ERR=1
+    echo -e "The 'curl' utility is missing.\nMake sure it is installed and available in your PATH!"
+fi
+
+# Check that tar is available
+tar --version >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    ERR=1
+    echo -e "The 'tar' utility is missing.\nMake sure it is installed and available in your PATH!"
+fi
+
+if [ $ERR != 0 ]; then
+    exit 1
 fi
 
 # Make sure script is run as root
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root!"
   exit
+fi
+
+if [ -z "$SUDO_USER" ]; then
+    echo "Run with sudo, not as root directly."
+    exit 1
 fi
 
 ###### Function Definitions ######
@@ -70,6 +92,7 @@ function uninstall {
 }
 
 MODE=0
+
 function run {
     local msg=$1 cmd=$2 
     local -n reply=$3
@@ -95,6 +118,8 @@ function run {
 
 # Set mode (0 = Install, 1 = Uninstall)
 ARG=$1
+
+
 MODE=0
 
 if [ "$ARG" == "uninstall" ]; then
@@ -141,7 +166,7 @@ if [ $MODE -eq 0 ]; then
     ###### Detecting latest catnap version ######
     
     # Get latest actual release url from redirect url of '/releases/latest'
-    run "Detecting latest version" \
+    run "Pulling latest release url" \
 	"curl -Ls -o /dev/null -w %{url_effective} 'https://github.com/iinsertNameHere/catnap/releases/latest/'" \
 	RAW_URL
 
@@ -149,21 +174,51 @@ if [ $MODE -eq 0 ]; then
     BASE_URL=$(echo $RAW_URL | sed 's/tag/download/')
     
     # Extract version number
-    VERSION=$(echo $BASE_URL | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+')
-    
+    run "Detecting version number" \
+	"echo '$BASE_URL' | grep -oE 'v[0-9]+\.[0-9]+\.[0-9]+'" \
+	VERSION
+
+    if [ -z "$VERSION" ]; then
+	echo "Detected invalid version number from release URL: '$RAW_URL'"
+	exit 1
+    fi
+
     BIN_NAME="catnap-$VERSION-$ARCH"
     CFG_SRC_NAME="catnap-$VERSION-config.tar.gz"
-    
-    echo ""
+
+    # Check if catnap is already installed
+    run "Checking if already installed" \
+	"catnap -v >/dev/null 2>&1; echo \$?"\
+	ALREADY_INSTALLED
+
+    # Detect the current version number that is installed
+    INSTALLED_VERSION=""
+    if [ $ALREADY_INSTALLED -eq 0 ]; then
+	run "Detecting installed version" \
+	    "catnap -v | sed 's/Catnap //'" \
+	    INSTALLED_VERSION
+    fi
 
     ###### Start installation ######
 
+    echo ""
     echo "Architecture: $ARCH"
+    if [ "$INSTALLED_VERSION" != "" ]; then
+	echo "Installed Version: $INSTALLED_VERSION"
+    fi
     echo "Latest Version: $VERSION"
-   
     echo ""
 
-    if [ $(yn "Start installation?") -eq 1 ]; then
+    START_MSG="Start installation?"
+
+    # Warn user if latest version is already installed
+    if [ "$INSTALLED_VERSION" = "$VERSION" ]; then
+	echo -e "\033[33mAlready on the latest version ($VERSION)\033[0m"
+	echo ""
+	START_MSG="Start install anyways?"
+    fi
+
+    if [ $(yn "$START_MSG") -eq 1 ]; then
         exit 0
     fi
 
@@ -171,7 +226,13 @@ if [ $MODE -eq 0 ]; then
     
     # Create temp dir and cd into it
     WORK_DIR=$(mktemp -d)
-    cd $WORK_DIR
+
+    # Trap cleanup
+    trap "rm -rf $WORK_DIR; exit 1" SIGINT
+    trap "rm -rf $WORK_DIR; exit 1" SIGTERM
+    trap "rm -rf $WORK_DIR" EXIT
+
+    cd "$WORK_DIR"
     
     ###### Download files ######
     
@@ -188,18 +249,18 @@ if [ $MODE -eq 0 ]; then
     
     ###### Extract source ######
     
-    CONF_TMP_PATH="config"
+    CONF_TMP_PATH="$WORK_DIR/config"
     CONF_INSTALL_PATH="$HOME/.config/catnap"
     
     # Extract config files 
     run "Extracting source files" \
-	"tar -czf $SRC_NAME $CONF_TMP_PATH config/ >/dev/null 2>&1" \
+	"tar -xf $CFG_SRC_NAME config >/dev/null 2>&1" \
 	NULL  
 
     ###### Install bin file ###### 
     
-    chmod +x "$BIN_NAME"
-    install "$BIN_NAME" "/usr/local/bin/catnap"
+    chmod +x "$WORK_DIR/$BIN_NAME"
+    install "$WORK_DIR/$BIN_NAME" "/usr/local/bin/catnap"
     
     ###### Install Config files ######
     
@@ -214,12 +275,7 @@ if [ $MODE -eq 0 ]; then
     
     # Install theme
     install "$CONF_TMP_PATH/themes/catppuccin-mocha.cat" "$CONF_INSTALL_PATH/themes/catppuccin-mocha.cat"
-    
-    ###### Clean up ######
-    
-    cd 
-    rm -rf "$WORK_DIR"
-    
+     
     ###### Installed catnap successfully ######
     
     echo ""
