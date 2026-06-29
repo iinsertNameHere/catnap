@@ -1,6 +1,6 @@
 #!/bin/bash
 
-curl -version
+curl --version >/dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Couldn't fin curl command. Make sure it is installed and available in your PATH!"
 fi
