@@ -12,49 +12,69 @@ from unicode import toLower
 from "../common/definitions" import PKGMANAGERS, PKGCOUNTCOMMANDS
 from "../common/utils" import toCachePath, toTmpPath
 from "../config/types" import Config
-from "types" import DistroId
+from "types" import OsInfo
 import "../common/logging"
 import "../common/caching"
 import algorithm
 
-proc getDistro*(): string =
-    let cacheFile = "distroname".toCachePath
-    result = readCache(cacheFile)
-    if result != "": return
+proc parseReleaseFile*(path: string, info: var OsInfo) =
+    if not fileExists(path):
+        return
 
-    when defined(linux) or defined(bsd):
-    # Returns the name of the running linux distro
-        result = "/etc/os-release".loadConfig.getSectionValue("", "PRETTY_NAME") & " " & uname().machine
-    elif defined(macosx):
-        result = "MacOS X" & " " & uname().machine
+    let f = loadConfig(path)
+
+    if info.id == "":
+        info.id = f.getSectionValue("", "ID").toLower()
+        if info.id == "":
+            info.id = f.getSectionValue("", "DISTRIB_ID").toLower()
+
+    if info.id_like == "":
+        info.id_like = f.getSectionValue("", "ID_LIKE").toLower()
+
+    if info.name == "":
+        info.name = f.getSectionValue("", "PRETTY_NAME")
+        if info.name == "":
+            info.name = f.getSectionValue("", "DISTRIB_DESCRIPTION")
+        if info.name == "":
+            info.name = f.getSectionValue("", "NAME")
+
+proc getOs*(): OsInfo =
+    let rpi_issue      = "/etc/rpi-issue"
+    let os_release     = "/etc/os-release"
+    let lib_os_release = "/usr/lib/os-release"
+    let lsb_release    = "/etc/lsb-release"
+    let bdrk_os_release = "/bedrock/strata/bedrock/etc/os-release"
+
+    if fileExists(rpi_issue):
+        result.id      = "raspbian"
+        result.id_like = "debian"
+        result.name    = "Raspberry Pi OS " & uname().machine
+        return
+
+    let wsl = getEnv("WSL_DISTRO_NAME")
+    if wsl != "":
+        result.id   = wsl.toLower().replace(" ", "_")
+        result.name = wsl
+
+    let bdrk = getEnv("BEDROCK_RESTRICT")
+    if bdrk != "1" and fileExists(bdrk_os_release):
+        parseReleaseFile(bdrk_os_release, result)
+
+    if fileExists(lsb_release):
+        parseReleaseFile(lsb_release, result)
+
+    if fileExists(os_release):
+        parseReleaseFile(os_release, result)
+
+    if fileExists(lib_os_release):
+        parseReleaseFile(lib_os_release, result)
+
+    if result.id      == "": result.id      = "default"
+    if result.id_like == "": result.id_like = "default"
+    if result.name    != "":
+        result.name &= " " & uname().machine
     else:
-        result = "Unknown"
-
-    writeCache(cacheFile, result, INFINITEDURATION)
-
-proc getDistroId*(): DistroId =
-    let cacheFile = "distroid".toCachePath
-    let raw = readCache(cacheFile)
-    if raw != "":
-        let raw_vals = raw.split(':')
-        if raw_vals.len == 2:
-            result.id = raw_vals[0].replace(" ", "_")
-            result.like = raw_vals[1].replace(" ", "_")
-
-    if defined(linux) or defined(bsd):
-        if fileExists("/boot/issue.txt"): # Check if raspbian else get distroid from /etc/os-release
-            result.id = "raspbian"
-            result.like = "debian"
-        else:
-            result.id = "/etc/os-release".loadConfig.getSectionValue("", "ID").toLower()
-            result.like = "/etc/os-release".loadConfig.getSectionValue("", "ID_LIKE").toLower()
-    elif defined(macosx):
-        result.id = "macos"
-        result.like = "macos"
-    else:
-        result.id = "Unknown"
-        result.like = "Unknown"
-    writeCache(cacheFile, &"{result.id}|{result.like}", INFINITEDURATION)
+        result.name = "Unknown " & uname().machine
 
 proc getUptime*(): string =
     # Returns the system uptime as a string (DAYS, HOURS, MINUTES)
@@ -278,7 +298,7 @@ proc getCpu*(): string =
         let rawLines = readFile("/proc/cpuinfo").split("\n")
 
         var key_name = "model name"
-        if getDistroId().id == "raspbian": key_name = "Model"
+        if getOs().id == "raspbian": key_name = "Model"
 
         for rawLine in rawLines:
             let line = rawLine.split(":")
@@ -332,18 +352,18 @@ proc getCpuUsage*(): string =
     else:
         return "N/A"
 
-proc getPkgManager(distroId: DistroId): string =
+proc getPkgManager(osInfo: OsInfo): string =
     for key in PKGMANAGERS.keys:
-        if distroId.id == key:
+        if osInfo.id == key:
             return PKGMANAGERS[key]
 
     for key in PKGMANAGERS.keys:
-        if distroId.like == key:
+        if osInfo.id_like == key:
             return PKGMANAGERS[key]
 
     return "Unknown"
 
-proc getPackages*(distroId: DistroId = getDistroId()): string =
+proc getPackages*(osInfo: OsInfo = getOs()): string =
     # Returns the installed package count
     let cacheFile = "packages".toCachePath
 
@@ -351,7 +371,7 @@ proc getPackages*(distroId: DistroId = getDistroId()): string =
     if result != "":
         return
 
-    let pkgManager = getPkgManager(distroId)
+    let pkgManager = getPkgManager(osInfo)
     if pkgManager == "Unknown":
         return "Unknown"
 

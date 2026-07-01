@@ -3,7 +3,7 @@ import parser
 import analyzer
 import tables
 import "../../common/logging"
-from "../types" import Config, StatEntry, MiscConfig, Logo
+from "../types" import Config, StatEntry, MiscConfig, Art
 
 proc loadDslConfig*(src: string, baseDir: string = "."): DslOutput =
     try:
@@ -42,9 +42,9 @@ proc dslToConfig*(output: DslOutput, configFile: string): Config =
 
 
     for item in output.vars["distros"].items:
-        let logo = Logo(margin: item.margin, art: item.art)
+        let art = Art(margin: item.margin, art: item.art)
         for name in item.artNames:
-            result.distroart[name] = logo
+            result.distroart[name] = art
 
     result.misc.layout           = if output.vars.hasKey("layout"):           output.vars["layout"].strVal              else: "inline"
     result.misc.border_style     = if output.vars.hasKey("border_style"):     output.vars["border_style"].strVal        else: "single"

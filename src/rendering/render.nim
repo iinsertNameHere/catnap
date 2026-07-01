@@ -9,15 +9,15 @@ import "../generation/utils"
 
 proc Render*(config: Config, fetchinfo: FetchInfo) =
     let
-        margin_top   = fetchinfo.logo.margin[0]
-        margin_left  = fetchinfo.logo.margin[1]
-        margin_right = fetchinfo.logo.margin[2]
+        margin_top   = fetchinfo.art.margin[0]
+        margin_left  = fetchinfo.art.margin[1]
+        margin_right = fetchinfo.art.margin[2]
 
     let layout = config.misc.layout
 
     var distro_art: seq[string]
-    for idx in countup(0, fetchinfo.logo.art.len - 1):
-        distro_art.add(" ".fill(margin_left) & fetchinfo.logo.art[idx] & colors.Default & " ".fill(margin_right))
+    for idx in countup(0, fetchinfo.art.art.len - 1):
+        distro_art.add(" ".fill(margin_left) & fetchinfo.art.art[idx] & colors.Default & " ".fill(margin_right))
 
     # Normalize art lines to uniform visible width so no single line pushes stats off-column.
     if distro_art.len > 0:

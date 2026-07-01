@@ -275,7 +275,10 @@ if [ $MODE -eq 0 ]; then
     
     # Install theme
     install "$CONF_TMP_PATH/themes/catppuccin-mocha.cat" "$CONF_INSTALL_PATH/themes/catppuccin-mocha.cat"
-     
+
+    # Make the user the owner of the config files
+    chown $SUDO_USER:$SUDO_USER -R "$CONF_INSTALL_PATH"
+
     ###### Installed catnap successfully ######
     
     echo ""

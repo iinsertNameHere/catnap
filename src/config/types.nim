@@ -1,7 +1,7 @@
 import tables
 
 type
-    Logo* = object
+    Art* = object
         margin*: array[3, int]
         art*:    seq[string]
 
@@ -33,5 +33,5 @@ type
     Config* = object
         configFile*: string
         stats*:      seq[StatEntry]
-        distroart*:  OrderedTable[string, Logo]
+        distroart*:  OrderedTable[string, Art]
         misc*:       MiscConfig

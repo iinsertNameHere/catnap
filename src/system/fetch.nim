@@ -1,15 +1,16 @@
 import sugar
 import tables
 
-from "../config/types" import Config, Logo
+from "../config/types" import Config, Art
 from "types" import FetchInfo
 import "probe"
 
-proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
-    result.distroId = probe.getDistroId()
+proc fetchSystemInfo*(config: Config, os_id: string = ""): FetchInfo =
+    result.os_info = probe.getOs()
+    let osInfo = result.os_info
     result.list["username"] = proc(): string = return probe.getUser()
     result.list["hostname"] = proc(): string = return probe.getHostname()
-    result.list["distro"]   = proc(): string = return probe.getDistro()
+    result.list["distro"]   = proc(): string = return osInfo.name
     result.list["uptime"]   = proc(): string = return probe.getUptime()
     result.list["kernel"]   = proc(): string = return probe.getKernel()
     result.list["desktop"]  = proc(): string = return probe.getDesktop()
@@ -20,7 +21,7 @@ proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
     result.list["cpu"]       = proc(): string = return probe.getCpu()
     result.list["cpu_usage"] = proc(): string = return probe.getCpuUsage()
     result.list["gpu"]      = proc(): string = return probe.getGpu()
-    result.list["packages"] = proc(): string = return probe.getPackages()
+    result.list["packages"] = proc(): string = return probe.getPackages(osInfo)
     result.list["weather"]  = proc(): string = return probe.getWeather(config)
     if defined(linux):
         # Add a disk stat for all mounts
@@ -47,14 +48,15 @@ proc fetchSystemInfo*(config: Config, distroId: string = ""): FetchInfo =
         result.list["disk_0"] = proc(): string = ""
         result.disk_statnames.add("disk_0")
 
-    var distroId = (if distroId != "": distroId else: result.distroId.id)
+    var os_id = (if os_id != "": os_id else: result.os_info.id)
 
-    if not config.distroart.contains(distroId):
-        distroId = result.distroId.like
-        if not config.distroart.contains(distroId):
-            distroId = "default"
+    if not config.distroart.contains(os_id):
+        os_id = result.os_info.id_like
+        if not config.distroart.contains(os_id):
+            os_id = "default"
 
-    if config.distroart.contains(distroId):
-        result.logo = config.distroart[distroId]
+    if config.distroart.contains(os_id):
+        result.art = config.distroart[os_id]
     else:
-        result.logo = Logo(margin: [0, 1, 1], art: @[])
+        result.art = Art(margin: [0, 1, 1], art: @[])
+

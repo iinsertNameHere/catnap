@@ -1,13 +1,14 @@
 import tables
-from "../config/types" import Logo
+from "../config/types" import Art
 
 type
-    DistroId* = object
+    OsInfo* = object
         id*: string
-        like*: string
+        id_like*: string
+        name*: string
 
     FetchInfo* = object
         list*: Table[string, proc(): string]
         disk_statnames*: seq[string]
-        distroId*: DistroId
-        logo*: Logo
+        os_info*: OsInfo
+        art*: Art
