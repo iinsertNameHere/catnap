@@ -80,7 +80,7 @@ const
         "nix": "nix-env --query --installed | wc -l",
         "xbps": "xbps-query -l | wc -l",
         "emerge": "equery list '*' | wc -l",
-        "dnf": "dnf list installed | wc -l",
+        "dnf": "dnf list --installed | wc -l",
         "yum": "yum list installed | wc -l",
         "apt": "dpkg-query -l | grep '^ii' | wc -l",
         "zypper": "rpm -qa --last | wc --l",
